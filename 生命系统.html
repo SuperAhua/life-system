@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>生命系统</title>
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#f6f4ef">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="生命系统">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
   :root{
     --bg:#f6f4ef; --surface:#fff; --s2:#faf8f3;
@@ -427,10 +434,11 @@
 7. [清单管理](#七清单管理)
 8. [数据与备份](#八数据与备份)
 9. [手机端适配](#九手机端适配)
-10. [设计原则：为什么这样取舍](#十设计原则为什么这样取舍)
-11. [常见问题](#十一常见问题)
-12. [技术说明](#十二技术说明)
-13. [版本演进](#十三版本演进)
+10. [放到手机上用](#十放到手机上用github-pages)
+11. [设计原则：为什么这样取舍](#十一设计原则为什么这样取舍)
+12. [常见问题](#十二常见问题)
+13. [技术说明](#十三技术说明)
+14. [版本演进](#十四版本演进)
 
 ---
 
@@ -462,6 +470,8 @@
 ### 打开
 
 双击 `生命系统.html`，用 Chrome / Edge / Safari 打开即可。也可以拖进浏览器窗口。
+
+手机上不用传文件：直接开 [线上地址](https://superahua.github.io/life-system/)，再「添加到主屏幕」（见第十节）。
 
 ### 第一次打开会看到什么
 
@@ -870,7 +880,45 @@ sum:  原地踏步 3 分钟；开合跳 3 组 × 30 秒；…   （做过的动�
 
 ---
 
-## 十、设计原则：为什么这样取舍
+## 十、放到手机上用（GitHub Pages）
+
+线上地址：**[superahua.github.io/life-system](https://superahua.github.io/life-system/)**
+
+### 装到主屏（30 秒）
+
+1. 手机浏览器打开上面的地址（Safari / Chrome 都行）
+2. 分享菜单 → **添加到主屏幕**（Chrome 在右上角菜单里）
+3. 以后从桌面图标点开：全屏、没有地址栏，和原生 App 差不多
+
+### 部署的是什么
+
+仓库根目录放的就是这份静态文件，`main` 一推送，GitHub Pages 自动重建（约 30 秒）：
+
+| 文件 | 作用 |
+|---|---|
+| `index.html` | 首页入口，和 `生命系统.html` 内容完全一致，由 `node tools/build.mjs` 生成 |
+| `manifest.webmanifest` | 主屏图标名、主题色、独立窗口 |
+| `icon-192.png` / `icon-512.png` / `icon-180.png` | 主屏图标与 iOS touch icon |
+| `sw.js` | 让「打开过一次之后没网也能开」：导航请求走网络优先，失败才读缓存 |
+
+### 三条要记住的
+
+- **服务端不存任何东西**。Pages 只把 HTML 发给你，记录仍然只写在这台手机浏览器的 `localStorage` 里。
+- **手机和电脑的数据是分开的**。两边各记一份，想搬到一起就用「设置 → 导出 JSON / 导入 JSON」。
+- **别用无痕模式**。关掉窗口数据就没了，和本地打开是同一个道理。
+
+### 想更新线上版本
+
+```bash
+node tools/build.mjs      # README 注回应用 + 重新生成 index.html
+git add -A && git commit -m "更新说明" && git push
+```
+
+推送后等半分钟刷新即可。缓存是网络优先，不会出现「改了但手机上还是旧版」。
+
+---
+
+## 十一、设计原则：为什么这样取舍
 
 **1. 每页只有一个主动作**
 今天 = 记录；训练 = 开始练；回顾 = 复盘；清单 = 维护。页面多了会瘫，动作多了也会瘫。
@@ -895,7 +943,7 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 
 ---
 
-## 十一、常见问题
+## 十二、常见问题
 
 **Q：换电脑 / 换手机怎么办？**
 导出 JSON，在新设备打开页面，导入。没有云同步。
@@ -923,11 +971,11 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 
 ---
 
-## 十二、技术说明
+## 十三、技术说明
 
 | 项 | 说明 |
 |---|---|
-| 形态 | 单文件 HTML（约 125 KB，其中约 22 KB 是内嵌的这份说明；代码约 2200 行），CSS + JS 全部内联 |
+| 形态 | 单文件 HTML（约 128 KB，其中约 23 KB 是内嵌的这份说明；代码约 2250 行），CSS + JS 全部内联 |
 | 依赖 | 无。不用框架、不用 CDN、不用构建 |
 | 运行 | `file://` 直接打开即可，也可放到任意静态服务器 |
 | 存储 | `localStorage`，键 `life.v3`（兼容读 `fourlines.v2` / `fourlines.v1`） |
@@ -936,7 +984,8 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 | 布局 | CSS Grid + Flex，断点 880 / 600 |
 | 图标 | 纯 CSS（品牌标记四个色块），无图标库 |
 | URL | 支持 `#today` `#train` `#review` `#list` 直接进入对应页 |
-| 说明页 | README 存在 `<script type="text/plain" id="docSrc">` 里，运行时用内置迷你 markdown 渲染器转 HTML。改完 README 后跑 `node tools/sync-doc.mjs` 同步，不用手动复制 |
+| 说明页 | README 存在 `<script type="text/plain" id="docSrc">` 里，运行时用内置迷你 markdown 渲染器转 HTML。改完 README 后跑 `node tools/build.mjs` 同步，并顺带生成 `index.html`，不用手动复制 |
+| 部署 | GitHub Pages 托管 `main` 根目录；`sw.js` 只缓存导航请求（网络优先），装到主屏后没网也能开 |
 
 主要函数：
 
@@ -953,7 +1002,7 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 
 ---
 
-## 十三、版本演进
+## 十四、版本演进
 
 | 版本 | 文件 | 变化 |
 |---|---|---|
@@ -961,7 +1010,7 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 | v2 | `四线生命系统.html` | 并入 SOP 四要素与三态记录；六个页签 |
 | v3 | `生命系统.html` | 并入「锻炼打卡」的跟练计时；砍到三个页签：今天 / 回顾 / 清单 |
 | v3.1 | `生命系统.html` | 训练独立成页；四个页签；全面手机端适配；修复编辑弹窗缺底板 |
-| **v3.2（当前）** | `生命系统.html` | 说明内嵌进设置页；目录可跳转；`tools/sync-doc.mjs` 保持与 README 同步 |
+| **v3.2（当前）** | `生命系统.html` · `index.html` | 说明内嵌进设置页；`tools/build.mjs` 同步说明并生成 `index.html`；上线 GitHub Pages，可加到手机主屏、断网可开 |
 
 旧版本文件保留在同目录，方便对照，可以随时删掉。
 
@@ -2333,7 +2382,7 @@ function md2html(src){
     if(/^\s*(---|\*\*\*)\s*$/.test(ln)){ flush(); out.push('<hr>'); i++; continue; }
 
     m = ln.match(/^>\s?(.*)$/);                 // 引用
-    if(m){ flushList(); quote.push(m[1]); i++; continue; }
+    if(m){ flushList(); if(m[1].trim()) quote.push(m[1]); i++; continue; }
 
     m = ln.match(/^\s*(\d+)\.\s+(.*)$/);        // 有序列表
     if(m){
@@ -2369,8 +2418,8 @@ function md2html(src){
 function docHTML(){
   if(!DOC_CACHE.html){
     let h = md2html(docSrc()) || '<p>说明文件缺失。请运行 <code>node tools/sync-doc.mjs</code> 从 README.md 重新生成。</p>';
-    /* 顶部的目录标签已经替代了正文里的「目录」，去掉避免首屏重复 */
-    h = h.replace(/<h2 id="[^"]*">目录<\/h2>\s*<ol>[\s\S]*?<\/ol>/, '');
+    /* 顶部的目录标签已经替代了正文里的「目录」，连同两侧的分隔线一起去掉 */
+    h = h.replace(/(?:<hr>\s*)?<h2 id="[^"]*">目录<\/h2>\s*<ol>[\s\S]*?<\/ol>\s*(?:<hr>\s*)?/, '');
     DOC_CACHE.html = h;
   }
   return DOC_CACHE.html;
@@ -2783,6 +2832,10 @@ $('#editDlg').addEventListener('close', () => { $('#editDlg').innerHTML = ''; ED
   if(['today','train','review','list'].indexOf(h) >= 0) TAB = h;
   ensureDraft();
   render();
+  /* 部署到网上（http/https）才注册离线缓存，装到主屏后没网也能开；本地 file:// 跳过 */
+  if(location.protocol.indexOf('http') === 0 && 'serviceWorker' in navigator){
+    window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  }
 })();
 </script>
 </body>
