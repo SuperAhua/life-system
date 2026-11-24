@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>四线仪表盘 · 25→35</title>
+<style>
+  :root{
+    --bg:#f7f6f2;
+    --card:#ffffff;
+    --ink:#23211d;
+    --ink2:#6b665d;
+    --ink3:#9d968a;
+    --line:#e7e4db;
+    --line2:#f0ede6;
+    --accent:#2f6f5a;
+    --warn:#b4553f;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(35,33,29,.04), 0 8px 24px -18px rgba(35,33,29,.25);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 520px at 8% -8%, #ebf3ee 0%, rgba(235,243,238,0) 62%),
+      radial-gradient(900px 460px at 100% -4%, #f7efe2 0%, rgba(247,239,226,0) 58%),
+      var(--bg);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+    font-size:15px;
+  }
+  .wrap{max-width:1160px;margin:0 auto;padding:28px 22px 64px}
+  /* ---------- header ---------- */
+  .top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:26px;height:26px}
+  .mark i{display:block;border-radius:3px}
+  .mark i:nth-child(1){background:#2f8f6b}
+  .mark i:nth-child(2){background:#bb8524}
+  .mark i:nth-child(3){background:#4a6fa5}
+  .mark i:nth-child(4){background:#b0607c}
+  h1{font-size:21px;margin:0;letter-spacing:.01em;font-weight:650}
+  .sub{font-size:12.5px;color:var(--ink3);letter-spacing:.04em;margin-top:1px}
+  .meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--ink2);box-shadow:var(--shadow)}
+  .chip b{color:var(--ink);font-weight:650}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block}
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:4px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:22px;overflow-x:auto;box-shadow:var(--shadow)}
+  .tabs button{flex:0 0 auto;border:0;background:none;font:inherit;font-size:13.5px;color:var(--ink2);padding:8px 16px;border-radius:999px;cursor:pointer;transition:.16s;white-space:nowrap}
+  .tabs button:hover{color:var(--ink);background:#f6f4ef}
+  .tabs button.on{background:#23211d;color:#fff}
+  /* ---------- layout ---------- */
+  .grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;align-items:start}
+  .grid > *{min-width:0}
+  @media(max-width:880px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+  .card + .card{margin-top:18px}
+  .card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .card-t{font-size:13px;font-weight:650;letter-spacing:.04em;color:var(--ink2)}
+  .card-note{font-size:12px;color:var(--ink3)}
+  .muted{color:var(--ink2)}
+  .tiny{font-size:12px;color:var(--ink3)}
+  /* ---------- focus ---------- */
+  .focus-box{border-left:3px solid var(--accent);background:#fbfaf6;border-radius:0 12px 12px 0;padding:12px 14px}
+  .focus-input{width:100%;border:0;background:none;font:inherit;font-size:15.5px;color:var(--ink);outline:none;padding:0}
+  .focus-input::placeholder{color:#b8b2a6}
+  /* ---------- line cards ---------- */
+  .lines{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .lines > .card{margin-top:0 !important}
+  @media(max-width:520px){.lines{grid-template-columns:1fr}}
+  .lc{border:1px solid var(--line);border-radius:14px;padding:14px;position:relative;overflow:hidden;transition:.18s;background:#fff}
+  .lc:hover{border-color:#d8d4c9;transform:translateY(-1px)}
+  .lc::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+  .lc-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:2px}
+  .lc-n{font-size:14.5px;font-weight:650}
+  .lc-v{font-size:20px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--c)}
+  .lc-v span{font-size:11.5px;color:var(--ink3);font-weight:400;margin-left:2px}
+  .lc-na{font-size:11.5px !important;color:#b3ada2 !important;font-weight:400 !important;letter-spacing:.02em}
+  .lc-hint{font-size:11.5px;color:var(--ink3);margin-bottom:10px;height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bar{height:5px;border-radius:99px;background:#f0ede6;overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:99px;background:var(--c);transition:width .35s ease}
+  .lc-f{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink3);margin-top:6px}
+  .weak{display:inline-block;background:#fbf0ec;color:var(--warn);font-size:10.5px;padding:0 6px;border-radius:4px;margin-left:6px;vertical-align:1px;letter-spacing:.06em}
+  /* ---------- habit row ---------- */
+  .hb{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;padding:9px 8px;border-radius:10px;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:.14s}
+  .hb:hover{background:#f8f6f1}
+  .hb .box{width:19px;height:19px;border-radius:6px;border:1.6px solid #d8d3c8;flex:0 0 auto;display:grid;place-items:center;transition:.15s;background:#fff}
+  .hb .box svg{width:11px;height:11px;stroke:#fff;stroke-width:2.6;fill:none;opacity:0;stroke-linecap:round;stroke-linejoin:round}
+  .hb.on .box{background:var(--c);border-color:var(--c)}
+  .hb.on .box svg{opacity:1}
+  .hb .name{flex:1;min-width:0;font-size:14px;transition:.15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hb.on .name{color:#a8a29a;text-decoration:line-through;text-decoration-color:#d8d3c8}
+  .hb .cnt{font-size:11.5px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap;flex:0 0 auto}
+  .hb .cnt.ok{color:var(--accent);font-weight:600}
+  .group{margin-bottom:14px}
+  .group-h{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink3);letter-spacing:.06em;margin:0 0 4px 8px}
+  .group-h i{width:7px;height:7px;border-radius:2px;display:block}
+  .add{background:none;border:1px dashed #ddd8cd;color:var(--ink3);border-radius:9px;padding:6px 10px;font:inherit;font-size:12px;cursor:pointer;width:100%;transition:.15s}
+  .add:hover{border-color:var(--accent);color:var(--accent)}
+  .del{background:none;border:0;color:#c9c3b7;cursor:pointer;font-size:15px;line-height:1;padding:2px 4px;border-radius:4px;opacity:0;transition:.15s}
+  .hb:hover .del{opacity:1}
+  .del:hover{color:var(--warn)}
+  /* ---------- heatmap ---------- */
+  .heat{display:grid;grid-template-columns:repeat(18,var(--cs,20px));gap:4px;justify-content:space-between;overflow-x:auto;padding-bottom:4px}
+  .heat .col{display:grid;grid-template-rows:repeat(7,var(--cs,20px));gap:4px}
+  .heat .cell{width:var(--cs,20px);height:var(--cs,20px);border-radius:4px;background:#f0ede6}
+  @media(max-width:560px){.heat{--cs:12px;gap:3px}.heat .col{gap:3px}}
+  .cell.l1{background:#d9e8e0}
+  .cell.l2{background:#a9cdbb}
+  .cell.l3{background:#68a68a}
+  .cell.l4{background:#2f8f6b}
+  .cell.today{outline:1.5px solid #23211d;outline-offset:1px}
+  .heat-key{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink3);margin-top:10px}
+  .heat-key .cell{width:10px;height:10px;aspect-ratio:auto;border-radius:2px;flex:0 0 auto}
+  /* ---------- generic form ---------- */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12.5px;color:var(--ink2);margin-bottom:6px}
+  .field input[type=text],.field input[type=number],.field textarea,.field select{
+    width:100%;border:1px solid var(--line);background:#fdfcf9;border-radius:10px;padding:9px 12px;font:inherit;font-size:14px;color:var(--ink);outline:none;transition:.15s
+  }
+  .field textarea{resize:vertical;min-height:64px;line-height:1.6}
+  .field input:focus,.field textarea:focus{border-color:#b9cfc4;background:#fff;box-shadow:0 0 0 3px rgba(47,111,90,.07)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+  .btn{border:0;background:#23211d;color:#fff;font:inherit;font-size:13.5px;font-weight:550;padding:9px 18px;border-radius:10px;cursor:pointer;transition:.15s}
+  .btn:hover{background:#3a362f}
+  .btn.ghost{background:#fff;color:var(--ink2);border:1px solid var(--line)}
+  .btn.ghost:hover{background:#f8f6f1;color:var(--ink)}
+  .btn.warn{background:#fff;color:var(--warn);border:1px solid #ecd9d2}
+  .btn.warn:hover{background:#fdf4f1}
+  /* ---------- wheel ---------- */
+  .wheel-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center}
+  @media(max-width:820px){.wheel-grid{grid-template-columns:1fr}}
+  .slider-row{margin-bottom:20px}
+  .slider-row .sh{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+  .slider-row .sh b{font-variant-numeric:tabular-nums}
+  .slider-row .sh .des{font-size:11.5px;color:var(--ink3)}
+  .slider-row input[type=range] + input[type=range]{margin-top:9px}
+  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:99px;background:#ece9e1;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--c,#23211d);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--c,#23211d);border:2px solid #fff;cursor:pointer}
+  .hist{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .hist-row{display:flex;align-items:center;gap:10px;font-size:12.5px;padding:8px 10px;background:#fbfaf7;border-radius:9px}
+  .hist-row .d{color:var(--ink3);font-variant-numeric:tabular-nums;width:82px;flex:0 0 auto}
+  .hist-row .v{color:var(--ink2)}
+  .delta{font-size:11px;padding:1px 6px;border-radius:99px;margin-left:auto}
+  .delta.up{background:#e4f0ea;color:#2f6f5a}
+  .delta.dn{background:#f9e8e3;color:#b4553f}
+  /* ---------- review ---------- */
+  .review-item{border-top:1px solid var(--line2);padding:14px 0}
+  .review-item:first-child{border-top:0;padding-top:0}
+  .review-h{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink3);margin-bottom:6px}
+  .review-h b{color:var(--ink);font-size:13px}
+  .rating{margin-left:auto;letter-spacing:2px;color:#bb8524;font-size:12px}
+  .qa{margin:6px 0}
+  .qa .q{font-size:11.5px;color:var(--ink3);letter-spacing:.04em}
+  .qa .a{font-size:14px;white-space:pre-wrap}
+  /* ---------- stats ---------- */
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .stat{background:#fbfaf6;border:1px solid #f1eee6;border-radius:10px;padding:10px 12px}
+  .stat .k{font-size:11.5px;color:var(--ink3)}
+  .stat .v{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums}
+  .stat .v small{font-size:11px;font-weight:400;color:var(--ink3);margin-left:2px}
+  .hint{font-size:12px;color:var(--ink3);line-height:1.7;background:#fbfaf6;border-radius:10px;padding:10px 12px}
+  .empty{text-align:center;color:var(--ink3);font-size:13px;padding:26px 10px;border:1px dashed var(--line);border-radius:12px}
+  .hide{display:none !important}
+  footer{margin-top:26px;font-size:11.5px;color:#b5afa3;text-align:center;letter-spacing:.03em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="mark"><i></i><i></i><i></i><i></i></div>
+      <div>
+        <h1>四线仪表盘</h1>
+        <div class="sub">HEALTH · MONEY · SKILL · RELATIONSHIP</div>
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip"><span class="dot"></span>第 <b id="dayCount">1</b> 天</span>
+      <span class="chip">连续记录 <b id="streakCount">0</b> 天</span>
+      <span class="chip" id="todayLabel">—</span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-action="tab" data-tab="overview" class="on">概览</button>
+    <button data-action="tab" data-tab="checkin">今日打卡</button>
+    <button data-action="tab" data-tab="wheel">季度体检</button>
+    <button data-action="tab" data-tab="money">算一算</button>
+    <button data-action="tab" data-tab="review">周复盘</button>
+    <button data-action="tab" data-tab="data">数据</button>
+  </nav>
+
+  <main>
+    <section id="view-overview"></section>
+    <section id="view-checkin" class="hide"></section>
+    <section id="view-wheel" class="hide"></section>
+    <section id="view-money" class="hide"></section>
+    <section id="view-review" class="hide"></section>
+    <section id="view-data" class="hide"></section>
+  </main>
+
+  <footer>数据只保存在这台设备的浏览器里 · 建议每周导出一次备份</footer>
+</div>
+
+<script>
+/* =========================================================
+   数据层
+   ========================================================= */
+const STORE = 'fourlines.v1';
+
+const LINES = [
+  { key:'health', name:'健康', color:'#2f8f6b', hint:'身体是所有目标的底座',
+    habits:[
+      {name:'运动 30 分钟', perWeek:3},
+      {name:'23:30 前放下手机', perWeek:5},
+      {name:'好好吃饭 · 喝够水', perWeek:7}
+    ]},
+  { key:'money', name:'财务', color:'#bb8524', hint:'不透支，也别让钱闲着',
+    habits:[
+      {name:'记账 / 复盘支出', perWeek:2},
+      {name:'发薪日自动转存', perWeek:1},
+      {name:'不冲动大额消费', perWeek:7}
+    ]},
+  { key:'skill', name:'能力', color:'#4a6fa5', hint:'一项别人难以替代的本事',
+    habits:[
+      {name:'专业深耕 1 小时', perWeek:3},
+      {name:'读长文 / 读书', perWeek:3},
+      {name:'沉淀一个作品或笔记', perWeek:1}
+    ]},
+  { key:'relation', name:'关系', color:'#b0607c', hint:'父母的陪伴有期限',
+    habits:[
+      {name:'给家人打电话', perWeek:2},
+      {name:'和老朋友深聊', perWeek:1},
+      {name:'认真陪伴重要的人', perWeek:5}
+    ]}
+];
+
+const LINE_MAP = {};
+LINES.forEach(l => LINE_MAP[l.key] = l);
+
+const pad = n => String(n).padStart(2,'0');
+const iso = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+const TODAY = iso(new Date());
+
+function uid(){ return 'h' + Math.random().toString(36).slice(2,9); }
+function $(sel, root){ return (root||document).querySelector(sel); }
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmt(n){ return Math.round(n).toLocaleString('zh-CN'); }
+
+function defaultState(){
+  const habits = [];
+  LINES.forEach(l => l.habits.forEach(h => habits.push({
+    id: uid(), line: l.key, name: h.name, perWeek: h.perWeek, log: {}
+  })));
+  return {
+    v: 1,
+    startDate: TODAY,
+    focus: '',
+    habits: habits,
+    scores: [],
+    reviews: [],
+    draft: { done:'', fail:'', next:'', rating: 0 },
+    draftScore: null,
+    money: { income: 15000, save: 3000, rate: 5, years: 10 }
+  };
+}
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORE);
+    if(!raw) return null;
+    const o = JSON.parse(raw);
+    if(!o || !Array.isArray(o.habits)) return null;
+    const base = defaultState();
+    const s = Object.assign(base, o);
+    if(!s.draft) s.draft = base.draft;
+    if(!s.money) s.money = base.money;
+    return s;
+  }catch(e){ return null; }
+}
+
+let S = loadState() || defaultState();
+
+function save(){
+  try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){}
+}
+
+/* =========================================================
+   日期工具
+   ========================================================= */
+function weekStart(d){
+  const x = new Date(d);
+  const wd = (x.getDay() + 6) % 7;      // 周一为一周开始
+  x.setDate(x.getDate() - wd);
+  x.setHours(0,0,0,0);
+  return x;
+}
+function weekKeys(){
+  const s = weekStart(new Date());
+  const out = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(s);
+    d.setDate(s.getDate() + i);
+    out.push(iso(d));
+  }
+  return out;
+}
+function lastNDays(n){
+  const out = [];
+  for(let i=n-1;i>=0;i--){
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    out.push(iso(d));
+  }
+  return out;
+}
+function daysBetween(a,b){
+  return Math.round((new Date(b) - new Date(a)) / 86400000);
+}
+function niceDate(key){
+  const d = new Date(key);
+  const wd = ['日','一','二','三','四','五','六'][d.getDay()];
+  return (d.getMonth()+1) + '月' + d.getDate() + '日 周' + wd;
+}
+function fmtReviewDate(s){
+  const str = String(s || '');
+  return /^\d{4}-\d{2}-\d{2}$/.test(str) ? niceDate(str) : str;
+}
+
+/* =========================================================
+   统计
+   ========================================================= */
+function habitsOf(line){ return S.habits.filter(h => h.line === line); }
+
+function weekStat(line){
+  const keys = weekKeys();
+  const hs = habitsOf(line);
+  const target = hs.reduce((a,h) => a + (h.perWeek || 1), 0);
+  const done = hs.reduce((a,h) => a + keys.filter(k => h.log[k]).length, 0);
+  const capped = hs.reduce((a,h) => a + Math.min(h.perWeek || 1, keys.filter(k => h.log[k]).length), 0);
+  return { target, done, capped, pct: target ? Math.round(capped/target*100) : 0, habits: hs };
+}
+
+function totalLogs(){
+  let n = 0;
+  S.habits.forEach(h => { n += Object.keys(h.log).length; });
+  return n;
+}
+
+function dayCount(){
+  let n = 0;
+  S.habits.forEach(h => { Object.keys(h.log).forEach(k => { if(k === TODAY && h.log[k]) n++; }); });
+  return n;
+}
+
+function todayDoneCount(){
+  return S.habits.filter(h => h.log[TODAY]).length;
+}
+
+function calcStreak(){
+  // 从今天（或昨天）往前，连续有任意打卡的天数
+  let cursor = new Date();
+  let first = true;
+  let n = 0;
+  const anyLog = key => S.habits.some(h => h.log[key]);
+  if(!anyLog(iso(cursor))){ cursor.setDate(cursor.getDate()-1); }
+  for(let i=0;i<730;i++){
+    const key = iso(cursor);
+    if(anyLog(key)){ n++; }
+    else break;
+    cursor.setDate(cursor.getDate()-1);
+  }
+  return n;
+}
+
+function latestScore(){
+  if(!S.scores.length) return null;
+  return S.scores[S.scores.length - 1];
+}
+
+function avgScore(entry){
+  if(!entry || !entry.values) return 0;
+  const v = Object.values(entry.values);
+  return v.reduce((a,b)=>a+b,0) / (v.length || 1);
+}
+
+function weakestLine(){
+  const latest = latestScore();
+  if(latest && latest.values){
+    let k = null, min = 99;
+    LINES.forEach(l => {
+      const v = latest.values[l.key];
+      if(typeof v === 'number' && v < min){ min = v; k = l.key; }
+    });
+    if(k) return { key:k, reason:'score' };
+  }
+  let wk = null, minPct = 999;
+  LINES.forEach(l => {
+    const st = weekStat(l.key);
+    if(st.habits.length && st.pct < minPct){ minPct = st.pct; wk = l.key; }
+  });
+  return wk ? { key:wk, reason:'pct' } : null;
+}
+
+/* =========================================================
+   雷达图
+   ========================================================= */
+function radarSVG(cur, des){
+  const cx = 172, cy = 172, R = 116;
+  const ANGLES = [-90, 0, 90, 180];
+  const pt = (v, deg) => {
+    const r = R * Math.max(0, Math.min(10, v)) / 10;
+    const a = deg * Math.PI / 180;
+    return [cx + r*Math.cos(a), cy + r*Math.sin(a)];
+  };
+  let grid = '';
+  [2,4,6,8,10].forEach(v => {
+    const pts = ANGLES.map(a => pt(v,a).join(',')).join(' ');
+    grid += `<polygon points="${pts}" fill="none" stroke="#eae6dd" stroke-width="1"/>`;
+  });
+  let axes = '';
+  ANGLES.forEach((a,i) => {
+    const p = pt(10,a);
+    grid += `<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="#eae6dd" stroke-width="1"/>`;
+  });
+  const poly = vals => vals.map((v,i) => pt(v, ANGLES[i]).join(',')).join(' ');
+  const curVals = LINES.map(l => typeof cur[l.key] === 'number' ? cur[l.key] : 5);
+  const desVals = LINES.map(l => typeof des[l.key] === 'number' ? des[l.key] : 5);
+  const desPts = desVals.map((v,i) => pt(v, ANGLES[i]));
+
+  let desLine = `<polygon points="${poly(desVals)}" fill="none" stroke="#b9b3a6" stroke-width="1.4" stroke-dasharray="4 4"/>`;
+  let curPoly = `<polygon points="${poly(curVals)}" fill="rgba(47,143,107,.09)" stroke="#2f6f5a" stroke-width="1.8" stroke-linejoin="round"/>`;
+
+  let dots = '', labels = '';
+  LINES.forEach((l,i) => {
+    const p = pt(curVals[i], ANGLES[i]);
+    dots += `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#fff" stroke="${l.color}" stroke-width="2"/>`;
+    const lp = pt(11.4, ANGLES[i]);
+    const anchor = i === 0 ? 'middle' : (i === 2 ? 'middle' : (i === 1 ? 'start' : 'end'));
+    const dy = i === 0 ? -4 : (i === 2 ? 12 : 4);
+    labels += `<text x="${lp[0]}" y="${lp[1]+dy}" text-anchor="${anchor}" font-size="12" fill="#6b665d">${l.name}</text>`;
+    labels += `<text x="${lp[0]}" y="${lp[1]+dy+14}" text-anchor="${anchor}" font-size="11" fill="${l.color}" font-weight="600">${curVals[i]}</text>`;
+  });
+
+  return `<svg viewBox="0 0 344 344" width="100%" style="max-width:360px;display:block;margin:0 auto">
+    ${grid}${axes}${desLine}${curPoly}${dots}${labels}
+  </svg>`;
+}
+
+/* =========================================================
+   渲染：概览
+   ========================================================= */
+function renderOverview(){
+  const el = $('#view-overview');
+  const wd = weakestLine();
+  const latest = latestScore();
+  const streak = calcStreak();
+  const todayN = todayDoneCount();
+  const total = S.habits.length;
+
+  $('#dayCount').textContent = Math.max(1, daysBetween(S.startDate, TODAY) + 1);
+  $('#streakCount').textContent = streak;
+  $('#todayLabel').textContent = niceDate(TODAY);
+
+  const cards = LINES.map(l => {
+    const st = weekStat(l.key);
+    const score = latest && latest.values ? latest.values[l.key] : null;
+    const isWeak = wd && wd.key === l.key;
+    return `<div class="lc" style="--c:${l.color}">
+      <div class="lc-h">
+        <span class="lc-n">${l.name}${isWeak ? '<span class="weak">待补</span>' : ''}</span>
+        <span class="lc-v">${(score === null || score === undefined)
+          ? '<span class="lc-na">未体检</span>'
+          : score + '<span>/10</span>'}</span>
+      </div>
+      <div class="lc-hint">${l.hint}</div>
+      <div class="bar"><i style="width:${st.pct}%"></i></div>
+      <div class="lc-f"><span>本周完成 ${st.capped}/${st.target}</span><span>${st.pct}%</span></div>
+    </div>`;
+  }).join('');
+
+  const groups = LINES.map(l => {
+    const hs = habitsOf(l.key);
+    if(!hs.length) return '';
+    const rows = hs.map(h => {
+      const on = !!h.log[TODAY];
+      const wk = weekKeys().filter(k => h.log[k]).length;
+      return `<div class="hb ${on?'on':''}" data-action="toggle" data-id="${h.id}" data-date="${TODAY}" style="--c:${l.color}">
+        <span class="box"><svg viewBox="0 0 12 12"><polyline points="2,6.2 4.8,9 10,3.4"/></svg></span>
+        <span class="name">${esc(h.name)}</span>
+        <span class="cnt ${wk>=h.perWeek?'ok':''}">${wk}/${h.perWeek}</span>
+      </div>`;
+    }).join('');
+    return `<div class="group">
+      <div class="group-h"><i style="background:${l.color}"></i>${l.name}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+
+  const heat = heatmapHTML();
+
+  el.innerHTML = `
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="card-h">
+            <span class="card-t">四条线</span>
+            <span class="card-note">${latest ? '体检分来自 ' + niceDate(latest.date.slice(0,10)) : '还没做过季度体检'}</span>
+          </div>
+          <div class="lines">${cards}</div>
+          <div class="hint" style="margin-top:14px">${
+            wd ? `当前最需要补的是 <b style="color:${LINE_MAP[wd.key].color}">${LINE_MAP[wd.key].name}</b>${wd.reason==='score'?'（四条线里分数最低）':'（本周完成率最低）'}。不用同时补四条，这周只加一件小事就够。`
+               : '四条线都还没有数据。先去「今日打卡」勾一项，仪表盘才会动起来。'
+          }</div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">
+            <span class="card-t">最近 18 周</span>
+            <span class="card-note">每天打了几项</span>
+          </div>
+          ${heat}
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-h">
+            <span class="card-t">本周唯一重点</span>
+            <span class="card-note">${todayN}/${total} 今日</span>
+          </div>
+          <div class="focus-box">
+            <input class="focus-input" data-field="focus" placeholder="只写一件，这周做完就算赢" value="${esc(S.focus)}">
+          </div>
+          <div class="tiny" style="margin-top:10px">写下来的那件事，优先级高于清单上的其他所有项。</div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">
+            <span class="card-t">今日清单</span>
+            <span class="card-note">${niceDate(TODAY)}</span>
+          </div>
+          ${groups || '<div class="empty">还没有习惯，去「今日打卡」添加</div>'}
+        </div>
+
+        ${lastReviewHTML()}
+      </div>
+    </div>`;
+}
+
+function lastReviewHTML(){
+  if(!S.reviews.length) return '';
+  const r = S.reviews[S.reviews.length - 1];
+  return `<div class="card">
+    <div class="card-h">
+      <span class="card-t">上次复盘</span>
+      <span class="card-note">${fmtReviewDate(r.date)}</span>
+    </div>
+    ${r.next ? `<div class="qa"><div class="q">下周最重要的一件事</div><div class="a">${esc(r.next)}</div></div>` : '<div class="tiny">没有记录下周重点</div>'}
+  </div>`;
+}
+
+function heatmapHTML(){
+  const DAYS = 126, COLS = 18;
+  const days = lastNDays(DAYS);
+  const counts = {};
+  S.habits.forEach(h => Object.keys(h.log).forEach(k => { if(h.log[k]) counts[k] = (counts[k]||0) + 1; }));
+  const lvl = n => n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n <= 4 ? 3 : 4;
+  let cols = '';
+  for(let c=0;c<COLS;c++){
+    let cells = '';
+    for(let r=0;r<7;r++){
+      const key = days[c*7 + r];
+      const n = counts[key] || 0;
+      cells += `<div class="cell l${lvl(n)} ${key===TODAY?'today':''}" title="${key} · ${n} 项"></div>`;
+    }
+    cols += `<div class="col">${cells}</div>`;
+  }
+  return `<div class="heat">${cols}</div>
+    <div class="heat-key"><span style="margin-right:4px">少</span>
+      <span class="cell"></span><span class="cell l1"></span><span class="cell l2"></span><span class="cell l3"></span><span class="cell l4"></span>
+      <span style="margin-left:4px">多</span>
+      <span style="margin-left:auto">本期累计 ${totalLogs()} 项</span>
+    </div>`;
+}
+
+/* =========================================================
+   渲染：打卡
+   ========================================================= */
+function renderCheckin(){
+  const el = $('#view-checkin');
+  const D = LOGDATE;
+  const doneOnD = S.habits.filter(h => h.log[D]).length;
+  const blocks = LINES.map(l => {
+    const hs = habitsOf(l.key);
+    const rows = hs.map(h => {
+      const on = !!h.log[D];
+      const wk = weekKeys().filter(k => h.log[k]).length;
+      return `<div class="hb ${on?'on':''}" data-action="toggle" data-id="${h.id}" data-date="${D}" style="--c:${l.color}">
+        <span class="box"><svg viewBox="0 0 12 12"><polyline points="2,6.2 4.8,9 10,3.4"/></svg></span>
+        <span class="name">${esc(h.name)}</span>
+        <span class="cnt ${wk>=h.perWeek?'ok':''}">本周 ${wk}/${h.perWeek}</span>
+        <button class="del" data-action="del-habit" data-id="${h.id}" title="删除">×</button>
+      </div>`;
+    }).join('');
+    return `<div class="card" style="--c:${l.color}">
+      <div class="card-h">
+        <span class="card-t" style="color:${l.color}">${l.name}</span>
+        <span class="card-note">${l.hint}</span>
+      </div>
+      ${rows || '<div class="empty">这一条还是空的</div>'}
+      <button class="add" data-action="add-habit" data-line="${l.key}" style="margin-top:8px">+ 添加一项</button>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-h">
+        <span class="card-t">${niceDate(D)}${D===TODAY?'':' · 补记中'}</span>
+        <span class="card-note">${D===TODAY?'今天':'这天'}已完成 ${doneOnD}/${S.habits.length}</span>
+      </div>
+      <div class="tiny">点一下就是完成。日习惯按 7 次/周计，周习惯按 1–3 次计；没做到不算失败，只是这周的完成率低一点。</div>
+    </div>
+    <div class="grid"><div class="lines">${blocks}</div>
+      <div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">补卡</span><span class="card-note">忘了勾的可以补</span></div>
+          <div class="field"><label>日期</label><input type="date" data-field="backdate" value="${D}" max="${TODAY}"></div>
+          <div class="hint">选日期后，上面就切到那一天，点选即可补记；热力图和完成率会一起更新。</div>
+          ${D!==TODAY ? `<button class="btn ghost" data-action="backdate-today" style="margin-top:10px;width:100%">回到今天</button>` : ''}
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">本周完成率</span></div>
+          ${LINES.map(l => {
+            const st = weekStat(l.key);
+            return `<div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-bottom:3px">
+                <span>${l.name}</span><span>${st.capped}/${st.target}</span>
+              </div>
+              <div class="bar" style="--c:${l.color}"><i style="width:${st.pct}%;background:${l.color}"></i></div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">说明</span></div>
+          <div class="hint">
+            每条线默认只有 3 项，是为了能长期做下去。<br>
+            想加就加，但建议四条线加起来不超过 16 项 —— 超过之后完成率一定会掉，掉完就不想看了。
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* =========================================================
+   渲染：季度体检
+   ========================================================= */
+function ensureDraftScore(){
+  if(S.draftScore && S.draftScore.cur) return;
+  const latest = latestScore();
+  const cur = {}, des = {};
+  LINES.forEach(l => {
+    cur[l.key] = latest && latest.values ? (latest.values[l.key] ?? 5) : 5;
+    des[l.key] = latest && latest.desired ? (latest.desired[l.key] ?? 8) : 8;
+  });
+  S.draftScore = { cur, des };
+}
+
+function renderWheel(){
+  ensureDraftScore();
+  const el = $('#view-wheel');
+  const d = S.draftScore;
+
+  const sliders = LINES.map(l => `
+    <div class="slider-row">
+      <div class="sh">
+        <b style="color:${l.color}">${l.name}</b>
+        <span><span class="des">当前 </span><b id="cur-${l.key}">${d.cur[l.key]}</b>
+        <span class="des"> · 期望 </span><b id="des-${l.key}">${d.des[l.key]}</b></span>
+      </div>
+      <input type="range" min="0" max="10" step="1" value="${d.cur[l.key]}" style="--c:${l.color}"
+        data-field="score-cur" data-line="${l.key}">
+      <input type="range" min="0" max="10" step="1" value="${d.des[l.key]}" style="--c:#c9c3b7;margin-top:6px"
+        data-field="score-des" data-line="${l.key}">
+    </div>`).join('');
+
+  const hist = S.scores.length
+    ? `<div class="hist">${S.scores.slice().reverse().slice(0,6).map((s,i,arr) => {
+        const prev = S.scores[S.scores.indexOf(s)-1];
+        const diff = prev ? (avgScore(s) - avgScore(prev)) : null;
+        const vals = LINES.map(l => `${l.name[0]}${s.values[l.key]}`).join(' · ');
+        return `<div class="hist-row">
+          <span class="d">${esc(s.date.slice(0,10))}</span>
+          <span class="v">${vals}</span>
+          ${diff === null ? '' : `<span class="delta ${diff>=0?'up':'dn'}">${diff>=0?'+':''}${diff.toFixed(1)}</span>`}
+        </div>`;
+      }).join('')}</div>`
+    : '<div class="empty">还没有体检记录</div>';
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-h">
+        <span class="card-t">四线评分</span>
+        <span class="card-note">建议每季度做一次，10 分制</span>
+      </div>
+      <div class="wheel-grid">
+        <div id="radarHolder">${radarSVG(d.cur, d.des)}</div>
+        <div>
+          <div class="tiny" style="margin-bottom:12px">上面那道滑块是「现在」，下面灰色那道是「你希望到哪」。</div>
+          ${sliders}
+          <div class="hint" id="gapText"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" data-action="save-score">保存本次体检</button>
+        <button class="btn ghost" data-action="reset-draft">恢复上次数值</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">
+        <span class="card-t">历史</span>
+        <span class="card-note">${S.scores.length} 次</span>
+      </div>
+      ${hist}
+    </div>`;
+
+  updateGapText();
+}
+
+function updateGapText(){
+  const g = $('#gapText');
+  if(!g) return;
+  const d = S.draftScore;
+  const gaps = LINES.map(l => ({ l, gap: (d.des[l.key] || 0) - (d.cur[l.key] || 0) }))
+                    .sort((a,b) => b.gap - a.gap);
+  const top = gaps[0];
+  g.innerHTML = top.gap > 0
+    ? `差距最大的是 <b style="color:${top.l.color}">${top.l.name}</b>：现在 ${d.cur[top.l.key]} 分，你希望是 ${d.des[top.l.key]} 分。<br>这个季度先只动它。`
+    : '四条线的现状都达到了你的期望。接下来不是加码，而是保持。';
+}
+
+/* =========================================================
+   渲染：算一算
+   ========================================================= */
+function renderMoney(){
+  const el = $('#view-money');
+  const m = S.money;
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-h"><span class="card-t">现在每月存下的钱，35 岁值多少</span></div>
+      <div class="row2">
+        <div class="field"><label>月收入（元）</label><input type="number" min="0" step="500" data-field="m-income" value="${m.income}"></div>
+        <div class="field"><label>每月存下 / 投入（元）</label><input type="number" min="0" step="100" data-field="m-save" value="${m.save}"></div>
+        <div class="field"><label>年化收益（%）</label><input type="number" min="0" max="20" step="0.5" data-field="m-rate" value="${m.rate}"></div>
+        <div class="field"><label>从现在起坚持（年）</label><input type="number" min="1" max="40" step="1" data-field="m-years" value="${m.years}"></div>
+      </div>
+      <div id="moneyOut"></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="card-t">三条线一起看</span></div>
+      <div class="hint">
+        钱只是其中一条。<b>25–35 岁最怕的不是赚得少，是只忙一条线、把另外三条透支掉。</b><br>
+        算完这个数，回到概览看一眼：如果财务线在涨、健康和关系线在掉，那不是进步，那是借钱过日子。
+      </div>
+    </div>`;
+  renderMoneyOut();
+}
+
+function renderMoneyOut(){
+  const box = $('#moneyOut');
+  if(!box) return;
+  const m = S.money;
+  const income = Math.max(0, +m.income || 0);
+  const save = Math.max(0, +m.save || 0);
+  const rate = Math.max(0, +m.rate || 0);
+  const years = Math.max(1, +m.years || 1);
+  const sr = income > 0 ? save / income : 0;
+
+  const r = rate / 100 / 12;
+  const n = years * 12;
+  const fv = r === 0 ? save * n : save * ((Math.pow(1+r, n) - 1) / r);
+  const principal = save * n;
+  const gain = fv - principal;
+
+  const n2 = Math.max(0, (years - 5)) * 12;
+  const fv2 = n2 <= 0 ? 0 : (r === 0 ? save * n2 : save * ((Math.pow(1+r, n2) - 1) / r));
+  const lost = fv - fv2;
+
+  const pctBar = Math.min(100, Math.round(sr * 100));
+
+  box.innerHTML = `
+    <div class="stat-row">
+      <div class="stat"><div class="k">储蓄率</div><div class="v">${(sr*100).toFixed(0)}<small>%</small></div></div>
+      <div class="stat"><div class="k">累计投入</div><div class="v">${fmt(principal)}<small>元</small></div></div>
+      <div class="stat"><div class="k">${years} 年后</div><div class="v">${fmt(fv)}<small>元</small></div></div>
+    </div>
+    <div class="bar" style="height:6px;--c:#bb8524"><i style="width:${pctBar}%;background:#bb8524"></i></div>
+    <div class="tiny" style="margin:6px 0 14px">其中利息/收益约 ${fmt(gain)} 元，占 ${fv>0?((gain/fv)*100).toFixed(0):0}%。</div>
+    <div class="hint">
+      如果晚 5 年才开始（只投 ${Math.max(0,years-5)} 年），同样每月 ${fmt(save)} 元，最后只有 <b>${fmt(fv2)}</b> 元，
+      少掉 <b style="color:#b4553f">${fmt(lost)}</b> 元。<br>
+      这 5 年不是少存了 5 年的钱，是少了最早那 5 年的复利 —— 而复利最贵的就是开头。
+    </div>`;
+}
+
+/* =========================================================
+   渲染：周复盘
+   ========================================================= */
+function renderReview(){
+  const el = $('#view-review');
+  const d = S.draft;
+  const list = S.reviews.length
+    ? S.reviews.slice().reverse().map(r => `
+      <div class="review-item">
+        <div class="review-h"><b>${fmtReviewDate(r.date)}</b>
+          ${r.rating ? `<span class="rating">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>` : ''}
+        </div>
+        ${r.done ? `<div class="qa"><div class="q">这周做成了什么</div><div class="a">${esc(r.done)}</div></div>` : ''}
+        ${r.fail ? `<div class="qa"><div class="q">哪件事没做好，为什么</div><div class="a">${esc(r.fail)}</div></div>` : ''}
+        ${r.next ? `<div class="qa"><div class="q">下周最重要的一件事</div><div class="a">${esc(r.next)}</div></div>` : ''}
+      </div>`).join('')
+    : '<div class="empty">还没有复盘记录</div>';
+
+  el.innerHTML = `
+    <div class="grid">
+      <div class="card">
+        <div class="card-h">
+          <span class="card-t">本周复盘</span>
+          <span class="card-note">15 分钟就够</span>
+        </div>
+        <div class="field">
+          <label>1 · 这周做成了什么</label>
+          <textarea data-field="r-done" placeholder="哪怕很小的也算：连续三天早睡、把一个卡住的问题解决了">${esc(d.done)}</textarea>
+        </div>
+        <div class="field">
+          <label>2 · 哪件事没做好，原因是什么</label>
+          <textarea data-field="r-fail" placeholder="写原因，不写自责。时间不够？还是根本没想清楚">${esc(d.fail)}</textarea>
+        </div>
+        <div class="field">
+          <label>3 · 下周最重要的一件事</label>
+          <textarea data-field="r-next" placeholder="只写一件">${esc(d.next)}</textarea>
+        </div>
+        <div class="field">
+          <label>这周给自己打几分</label>
+          <div id="ratingRow" style="display:flex;gap:6px">
+            ${[1,2,3,4,5].map(i => `<button class="btn ghost" data-action="rate" data-v="${i}" style="${d.rating>=i?'background:#bb8524;border-color:#bb8524;color:#fff':''};padding:6px 14px">${i}</button>`).join('')}
+          </div>
+        </div>
+        <button class="btn" data-action="save-review">保存本周复盘</button>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="card-t">往期</span><span class="card-note">${S.reviews.length} 条</span></div>
+        <div style="max-height:620px;overflow:auto">${list}</div>
+      </div>
+    </div>`;
+}
+
+/* =========================================================
+   渲染：数据
+   ========================================================= */
+function renderData(){
+  const el = $('#view-data');
+  const perLine = LINES.map(l => {
+    const st = weekStat(l.key);
+    const all = S.habits.filter(h => h.line === l.key).reduce((a,h)=>a+Object.keys(h.log).filter(k=>h.log[k]).length,0);
+    return `<div class="hist-row">
+      <span style="width:8px;height:8px;border-radius:2px;background:${l.color}"></span>
+      <span style="width:44px">${l.name}</span>
+      <span class="v">本周 ${st.capped}/${st.target}</span>
+      <span class="delta">累计 ${all}</span>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-h"><span class="card-t">总览</span><span class="card-note">开始于 ${esc(S.startDate)}</span></div>
+      <div class="hist">${perLine}</div>
+      <div class="stat-row" style="margin-top:16px">
+        <div class="stat"><div class="k">累计打卡</div><div class="v">${totalLogs()}<small>项</small></div></div>
+        <div class="stat"><div class="k">连续记录</div><div class="v">${calcStreak()}<small>天</small></div></div>
+        <div class="stat"><div class="k">体检次数</div><div class="v">${S.scores.length}<small>次</small></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="card-t">备份</span></div>
+      <div class="hint" style="margin-bottom:14px">所有数据只在你自己的浏览器里。换设备、清缓存、换浏览器都会丢，所以养成每周导出一次的习惯。</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" data-action="export">导出备份（JSON）</button>
+        <button class="btn ghost" data-action="import">导入备份</button>
+        <input type="file" accept=".json,application/json" id="importFile" class="hide">
+        <button class="btn warn" data-action="reset">清空重来</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="card-t">这个仪表盘的逻辑</span></div>
+      <div class="hint">
+        它不催你"每天都要更好"，只看一件事：<b>四条线有没有哪一条在被透支。</b><br>
+        打卡算的是这周做了什么，体检算的是你真觉得怎么样 —— 分数低的那条，不用同时补，这个季度只动它一个。
+      </div>
+    </div>`;
+}
+
+/* =========================================================
+   渲染入口
+   ========================================================= */
+let ACTIVE = 'overview';
+let LOGDATE = TODAY;
+
+function renderAll(){
+  renderOverview();
+  $('#dayCount').textContent = Math.max(1, daysBetween(S.startDate, TODAY) + 1);
+  $('#streakCount').textContent = calcStreak();
+  $('#todayLabel').textContent = niceDate(TODAY);
+  if(ACTIVE === 'checkin' || ACTIVE === 'wheel' || ACTIVE === 'money' || ACTIVE === 'review' || ACTIVE === 'data'){
+    renderCurrent();
+  }
+}
+
+function renderCurrent(){
+  if(ACTIVE === 'checkin') renderCheckin();
+  if(ACTIVE === 'wheel') renderWheel();
+  if(ACTIVE === 'money') renderMoney();
+  if(ACTIVE === 'review') renderReview();
+  if(ACTIVE === 'data') renderData();
+}
+
+function switchTab(tab){
+  ACTIVE = tab;
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  ['overview','checkin','wheel','money','review','data'].forEach(t => {
+    $('#view-' + t).classList.toggle('hide', t !== tab);
+  });
+  if(tab !== 'overview') renderCurrent();
+  else renderOverview();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* =========================================================
+   交互
+   ========================================================= */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const a = el.dataset.action;
+
+  if(a === 'tab'){ switchTab(el.dataset.tab); return; }
+
+  if(a === 'toggle'){
+    const h = S.habits.find(x => x.id === el.dataset.id);
+    if(!h) return;
+    const d = el.dataset.date || TODAY;
+    if(h.log[d]) delete h.log[d];
+    else h.log[d] = true;
+    save();
+    renderOverview();
+    if(ACTIVE === 'checkin') renderCheckin();
+    return;
+  }
+
+  if(a === 'add-habit'){
+    const line = el.dataset.line;
+    const name = prompt('新的一项（建议具体、可当场判断做没做）');
+    if(!name) return;
+    const pw = prompt('每周做几次？（1–7）', '3');
+    const perWeek = Math.min(7, Math.max(1, parseInt(pw, 10) || 3));
+    S.habits.push({ id: uid(), line: line, name: name.trim().slice(0, 30), perWeek: perWeek, log: {} });
+    save();
+    renderCheckin();
+    return;
+  }
+
+  if(a === 'del-habit'){
+    const id = el.dataset.id;
+    const h = S.habits.find(x => x.id === id);
+    if(!h) return;
+    if(!confirm('删除「' + h.name + '」？已打卡记录也会一起删掉。')) return;
+    S.habits = S.habits.filter(x => x.id !== id);
+    save();
+    renderCheckin();
+    return;
+  }
+
+  if(a === 'save-score'){
+    const d = S.draftScore;
+    S.scores.push({
+      date: new Date().toISOString(),
+      values: Object.assign({}, d.cur),
+      desired: Object.assign({}, d.des)
+    });
+    S.draftScore = null;
+    save();
+    renderWheel();
+    renderOverview();
+    return;
+  }
+
+  if(a === 'reset-draft'){
+    S.draftScore = null;
+    ensureDraftScore();
+    save();
+    renderWheel();
+    return;
+  }
+
+  if(a === 'rate'){
+    S.draft.rating = +el.dataset.v;
+    save();
+    renderReview();
+    return;
+  }
+
+  if(a === 'backdate-today'){
+    LOGDATE = TODAY;
+    renderCheckin();
+    return;
+  }
+
+  if(a === 'save-review'){
+    const d = S.draft;
+    if(!d.done && !d.fail && !d.next){ alert('至少写一条再保存'); return; }
+    S.reviews.push({
+      date: TODAY,
+      done: d.done, fail: d.fail, next: d.next, rating: d.rating || 0
+    });
+    S.draft = { done:'', fail:'', next:'', rating: 0 };
+    save();
+    renderReview();
+    renderOverview();
+    return;
+  }
+
+  if(a === 'export'){
+    const blob = new Blob([JSON.stringify(S, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const aEl = document.createElement('a');
+    aEl.href = url;
+    aEl.download = '四线仪表盘备份-' + TODAY + '.json';
+    aEl.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    return;
+  }
+
+  if(a === 'import'){
+    $('#importFile').click();
+    return;
+  }
+
+  if(a === 'reset'){
+    if(!confirm('清空所有打卡、体检和复盘记录？这个操作不可撤销。')) return;
+    if(!confirm('再确认一次：真的要清空吗？')) return;
+    localStorage.removeItem(STORE);
+    S = defaultState();
+    save();
+    renderAll();
+    switchTab('overview');
+    return;
+  }
+});
+
+document.addEventListener('input', e => {
+  const el = e.target;
+  const f = el.dataset.field;
+  if(!f) return;
+
+  if(f === 'focus'){ S.focus = el.value; save(); return; }
+
+  if(f === 'r-done'){ S.draft.done = el.value; save(); return; }
+  if(f === 'r-fail'){ S.draft.fail = el.value; save(); return; }
+  if(f === 'r-next'){ S.draft.next = el.value; save(); return; }
+
+  if(f === 'm-income' || f === 'm-save' || f === 'm-rate' || f === 'm-years'){
+    const key = f.replace('m-','');
+    S.money[key] = +el.value || 0;
+    save();
+    renderMoneyOut();
+    return;
+  }
+
+  if(f === 'score-cur' || f === 'score-des'){
+    const key = el.dataset.line;
+    const val = +el.value;
+    if(f === 'score-cur') S.draftScore.cur[key] = val;
+    else S.draftScore.des[key] = val;
+    save();
+    const holder = $('#radarHolder');
+    if(holder) holder.innerHTML = radarSVG(S.draftScore.cur, S.draftScore.des);
+    const lab = $('#cur-' + key) || $('#des-' + key);
+    if(f === 'score-cur'){ const c = $('#cur-'+key); if(c) c.textContent = val; }
+    else { const d = $('#des-'+key); if(d) d.textContent = val; }
+    updateGapText();
+    return;
+  }
+});
+
+document.addEventListener('change', e => {
+  if(e.target.dataset && e.target.dataset.field === 'backdate'){
+    LOGDATE = e.target.value || TODAY;
+    renderCheckin();
+    return;
+  }
+  if(e.target.id === 'importFile'){
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const o = JSON.parse(String(reader.result));
+        if(!o || !Array.isArray(o.habits)) throw new Error('格式不对');
+        if(!confirm('导入会覆盖当前全部数据，继续？')) return;
+        const base = defaultState();
+        S = Object.assign(base, o);
+        if(!S.draft) S.draft = base.draft;
+        if(!S.money) S.money = base.money;
+        S.draftScore = null;
+        save();
+        renderAll();
+        switchTab('overview');
+        alert('导入完成');
+      }catch(err){
+        alert('导入失败：' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
+});
+
+/* 初始化 */
+save();
+renderAll();
+(function initTab(){
+  const t = (location.hash || '').replace('#','');
+  const ok = ['overview','checkin','wheel','money','review','data'];
+  switchTab(ok.indexOf(t) >= 0 ? t : 'overview');
+})();
+</script>
+</body>
+</html>

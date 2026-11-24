@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>四线 · 生命系统</title>
+<style>
+  :root{
+    --bg:#f7f5f0; --surface:#fff; --surface2:#fbf9f5;
+    --ink:#1f1d1a; --ink2:#6b665d; --ink3:#9d968a;
+    --line:#e7e2d7; --line2:#f0ece3;
+    --green:#2f7d5f; --green-soft:#edf4f0; --green-line:#cfdcd3;
+    --amber:#a4762b; --amber-soft:#fbf4e7; --amber-line:#ecdcbe;
+    --rose:#a3564f; --rose-soft:#fbf0ee; --rose-line:#eed6d1;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(31,29,26,.04), 0 8px 24px -18px rgba(31,29,26,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--ink);background:var(--bg);font-size:15px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  button,input,textarea,select{font:inherit;color:inherit}
+  button{cursor:pointer}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 22px 64px}
+
+  /* ---------- header ---------- */
+  .top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:26px;height:26px}
+  .mark i{display:block;border-radius:3px}
+  .mark i:nth-child(1){background:#2f8f6b}
+  .mark i:nth-child(2){background:#bb8524}
+  .mark i:nth-child(3){background:#4a6fa5}
+  .mark i:nth-child(4){background:#b0607c}
+  h1{font-size:21px;margin:0;font-weight:650;letter-spacing:.01em}
+  .sub{font-size:11.5px;color:var(--ink3);letter-spacing:.08em;margin-top:2px}
+  .meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--ink2);box-shadow:var(--shadow)}
+  .chip b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:3px;background:#efece3;border-radius:12px;padding:3px;margin-bottom:20px;overflow-x:auto}
+  .tabs button{flex:0 0 auto;border:0;background:none;font:inherit;font-size:13.5px;color:var(--ink2);padding:7px 15px;border-radius:9px;cursor:pointer;transition:.15s;white-space:nowrap;font-weight:500}
+  .tabs button:hover{color:var(--ink)}
+  .tabs button.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+
+  /* ---------- layout ---------- */
+  .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:start}
+  .grid > *{min-width:0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  .grid2 > .card{margin-top:0 !important}
+  @media(max-width:880px){.grid{grid-template-columns:1fr}}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px}
+  .card + .card{margin-top:16px}
+  .card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .card-t{font-size:13px;font-weight:650;letter-spacing:.03em;color:var(--ink2)}
+  .card-note{font-size:12px;color:var(--ink3)}
+  .tiny{font-size:12px;color:var(--ink3);line-height:1.75}
+  .hint{font-size:12.5px;color:var(--ink2);line-height:1.75;background:var(--surface2);border-radius:10px;padding:10px 12px}
+  .hint b{font-weight:600;color:var(--ink)}
+
+  /* ---------- 四线卡 ---------- */
+  .lines{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  @media(max-width:520px){.lines{grid-template-columns:1fr}}
+  .lc{border:1px solid var(--line);border-radius:13px;padding:13px 14px;position:relative;background:#fff;transition:.18s}
+  .lc:hover{border-color:#dcd5c6;transform:translateY(-1px)}
+  .lc::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:var(--c)}
+  .lc-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .lc-n{font-size:14px;font-weight:650}
+  .lc-v{font-size:19px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--c)}
+  .lc-v small{font-size:11px;color:var(--ink3);font-weight:400;margin-left:1px}
+  .lc-na{font-size:11.5px;color:#b3ada2;font-weight:400}
+  .lc-hint{font-size:11.5px;color:var(--ink3);margin:1px 0 9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar{height:5px;border-radius:99px;background:#f1eee6;overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:99px;background:var(--c);transition:width .35s ease}
+  .lc-f{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink3);margin-top:6px;font-variant-numeric:tabular-nums}
+  .weak{display:inline-block;background:var(--rose-soft);color:var(--rose);font-size:10.5px;padding:0 6px;border-radius:4px;margin-left:6px;vertical-align:1px;letter-spacing:.04em}
+
+  /* ---------- 任务卡（三态） ---------- */
+  .task{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;background:#fff;transition:.15s}
+  .task:hover{border-color:#dcd5c6}
+  .task.done{border-color:var(--green-line);background:#fcfdfc}
+  .task.min{border-color:var(--amber-line);background:#fffdf8}
+  .task.miss{border-color:var(--rose-line);background:#fdfbfa}
+  .task.now{border-color:var(--green);box-shadow:0 0 0 3px rgba(47,125,95,.07)}
+  .t-top{display:flex;align-items:center;gap:8px}
+  .t-dot{width:7px;height:7px;border-radius:2px;flex:0 0 auto;background:var(--c)}
+  .t-name{font-size:14.5px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .task.done .t-name{color:#5b7a68}
+  .task.miss .t-name{color:#8d8279}
+  .t-wk{font-size:11.5px;color:var(--ink3);white-space:nowrap;font-variant-numeric:tabular-nums;flex:0 0 auto}
+  .t-now{font-size:10px;color:#fff;background:var(--green);border-radius:4px;padding:1px 5px;margin-left:6px;letter-spacing:.04em}
+  .t-sub{font-size:12px;color:var(--ink3);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .t-ctl{display:flex;align-items:center;gap:8px;margin-top:9px;flex-wrap:wrap}
+  .st{display:inline-flex;gap:2px;background:#f0ece2;border:1px solid #e6e0d2;border-radius:8px;padding:2px}
+  .st button{border:0;background:none;font:inherit;font-size:12px;color:#7d7767;padding:4px 10px;border-radius:6px;transition:.13s}
+  .st button:hover{color:var(--ink);background:#e8e2d4}
+  .st button.on{color:#fff;font-weight:550}
+  .st button.on[data-st="done"]{background:var(--green)}
+  .st button.on[data-st="min"]{background:var(--amber)}
+  .st button.on[data-st="miss"]{background:var(--rose)}
+  .more{margin-left:auto;font-size:12px;color:var(--ink3);background:none;border:0;padding:3px 4px;border-radius:5px}
+  .more:hover{color:var(--ink);background:#f4f1e9}
+  .t-panel{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+  .steps{margin:0 0 8px 18px;padding:0;font-size:12.5px;color:#4a463e;line-height:1.85}
+  .minbox{font-size:12px;color:var(--ink2);background:var(--amber-soft);border:1px dashed var(--amber-line);border-radius:8px;padding:7px 10px;margin-bottom:8px}
+  .minbox b{color:var(--amber);font-weight:600}
+  .t-note{width:100%;border:0;border-bottom:1px dashed var(--line);background:none;padding:6px 0;font-size:12.5px;outline:none}
+  .t-note::placeholder{color:#bdb5a6}
+
+  /* ---------- 7 日条 ---------- */
+  .week{display:flex;gap:6px;margin:2px 0 4px}
+  .wd{flex:1;text-align:center;min-width:0}
+  .wd .lb{font-size:10.5px;color:var(--ink3);margin-bottom:5px}
+  .wd .bar2{height:56px;border-radius:7px;background:#f1eee6;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+  .wd .bar2 i{display:block;background:var(--green);opacity:.85}
+  .wd .bar2.zero i{background:#ded8ca}
+  .wd .bar2.none{background:repeating-linear-gradient(135deg,#f1eee6,#f1eee6 4px,#e9e3d6 4px,#e9e3d6 6px)}
+  .wd.today .lb{color:var(--ink);font-weight:650}
+  .wd.today .bar2{box-shadow:0 0 0 1.5px var(--green-line)}
+
+  /* ---------- heatmap ---------- */
+  .heat{display:grid;grid-template-columns:repeat(18,var(--cs,28px));gap:6px;justify-content:flex-start;overflow-x:auto;padding-bottom:4px}
+  .heat .col{display:grid;grid-template-rows:repeat(7,var(--cs,28px));gap:6px}
+  .heat .cell{width:var(--cs,28px);height:var(--cs,28px);border-radius:5px;background:#f1eee6;cursor:pointer;transition:.12s}
+  .heat .cell:hover{outline:1.5px solid #c9c2b3;outline-offset:1px}
+  .cell.l1{background:#d9e8e0}.cell.l2{background:#a9cdbb}.cell.l3{background:#68a68a}.cell.l4{background:#2f8f6b}
+  .cell.today{outline:1.5px solid #1f1d1a;outline-offset:1px}
+  .cell.sel{outline:2px solid var(--amber);outline-offset:1px}
+  .heat-key{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink3);margin-top:10px;flex-wrap:wrap}
+  .heat-key .cell{width:10px;height:10px;border-radius:2px;flex:0 0 auto}
+
+  /* ---------- 清单 ---------- */
+  .row-i{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:9px;transition:.13s}
+  .row-i:hover{background:#f8f6f0}
+  .row-i.off{opacity:.45}
+  .row-n{font-size:14px;font-weight:550;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tag{font-size:11px;color:var(--green);background:var(--green-soft);border:1px solid var(--green-line);border-radius:5px;padding:0 6px;white-space:nowrap;flex:0 0 auto}
+  .tag.gray{color:var(--ink3);background:#f4f1e9;border-color:#e6e0d3}
+  .mini{background:none;border:0;color:#b8b1a3;padding:2px 5px;border-radius:5px;font-size:12px}
+  .mini:hover{color:var(--ink);background:#f1eee6}
+  .mini.danger:hover{color:var(--rose)}
+
+  /* ---------- 通用表单 ---------- */
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:12px;color:var(--ink2);margin-bottom:5px;font-weight:550}
+  .in{width:100%;border:1px solid #ded8cb;background:#fff;border-radius:9px;padding:8px 11px;font:inherit;font-size:13.5px;outline:none;transition:.15s}
+  .in:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(47,125,95,.08)}
+  textarea.in{resize:vertical;min-height:64px;line-height:1.7}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+  .btn{border:0;background:#1f1d1a;color:#fff;font-size:13px;font-weight:550;padding:9px 16px;border-radius:9px;transition:.15s}
+  .btn:hover{background:#3a352d}
+  .btn.ghost{background:#fff;color:var(--ink2);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--surface2);color:var(--ink)}
+  .btn.warn{background:#fff;color:var(--rose);border:1px solid var(--rose-line)}
+  .btn.sm{padding:6px 11px;font-size:12.5px;border-radius:8px}
+
+  /* ---------- 体检 ---------- */
+  .wheel-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center}
+  @media(max-width:820px){.wheel-grid{grid-template-columns:1fr}}
+  .slider-row{margin-bottom:18px}
+  .slider-row .sh{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+  .slider-row .sh b{font-variant-numeric:tabular-nums}
+  .slider-row .sh .des{font-size:11.5px;color:var(--ink3)}
+  .slider-row input[type=range] + input[type=range]{margin-top:9px}
+  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:99px;background:#ece8de;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--c,#1f1d1a);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--c,#1f1d1a);border:2px solid #fff;cursor:pointer}
+  .hist{display:flex;flex-direction:column;gap:7px}
+  .hist-row{display:flex;align-items:center;gap:10px;font-size:12.5px;padding:8px 10px;background:var(--surface2);border-radius:9px}
+  .hist-row .d{color:var(--ink3);width:84px;flex:0 0 auto;font-variant-numeric:tabular-nums}
+  .delta{font-size:11px;padding:1px 6px;border-radius:99px;margin-left:auto}
+  .delta.up{background:#e4f0ea;color:var(--green)}
+  .delta.dn{background:#f9e8e3;color:var(--rose)}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .stat{background:var(--surface2);border:1px solid #f1eee6;border-radius:10px;padding:10px 12px}
+  .stat .k{font-size:11.5px;color:var(--ink3)}
+  .stat .v{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums}
+  .stat .v small{font-size:11px;font-weight:400;color:var(--ink3);margin-left:2px}
+
+  /* ---------- 复盘 ---------- */
+  .qa{margin:7px 0}
+  .qa .q{font-size:11.5px;color:var(--ink3);letter-spacing:.03em}
+  .qa .a{font-size:13.5px;white-space:pre-wrap}
+  .review-item{border-top:1px solid var(--line2);padding:13px 0}
+  .review-item:first-child{border-top:0;padding-top:0}
+  .review-h{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink3);margin-bottom:5px}
+  .review-h b{color:var(--ink);font-size:13px}
+  .rating{margin-left:auto;letter-spacing:2px;color:var(--amber);font-size:12px}
+  .sum-line{display:flex;align-items:center;gap:9px;font-size:12.5px;margin-bottom:7px}
+  .sum-line .nm{width:38px;flex:0 0 auto;color:var(--ink2)}
+  .sum-line .bar{flex:1}
+  .sum-line .pc{width:38px;text-align:right;flex:0 0 auto;color:var(--ink3);font-variant-numeric:tabular-nums}
+  .empty{text-align:center;color:var(--ink3);font-size:13px;padding:24px 10px;border:1px dashed var(--line);border-radius:11px}
+
+  /* ---------- dialog ---------- */
+  dialog{border:0;border-radius:15px;padding:0;width:calc(100% - 36px);max-width:520px;background:#fff;box-shadow:0 24px 60px rgba(20,18,15,.2);overflow:hidden}
+  dialog::backdrop{background:rgba(31,29,26,.3)}
+  form.dlg{display:flex;flex-direction:column;max-height:86vh}
+  .dh{padding:19px 20px 0;font-size:15px;font-weight:650}
+  .db{padding:15px 20px;overflow:auto;flex:1 1 auto}
+  .df{padding:13px 20px 16px;display:flex;gap:9px;justify-content:flex-end;border-top:1px solid var(--line2)}
+  .note{font-size:11.5px;color:var(--ink3);line-height:1.65;margin-top:5px}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(10px);background:#232220;color:#fff;padding:9px 16px;border-radius:9px;font-size:13px;opacity:0;pointer-events:none;transition:.22s;z-index:99;max-width:88vw}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  .hide{display:none !important}
+  footer{margin-top:24px;font-size:11.5px;color:#b5afa3;text-align:center}
+  @media(max-width:560px){
+    .wrap{padding:18px 14px 50px}
+    .card{padding:16px}
+    h1{font-size:19px}
+    .heat{--cs:12px;gap:3px}
+    .heat .col{gap:3px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="mark"><i></i><i></i><i></i><i></i></div>
+      <div>
+        <h1>四线 · 生命系统</h1>
+        <div class="sub">方向看四线 · 每天看一张清单</div>
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip"><span class="dot"></span>第 <b id="dayCount">1</b> 天</span>
+      <span class="chip">连续 <b id="streakCount">0</b> 天</span>
+      <span class="chip" id="todayLabel">—</span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-act="tab" data-tab="overview" class="on">概览</button>
+    <button data-act="tab" data-tab="list">清单</button>
+    <button data-act="tab" data-tab="record">记录</button>
+    <button data-act="tab" data-tab="body">季度体检</button>
+    <button data-act="tab" data-tab="review">周复盘</button>
+    <button data-act="tab" data-tab="data">数据</button>
+  </nav>
+
+  <main>
+    <section id="view-overview"></section>
+    <section id="view-list" class="hide"></section>
+    <section id="view-record" class="hide"></section>
+    <section id="view-body" class="hide"></section>
+    <section id="view-review" class="hide"></section>
+    <section id="view-data" class="hide"></section>
+  </main>
+
+  <footer>数据只存在这台设备的浏览器里 · 每周导出一次备份</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+<dialog id="dlg"><form class="dlg" id="dlgForm" method="dialog"></form></dialog>
+
+<script>
+/* =========================================================
+   基础
+   ========================================================= */
+const STORE = 'fourlines.v2';
+const OLD   = 'fourlines.v1';
+const pad = n => String(n).padStart(2,'0');
+const ymd = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+const dateOf = k => new Date(String(k).replace(/-/g,'/'));
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = s => document.querySelector(s);
+const WD = ['日','一','二','三','四','五','六'];
+const TODAY = ymd(new Date());
+const uid = () => 'h' + Date.now().toString(36) + Math.floor(Math.random()*900+100);
+const W = { done:1, min:0.6, miss:0 };
+const ST_LABEL = { done:'做了', min:'最小版', miss:'没做' };
+const fmtN = n => Number.isInteger(n) ? String(n) : n.toFixed(1);
+
+const LINES = [
+  { key:'health', name:'健康', color:'#2f8f6b', hint:'身体是所有目标的底座' },
+  { key:'money',  name:'财务', color:'#bb8524', hint:'不透支，也别让钱闲着' },
+  { key:'skill',  name:'能力', color:'#4a6fa5', hint:'一项别人难以替代的本事' },
+  { key:'relation',name:'关系', color:'#b0607c', hint:'父母的陪伴有期限' }
+];
+const LINE_MAP = {}; LINES.forEach(l => LINE_MAP[l.key] = l);
+
+/* =========================================================
+   默认数据
+   ========================================================= */
+function mk(line, name, opt){
+  opt = opt || {};
+  return {
+    id: uid(), line, name,
+    freq: opt.freq || { type:'daily' },
+    when: opt.when || '',
+    dur: opt.dur || 0,
+    steps: opt.steps || [],
+    min: opt.min || '',
+    off: false,
+    log: {}
+  };
+}
+function seedHabits(){
+  return [
+    mk('health','运动 30 分钟',{freq:{type:'flex',perWeek:3},when:'20:00',dur:30,
+      steps:['换好运动衣（这就算开始）','动 30 分钟，不设强度要求','记一句：今天最难的是哪一步'],
+      min:'换好衣服 + 做 1 组'}),
+    mk('health','23:30 前放下手机',{freq:{type:'daily'},when:'23:00',dur:10,
+      steps:['提醒响了就起身，不看最后一条','手机放到充电位，不带上床','洗漱，回房关灯'],
+      min:'手机放到客厅'}),
+    mk('health','好好吃饭 · 喝够水',{freq:{type:'daily'},when:'',dur:0,
+      steps:['三餐都有蛋白质','水杯放在手边','下午不加糖'],
+      min:'喝一杯水'}),
+
+    mk('money','记账 / 复盘支出',{freq:{type:'flex',perWeek:2},when:'21:30',dur:5,
+      steps:['打开记账','记当天支出','有收入补一条'],
+      min:'只记当天总支出一个数'}),
+    mk('money','发薪日自动转存',{freq:{type:'flex',perWeek:1},when:'',dur:10,
+      steps:['确认自动转存开了','检查本月是否有意外大额','看一眼信用卡账单'],
+      min:'只看一眼账单'}),
+    mk('money','不冲动大额消费',{freq:{type:'daily'},when:'',dur:0,
+      steps:['超过 500 元的非必需品先放 24 小时','问自己：下周还会想买吗','不因为打折而买'],
+      min:'今天不打开购物 App'}),
+
+    mk('skill','专业深耕 1 小时',{freq:{type:'flex',perWeek:3},when:'21:00',dur:60,
+      steps:['关掉消息通知','定一个具体的小目标','做完记一句结论'],
+      min:'只做 15 分钟'}),
+    mk('skill','读长文 / 读书',{freq:{type:'flex',perWeek:3},when:'22:00',dur:30,
+      steps:['拿起书或打开文章','读到有感觉的地方标记','写一句自己的话'],
+      min:'读两页'}),
+    mk('skill','沉淀一个作品或笔记',{freq:{type:'flex',perWeek:1},when:'',dur:45,
+      steps:['选一个这周学到的东西','写成 300 字以内','发出去或存档'],
+      min:'只写标题和三个要点'}),
+
+    mk('relation','给家人打电话',{freq:{type:'flex',perWeek:2},when:'',dur:15,
+      steps:['挑一个他们方便的时间','问一件具体的事，别只问好不好','听完再给建议'],
+      min:'发一条语音'}),
+    mk('relation','和老朋友深聊',{freq:{type:'flex',perWeek:1},when:'',dur:60,
+      steps:['挑一个很久没联系的人','发一条具体的消息（提起一件旧事）','约一次见面或通话'],
+      min:'发一条消息'}),
+    mk('relation','认真陪伴重要的人',{freq:{type:'flex',perWeek:5},when:'',dur:30,
+      steps:['手机放到另一个房间','做一件对方想做的事','不评价、不指导'],
+      min:'一起吃饭时不看手机'})
+  ];
+}
+
+function defaultState(){
+  return {
+    v: 2,
+    startDate: TODAY,
+    focus: '',
+    habits: seedHabits(),
+    scores: [],
+    reviews: [],
+    draft: { done:'', fail:'', next:'', rating:0 },
+    draftScore: null,
+    money: { income:15000, save:3000, rate:5, years:10 }
+  };
+}
+
+/* 旧版（v1，两态记录 / perWeek）迁移 */
+function migrateV1(o){
+  const habits = (o.habits || []).map(h => {
+    const perWeek = h.perWeek || 7;
+    const log = {};
+    Object.keys(h.log || {}).forEach(k => {
+      if(h.log[k]) log[k] = { st:'done', note:'' };
+    });
+    return {
+      id: h.id || uid(),
+      line: h.line || 'health',
+      name: h.name || '未命名',
+      freq: perWeek >= 7 ? {type:'daily'} : {type:'flex', perWeek: perWeek},
+      when: '', dur: 0, steps: [], min: '', off: false,
+      log: log
+    };
+  });
+  return {
+    v: 2,
+    startDate: o.startDate || TODAY,
+    focus: o.focus || '',
+    habits: habits.length ? habits : seedHabits(),
+    scores: o.scores || [],
+    reviews: (o.reviews || []).map(r => ({ date: r.date, done:r.done, fail:r.fail, next:r.next, rating:r.rating||0 })),
+    draft: o.draft || { done:'', fail:'', next:'', rating:0 },
+    draftScore: null,
+    money: o.money || { income:15000, save:3000, rate:5, years:10 }
+  };
+}
+
+function normalize(s){
+  const base = defaultState();
+  const out = Object.assign(base, s);
+  out.habits = (out.habits || []).map(h => ({
+    id: h.id || uid(),
+    line: h.line || 'health',
+    name: h.name || '未命名',
+    freq: h.freq || {type:'daily'},
+    when: h.when || '',
+    dur: h.dur || 0,
+    steps: Array.isArray(h.steps) ? h.steps : [],
+    min: h.min || '',
+    off: !!h.off,
+    log: h.log || {}
+  }));
+  if(!out.draft) out.draft = base.draft;
+  if(!out.money) out.money = base.money;
+  return out;
+}
+
+let S = (() => {
+  try{
+    const cur = localStorage.getItem(STORE);
+    if(cur) return normalize(JSON.parse(cur));
+    const old = localStorage.getItem(OLD);
+    if(old) return normalize(migrateV1(JSON.parse(old)));
+  }catch(e){}
+  return defaultState();
+})();
+
+let saveT = null;
+function save(){
+  clearTimeout(saveT);
+  saveT = setTimeout(() => {
+    try{ localStorage.setItem(STORE, JSON.stringify(S)); }
+    catch(e){ toast('本地存储写入失败'); }
+  }, 120);
+}
+
+/* =========================================================
+   派生
+   ========================================================= */
+function weekStart(d){
+  const x = new Date(d); const wd = (x.getDay()+6)%7;
+  x.setDate(x.getDate()-wd); x.setHours(0,0,0,0); return x;
+}
+function weekKeys(){
+  const s = weekStart(new Date()); const out = [];
+  for(let i=0;i<7;i++){ const d = new Date(s); d.setDate(s.getDate()+i); out.push(ymd(d)); }
+  return out;
+}
+function lastNDays(n){
+  const out = [];
+  for(let i=n-1;i>=0;i--){ const d = new Date(); d.setDate(d.getDate()-i); out.push(ymd(d)); }
+  return out;
+}
+function niceDate(k){
+  const d = dateOf(k);
+  return (d.getMonth()+1) + '月' + d.getDate() + '日 周' + WD[d.getDay()];
+}
+function mmdd(k){ return k.slice(5).replace('-','/'); }
+
+function dueOn(h, k){
+  if(h.off) return false;
+  const d = dateOf(k);
+  const f = h.freq || {type:'daily'};
+  if(f.type === 'weekly') return (f.dow || []).indexOf(d.getDay()) >= 0;
+  if(f.type === 'monthly'){
+    const last = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+    return d.getDate() === Math.min(f.dom || 1, last);
+  }
+  return true;   // daily / flex
+}
+function dueList(k){ return S.habits.filter(h => dueOn(h, k)); }
+
+function weekTarget(h){
+  const keys = weekKeys();
+  const f = h.freq || {type:'daily'};
+  if(f.type === 'flex') return Math.min(7, Math.max(1, f.perWeek || 1));
+  if(f.type === 'weekly') return keys.filter(k => (f.dow||[]).indexOf(dateOf(k).getDay()) >= 0).length;
+  if(f.type === 'monthly'){
+    return keys.filter(k => { const d = dateOf(k); const last = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate(); return d.getDate() === Math.min(f.dom||1,last); }).length;
+  }
+  return 7;
+}
+
+function weekStat(line){
+  const keys = weekKeys();
+  const hs = S.habits.filter(h => h.line === line && !h.off);
+  let target = 0, got = 0, done = 0, min = 0, miss = 0;
+  hs.forEach(h => {
+    target += weekTarget(h);
+    keys.forEach(k => {
+      const r = h.log[k]; if(!r || !r.st) return;
+      got += (W[r.st] || 0);
+      if(r.st === 'done') done++; else if(r.st === 'min') min++; else miss++;
+    });
+  });
+  const capped = Math.min(target, got);
+  return { target, got, done, min, miss, pct: target ? Math.round(capped/target*100) : 0 };
+}
+
+function habitWeek(h){
+  const keys = weekKeys();
+  let got = 0, done = 0, min = 0, miss = 0;
+  keys.forEach(k => {
+    const r = h.log[k]; if(!r || !r.st) return;
+    got += (W[r.st]||0);
+    if(r.st === 'done') done++; else if(r.st === 'min') min++; else miss++;
+  });
+  const target = weekTarget(h);
+  return { target, got: Math.min(got, target), done, min, miss, pct: target ? Math.round(Math.min(got,target)/target*100) : 0 };
+}
+
+function dayStat(k){
+  const items = dueList(k);
+  let done = 0, min = 0, miss = 0, rec = 0;
+  items.forEach(h => {
+    const r = h.log[k]; if(!r || !r.st) return;
+    rec++;
+    if(r.st === 'done') done++; else if(r.st === 'min') min++; else miss++;
+  });
+  const total = items.length;
+  const pct = total ? Math.min(1, (done + min*0.6) / total) : 0;
+  return { done, min, miss, rec, total, pct };
+}
+
+function anyLog(k){
+  return S.habits.some(h => h.log[k] && h.log[k].st);
+}
+function streak(){
+  let n = 0, d = new Date();
+  if(!anyLog(ymd(d))) d.setDate(d.getDate()-1);
+  for(let i=0;i<730;i++){
+    if(anyLog(ymd(d))) n++; else break;
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
+function bestStreak(){
+  const days = new Set();
+  S.habits.forEach(h => Object.keys(h.log).forEach(k => { if(h.log[k] && h.log[k].st) days.add(k); }));
+  const arr = Array.from(days).sort();
+  let best = 0, run = 0, prev = null;
+  arr.forEach(k => {
+    const t = dateOf(k).getTime();
+    run = (prev !== null && t - prev === 86400000) ? run + 1 : 1;
+    if(run > best) best = run;
+    prev = t;
+  });
+  return best;
+}
+function totalLogs(){
+  let n = 0;
+  S.habits.forEach(h => Object.keys(h.log).forEach(k => { if(h.log[k] && h.log[k].st) n++; }));
+  return n;
+}
+function missStreak(h){
+  let n = 0, d = new Date(TODAY.replace(/-/g,'/'));
+  d.setDate(d.getDate()-1);
+  for(let i=0;i<14;i++){
+    const r = h.log[ymd(d)];
+    if(r && r.st === 'miss') n++;
+    else if(r) break;
+    else break;
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
+function weakSpot(){
+  let best = null;
+  dueList(TODAY).forEach(h => {
+    if(h.log[TODAY]) return;
+    const n = missStreak(h);
+    if(n >= 2 && (!best || n > best.n)) best = { h, n };
+  });
+  return best;
+}
+function latestScore(){
+  return S.scores.length ? S.scores[S.scores.length-1] : null;
+}
+function avgScore(e){
+  if(!e || !e.values) return 0;
+  const v = Object.values(e.values);
+  return v.length ? v.reduce((a,b)=>a+b,0)/v.length : 0;
+}
+function weakestLine(){
+  const l = latestScore();
+  if(l && l.values){
+    let k = null, min = 99;
+    LINES.forEach(x => { const v = l.values[x.key]; if(typeof v === 'number' && v < min){ min = v; k = x.key; } });
+    if(k) return { key:k, reason:'score' };
+  }
+  let wk = null, minPct = 999;
+  LINES.forEach(x => {
+    const st = weekStat(x.key);
+    if(S.habits.some(h=>h.line===x.key && !h.off) && st.pct < minPct){ minPct = st.pct; wk = x.key; }
+  });
+  return wk ? { key:wk, reason:'pct' } : null;
+}
+function freqLabel(h){
+  const f = h.freq || {type:'daily'};
+  if(f.type === 'flex') return '每周 ' + (f.perWeek||1) + ' 次';
+  if(f.type === 'weekly') return '每周' + (f.dow||[]).map(d=>WD[d]).join('、');
+  if(f.type === 'monthly') return '每月 ' + (f.dom||1) + ' 号';
+  return '每天';
+}
+function sortByTime(list){
+  const m = h => {
+    if(!h.when) return 9999;
+    const a = String(h.when).split(':');
+    return (Number(a[0])||0)*60 + (Number(a[1])||0);
+  };
+  return list.slice().sort((a,b) => m(a)-m(b));
+}
+function nowMinutes(){ const d = new Date(); return d.getHours()*60 + d.getMinutes(); }
+
+/* =========================================================
+   提示
+   ========================================================= */
+let toastT = null;
+function toast(msg){
+  const t = $('#toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('on'), 1900);
+}
+
+/* =========================================================
+   雷达图
+   ========================================================= */
+function radarSVG(cur, des){
+  const cx = 172, cy = 172, R = 116;
+  const A = [-90, 0, 90, 180];
+  const pt = (v, deg) => {
+    const r = R * Math.max(0, Math.min(10, v)) / 10;
+    const a = deg * Math.PI / 180;
+    return [cx + r*Math.cos(a), cy + r*Math.sin(a)];
+  };
+  let grid = '';
+  [2,4,6,8,10].forEach(v => {
+    grid += `<polygon points="${A.map(a=>pt(v,a).join(',')).join(' ')}" fill="none" stroke="#ece7dc" stroke-width="1"/>`;
+  });
+  A.forEach(a => { const p = pt(10,a); grid += `<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="#ece7dc"/>`; });
+  const curVals = LINES.map(l => typeof cur[l.key]==='number' ? cur[l.key] : 5);
+  const desVals = LINES.map(l => typeof des[l.key]==='number' ? des[l.key] : 5);
+  const poly = vals => vals.map((v,i)=>pt(v,A[i]).join(',')).join(' ');
+  let dots = '', labels = '';
+  LINES.forEach((l,i) => {
+    const p = pt(curVals[i], A[i]);
+    dots += `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#fff" stroke="${l.color}" stroke-width="2"/>`;
+    const lp = pt(11.3, A[i]);
+    const anchor = i===0 ? 'middle' : (i===2 ? 'middle' : (i===1 ? 'start' : 'end'));
+    const dy = i===0 ? -4 : (i===2 ? 13 : 4);
+    labels += `<text x="${lp[0]}" y="${lp[1]+dy}" text-anchor="${anchor}" font-size="12" fill="#6b665d">${l.name}</text>`;
+    labels += `<text x="${lp[0]}" y="${lp[1]+dy+14}" text-anchor="${anchor}" font-size="11" font-weight="600" fill="${l.color}">${curVals[i]}</text>`;
+  });
+  return `<svg viewBox="0 0 344 344" width="100%" style="max-width:350px;display:block;margin:0 auto">
+    ${grid}
+    <polygon points="${poly(desVals)}" fill="none" stroke="#bdb6a8" stroke-width="1.4" stroke-dasharray="4 4"/>
+    <polygon points="${poly(curVals)}" fill="rgba(47,143,107,.09)" stroke="#2f7f5f" stroke-width="1.8" stroke-linejoin="round"/>
+    ${dots}${labels}
+  </svg>`;
+}
+
+/* =========================================================
+   渲染：概览
+   ========================================================= */
+let TAB = 'overview';
+let OPEN_ID = null;
+let SELDATE = TODAY;
+
+function renderOverview(){
+  const wd = weakestLine();
+  const latest = latestScore();
+  $('#dayCount').textContent = Math.max(1, Math.round((dateOf(TODAY)-dateOf(S.startDate))/86400000)+1);
+  $('#streakCount').textContent = streak();
+  $('#todayLabel').textContent = niceDate(TODAY);
+
+  const cards = LINES.map(l => {
+    const st = weekStat(l.key);
+    const score = latest && latest.values ? latest.values[l.key] : null;
+    const isWeak = wd && wd.key === l.key;
+    return `<div class="lc" style="--c:${l.color}">
+      <div class="lc-h">
+        <span class="lc-n">${l.name}${isWeak ? '<span class="weak">待补</span>' : ''}</span>
+        <span class="lc-v">${(score===null||score===undefined) ? '<span class="lc-na">未体检</span>' : score + '<small>/10</small>'}</span>
+      </div>
+      <div class="lc-hint">${l.hint}</div>
+      <div class="bar" style="--c:${l.color}"><i style="width:${st.pct}%;background:${l.color}"></i></div>
+      <div class="lc-f"><span>本周 ${fmtN(st.got)}/${fmtN(st.target)}</span><span>${st.pct}%</span></div>
+    </div>`;
+  }).join('');
+
+  $('#view-overview').innerHTML = `
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="card-h">
+            <span class="card-t">四条线</span>
+            <span class="card-note">${latest ? '体检分来自 ' + niceDate(latest.date.slice(0,10)) : '还没做过季度体检'}</span>
+          </div>
+          <div class="lines">${cards}</div>
+        </div>
+        <div class="card">
+          <div class="card-h">
+            <span class="card-t">今天要做的</span>
+            <span class="card-note">${dayStat(TODAY).rec}/${dueList(TODAY).length} 已记录</span>
+          </div>
+          ${todayListHTML()}
+          <div class="tiny" style="margin-top:12px">「最小版」是给今天实在不行的那天用的，不是打折。做了最小版，也算记录。</div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">本周唯一重点</span></div>
+          <div class="hint" style="padding:0;background:none">
+            <input class="in" data-field="focus" placeholder="只写一件，这周做完就算赢" value="${esc(S.focus)}" style="border-left:3px solid var(--green);border-radius:0 9px 9px 0">
+          </div>
+          <div class="tiny" style="margin-top:9px">写下来的那件事，优先级高于清单上的其他所有项。</div>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">这一周</span><span class="card-note">连续 ${streak()} · 最长 ${bestStreak()}</span></div>
+          ${weekStripHTML()}
+          <div class="tiny" style="margin-top:12px">斜纹 = 那天没记录。没记录不等于没做，但记录本身也是一种练习。</div>
+        </div>
+        ${weakHTML()}
+        ${lastReviewHTML()}
+      </div>
+    </div>`;
+}
+
+function todayListHTML(){
+  const list = sortByTime(dueList(TODAY));
+  if(!list.length) return '<div class="empty">今天没有安排的事。去「清单」里加一条。</div>';
+  const now = nowMinutes();
+  let nowId = null;
+  for(const h of list){
+    if(h.log[TODAY]) continue;
+    if(h.when && (Number(h.when.split(':')[0])*60 + Number(h.when.split(':')[1]||0)) <= now){ nowId = h.id; break; }
+  }
+  if(!nowId){ const f = list.find(h => !h.log[TODAY]); if(f && !f.when) nowId = f.id; }
+  return list.map(h => taskHTML(h, TODAY, h.id === nowId)).join('');
+}
+
+function taskHTML(h, date, isNow){
+  const r = h.log[date];
+  const st = r ? r.st : '';
+  const cls = st === 'done' ? 'done' : st === 'min' ? 'min' : st === 'miss' ? 'miss' : '';
+  const line = LINE_MAP[h.line] || LINES[0];
+  const ws = habitWeek(h);
+  const open = OPEN_ID === h.id && date === TODAY;
+  const freq = freqLabel(h);
+  const meta = [h.when, freq, h.dur ? h.dur + ' 分钟' : ''].filter(Boolean).join(' · ');
+  return `<div class="task ${cls} ${isNow?'now':''}" style="--c:${line.color}">
+    <div class="t-top">
+      <span class="t-dot"></span>
+      <span class="t-name">${esc(h.name)}${isNow?'<span class="t-now">现在</span>':''}</span>
+      <span class="t-wk">本周 ${fmtN(ws.got)}/${fmtN(ws.target)}</span>
+    </div>
+    <div class="t-sub">${esc(meta)}${h.min ? ' · 最小版：' + esc(h.min) : ''}</div>
+    <div class="t-ctl">
+      <div class="st">
+        <button data-act="mark" data-id="${h.id}" data-date="${date}" data-st="done" class="${st==='done'?'on':''}">做了</button>
+        <button data-act="mark" data-id="${h.id}" data-date="${date}" data-st="min" class="${st==='min'?'on':''}">最小版</button>
+        <button data-act="mark" data-id="${h.id}" data-date="${date}" data-st="miss" class="${st==='miss'?'on':''}">没做</button>
+      </div>
+      <button class="more" data-act="open" data-id="${h.id}">${open ? '收起' : '步骤'}</button>
+    </div>
+    ${open ? panelHTML(h, date) : ''}
+  </div>`;
+}
+
+function panelHTML(h, date){
+  const r = h.log[date] || {note:''};
+  const steps = (h.steps||[]).length
+    ? `<ol class="steps">${h.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>`
+    : '<div class="tiny" style="margin-bottom:8px">还没写步骤。去「清单」里补上，做的时候就不用想了。</div>';
+  return `<div class="t-panel">
+    ${steps}
+    ${h.min ? `<div class="minbox"><b>最小版</b>　${esc(h.min)}</div>` : ''}
+    <input class="t-note" data-field="note" data-id="${h.id}" data-date="${date}"
+      value="${esc(r.note||'')}" placeholder="加一句：卡在哪、什么感觉（可不填）">
+  </div>`;
+}
+
+function weekStripHTML(){
+  const cells = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const k = ymd(d);
+    const st = dayStat(k);
+    const pct = st.total ? (st.done + st.min*0.6)/st.total : 0;
+    const cls = st.rec === 0 ? 'none' : (pct === 0 ? 'zero' : '');
+    const tip = k + ' ' + WD[d.getDay()] + ' · ' + (st.rec ? `完成 ${st.done}${st.min?`，最小 ${st.min}`:''}${st.miss?`，没做 ${st.miss}`:''}` : '无记录');
+    cells.push(`<div class="wd ${i===0?'today':''}" title="${tip}">
+      <div class="lb">${i===0 ? '今' : WD[d.getDay()]}</div>
+      <div class="bar2 ${cls}"><i style="height:${st.rec ? Math.max(8, pct*100) : 0}%"></i></div>
+    </div>`);
+  }
+  return `<div class="week">${cells.join('')}</div>`;
+}
+
+function weakHTML(){
+  const w = weakSpot();
+  if(!w) return '';
+  return `<div class="card" style="border-color:var(--amber-line);background:var(--amber-soft)">
+    <div class="card-h" style="margin-bottom:6px"><span class="card-t" style="color:var(--amber)">注意到了</span></div>
+    <div style="font-size:13.5px;line-height:1.7">
+      「<b>${esc(w.h.name)}</b>」已经连续 ${w.n} 天记成没做了。<br>
+      不用自责，把它改小一点更快：看看最小版能不能再砍一步。
+    </div>
+    <button class="btn ghost sm" data-act="edit" data-id="${w.h.id}" style="margin-top:10px">改一下这条</button>
+  </div>`;
+}
+
+function lastReviewHTML(){
+  if(!S.reviews.length) return '';
+  const r = S.reviews[S.reviews.length-1];
+  return `<div class="card">
+    <div class="card-h"><span class="card-t">上次复盘</span><span class="card-note">${esc(r.date)}</span></div>
+    ${r.next ? `<div class="qa"><div class="q">下周最重要的一件事</div><div class="a">${esc(r.next)}</div></div>` : '<div class="tiny">没有留下下周重点</div>'}
+  </div>`;
+}
+
+/* =========================================================
+   渲染：清单
+   ========================================================= */
+function renderList(){
+  const blocks = LINES.map(l => {
+    const hs = S.habits.filter(h => h.line === l.key);
+    const rows = hs.map(h => `
+      <div class="row-i ${h.off?'off':''}">
+        <span class="t-dot" style="--c:${l.color}"></span>
+        <span class="row-n">${esc(h.name)}</span>
+        ${h.when ? `<span class="tag gray">${esc(h.when)}</span>` : ''}
+        <span class="tag">${freqLabel(h)}</span>
+        ${h.off ? '<span class="tag gray">已停用</span>' : ''}
+        <button class="mini" data-act="up" data-id="${h.id}" title="上移">↑</button>
+        <button class="mini" data-act="down" data-id="${h.id}" title="下移">↓</button>
+        <button class="mini" data-act="edit" data-id="${h.id}">编辑</button>
+      </div>`).join('');
+    return `<div class="card">
+      <div class="card-h">
+        <span class="card-t" style="color:${l.color}">${l.name}</span>
+        <span class="card-note">${l.hint}</span>
+      </div>
+      ${rows || '<div class="empty">这一条还是空的</div>'}
+      <button class="btn ghost sm" data-act="new" data-line="${l.key}" style="margin-top:10px">+ 加一条</button>
+    </div>`;
+  });
+
+  $('#view-list').innerHTML = `
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-h"><span class="card-t">清单怎么写才做得动</span></div>
+      <div class="hint">
+        每条只写四样：<b>叫什么</b>、<b>什么时候做</b>、<b>分几步</b>、<b>最小版是什么</b>。<br>
+        最小版不是打折，是给「今天实在不行」的那天留的台阶。有台阶，才不会断。
+        <div style="margin-top:9px">现在 ${S.habits.filter(h=>!h.off).length} 条在用，建议四条线加起来不超过 16 条。</div>
+      </div>
+    </div>
+    <div class="grid2">
+      ${blocks.join('')}
+    </div>`;
+}
+
+/* =========================================================
+   渲染：记录
+   ========================================================= */
+function renderRecord(){
+  const st = dayStat(SELDATE);
+  const items = sortByTime(S.habits.filter(h => h.log[SELDATE]));
+  const doneList = S.habits.filter(h => h.log[SELDATE] && h.log[SELDATE].st);
+  const rows = sortByTime(dueList(SELDATE)).map(h => taskHTML(h, SELDATE, false)).join('');
+  const extra = sortByTime(S.habits.filter(h => !dueOn(h, SELDATE) && h.log[SELDATE] && h.log[SELDATE].st));
+
+  $('#view-record').innerHTML = `
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="card-h">
+            <span class="card-t">最近 18 周</span>
+            <span class="card-note">点格子可以补记</span>
+          </div>
+          ${heatmapHTML()}
+        </div>
+        <div class="card">
+          <div class="card-h">
+            <span class="card-t">${niceDate(SELDATE)}${SELDATE===TODAY?' · 今天':''}</span>
+            <span class="card-note">${doneList.length} 条有记录</span>
+          </div>
+          ${SELDATE !== TODAY ? `<div class="tiny" style="margin-bottom:10px">你在看过去的某一天，点选状态就是补记。</div>` : ''}
+          ${rows || '<div class="empty">这天没有安排的事</div>'}
+          ${extra.length ? `<div class="tiny" style="margin:12px 0 6px">这天额外记的</div>${extra.map(h=>taskHTML(h,SELDATE,false)).join('')}` : ''}
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">这天</span><span class="card-note">${SELDATE}</span></div>
+          <div class="stat-row" style="margin-bottom:10px">
+            <div class="stat"><div class="k">做了</div><div class="v">${st.done}</div></div>
+            <div class="stat"><div class="k">最小版</div><div class="v">${st.min}</div></div>
+            <div class="stat"><div class="k">没做</div><div class="v">${st.miss}</div></div>
+          </div>
+          <div class="bar"><i style="width:${Math.round(st.pct*100)}%;background:var(--green)"></i></div>
+          <div class="tiny" style="margin-top:7px">按当天该做的事算：${st.rec}/${st.total} 条有记录。</div>
+          ${SELDATE !== TODAY ? `<button class="btn ghost sm" data-act="today" style="margin-top:10px;width:100%">回到今天</button>` : ''}
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">累计</span></div>
+          <div class="hist">
+            ${LINES.map(l => {
+              const ws = weekStat(l.key);
+              return `<div class="hist-row"><span style="width:8px;height:8px;border-radius:2px;background:${l.color}"></span>
+                <span style="width:36px">${l.name}</span>
+                <span style="color:var(--ink2)">本周 ${ws.pct}%</span>
+                <span class="delta">做了 ${ws.done} · 最小 ${ws.min} · 没做 ${ws.miss}</span></div>`;
+            }).join('')}
+          </div>
+          <div class="tiny" style="margin-top:10px">累计记录 ${totalLogs()} 次 · 连续 ${streak()} 天 · 最长 ${bestStreak()} 天</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function heatmapHTML(){
+  const DAYS = 126, COLS = 18;
+  const days = lastNDays(DAYS);
+  const counts = {};
+  S.habits.forEach(h => Object.keys(h.log).forEach(k => {
+    if(h.log[k] && h.log[k].st) counts[k] = (counts[k]||0) + 1;
+  }));
+  const lvl = n => n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n <= 4 ? 3 : 4;
+  let cols = '';
+  for(let c=0;c<COLS;c++){
+    let cells = '';
+    for(let r=0;r<7;r++){
+      const key = days[c*7 + r];
+      const n = counts[key] || 0;
+      cells += `<div class="cell l${lvl(n)} ${key===TODAY?'today':''} ${key===SELDATE?'sel':''}" data-act="pick" data-date="${key}" title="${key} · ${n} 条"></div>`;
+    }
+    cols += `<div class="col">${cells}</div>`;
+  }
+  return `<div class="heat">${cols}</div>
+    <div class="heat-key">
+      <span>少</span><span class="cell"></span><span class="cell l1"></span><span class="cell l2"></span><span class="cell l3"></span><span class="cell l4"></span><span>多</span>
+      <span style="margin-left:auto">累计 ${totalLogs()} 次</span>
+    </div>`;
+}
+
+/* =========================================================
+   渲染：季度体检（含财务测算）
+   ========================================================= */
+function ensureDraftScore(){
+  if(S.draftScore && S.draftScore.cur) return;
+  const latest = latestScore();
+  const cur = {}, des = {};
+  LINES.forEach(l => {
+    cur[l.key] = latest && latest.values ? (latest.values[l.key] ?? 5) : 5;
+    des[l.key] = latest && latest.desired ? (latest.desired[l.key] ?? 8) : 8;
+  });
+  S.draftScore = { cur, des };
+}
+
+function renderBody(){
+  ensureDraftScore();
+  const d = S.draftScore;
+  const sliders = LINES.map(l => `
+    <div class="slider-row">
+      <div class="sh">
+        <b style="color:${l.color}">${l.name}</b>
+        <span><span class="des">当前 </span><b id="cur-${l.key}">${d.cur[l.key]}</b>
+        <span class="des"> · 期望 </span><b id="des-${l.key}">${d.des[l.key]}</b></span>
+      </div>
+      <input type="range" min="0" max="10" step="1" value="${d.cur[l.key]}" style="--c:${l.color}" data-field="score-cur" data-line="${l.key}">
+      <input type="range" min="0" max="10" step="1" value="${d.des[l.key]}" style="--c:#c9c3b7" data-field="score-des" data-line="${l.key}">
+    </div>`).join('');
+
+  const hist = S.scores.length
+    ? `<div class="hist">${S.scores.slice().reverse().slice(0,6).map(s => {
+        const prev = S.scores[S.scores.indexOf(s)-1];
+        const diff = prev ? (avgScore(s) - avgScore(prev)) : null;
+        const vals = LINES.map(l => `${l.name[0]}${s.values[l.key]}`).join(' · ');
+        return `<div class="hist-row"><span class="d">${s.date.slice(0,10)}</span><span style="color:var(--ink2)">${vals}</span>
+          ${diff===null?'':`<span class="delta ${diff>=0?'up':'dn'}">${diff>=0?'+':''}${diff.toFixed(1)}</span>`}</div>`;
+      }).join('')}</div>`
+    : '<div class="empty">还没有体检记录</div>';
+
+  $('#view-body').innerHTML = `
+    <div class="card">
+      <div class="card-h"><span class="card-t">四线评分</span><span class="card-note">建议每季度做一次，10 分制</span></div>
+      <div class="wheel-grid">
+        <div id="radarHolder">${radarSVG(d.cur, d.des)}</div>
+        <div>
+          <div class="tiny" style="margin-bottom:12px">上面那道滑块是「现在」，下面灰色那道是「你希望到哪」。</div>
+          ${sliders}
+          <div class="hint" id="gapText"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn" data-act="save-score">保存本次体检</button>
+        <button class="btn ghost" data-act="reset-draft">恢复上次数值</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="card-t">历史</span><span class="card-note">${S.scores.length} 次</span></div>
+      ${hist}
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="card-t">财务：现在每月存下的钱，35 岁值多少</span></div>
+      <div class="row2">
+        <div class="field"><label>月收入（元）</label><input class="in" type="number" min="0" step="500" data-field="m-income" value="${S.money.income}"></div>
+        <div class="field"><label>每月存下 / 投入（元）</label><input class="in" type="number" min="0" step="100" data-field="m-save" value="${S.money.save}"></div>
+        <div class="field"><label>年化收益（%）</label><input class="in" type="number" min="0" max="20" step="0.5" data-field="m-rate" value="${S.money.rate}"></div>
+        <div class="field"><label>从现在起坚持（年）</label><input class="in" type="number" min="1" max="40" step="1" data-field="m-years" value="${S.money.years}"></div>
+      </div>
+      <div id="moneyOut"></div>
+    </div>`;
+  updateGapText();
+  renderMoneyOut();
+}
+
+function updateGapText(){
+  const g = $('#gapText'); if(!g) return;
+  const d = S.draftScore;
+  const gaps = LINES.map(l => ({ l, gap:(d.des[l.key]||0)-(d.cur[l.key]||0) })).sort((a,b)=>b.gap-a.gap);
+  const top = gaps[0];
+  g.innerHTML = top.gap > 0
+    ? `差距最大的是 <b style="color:${top.l.color}">${top.l.name}</b>：现在 ${d.cur[top.l.key]} 分，你希望是 ${d.des[top.l.key]} 分。<br>这个季度先只动它。`
+    : '四条线的现状都达到了你的期望。接下来不是加码，而是保持。';
+}
+
+function renderMoneyOut(){
+  const box = $('#moneyOut'); if(!box) return;
+  const m = S.money;
+  const income = Math.max(0, +m.income||0);
+  const save = Math.max(0, +m.save||0);
+  const rate = Math.max(0, +m.rate||0);
+  const years = Math.max(1, +m.years||1);
+  const sr = income > 0 ? save/income : 0;
+  const r = rate/100/12, n = years*12;
+  const fv = r === 0 ? save*n : save*((Math.pow(1+r,n)-1)/r);
+  const principal = save*n, gain = fv - principal;
+  const n2 = Math.max(0, years-5)*12;
+  const fv2 = n2 <= 0 ? 0 : (r === 0 ? save*n2 : save*((Math.pow(1+r,n2)-1)/r));
+  const lost = fv - fv2;
+
+  box.innerHTML = `
+    <div class="stat-row">
+      <div class="stat"><div class="k">储蓄率</div><div class="v">${(sr*100).toFixed(0)}<small>%</small></div></div>
+      <div class="stat"><div class="k">累计投入</div><div class="v">${Math.round(principal).toLocaleString('zh-CN')}<small>元</small></div></div>
+      <div class="stat"><div class="k">${years} 年后</div><div class="v">${Math.round(fv).toLocaleString('zh-CN')}<small>元</small></div></div>
+    </div>
+    <div class="bar" style="height:6px"><i style="width:${Math.min(100,Math.round(sr*100))}%;background:#bb8524"></i></div>
+    <div class="tiny" style="margin:6px 0 14px">其中利息 / 收益约 ${Math.round(gain).toLocaleString('zh-CN')} 元，占 ${fv>0?((gain/fv)*100).toFixed(0):0}%。</div>
+    <div class="hint">如果晚 5 年才开始（只投 ${Math.max(0,years-5)} 年），同样每月 ${Math.round(save).toLocaleString('zh-CN')} 元，最后只有 <b>${Math.round(fv2).toLocaleString('zh-CN')}</b> 元，少掉 <b style="color:var(--rose)">${Math.round(lost).toLocaleString('zh-CN')}</b> 元。<br>这 5 年不是少存了 5 年的钱，是少了最早那 5 年的复利。</div>`;
+}
+
+/* =========================================================
+   渲染：周复盘
+   ========================================================= */
+function renderReview(){
+  const d = S.draft;
+  const list = S.reviews.length
+    ? S.reviews.slice().reverse().map(r => `
+      <div class="review-item">
+        <div class="review-h"><b>${esc(fmtReviewDate(r.date))}</b>
+          ${r.rating ? `<span class="rating">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>` : ''}
+        </div>
+        ${r.done ? `<div class="qa"><div class="q">这周做成了什么</div><div class="a">${esc(r.done)}</div></div>` : ''}
+        ${r.fail ? `<div class="qa"><div class="q">哪件事没做好，为什么</div><div class="a">${esc(r.fail)}</div></div>` : ''}
+        ${r.next ? `<div class="qa"><div class="q">下周最重要的一件事</div><div class="a">${esc(r.next)}</div></div>` : ''}
+      </div>`).join('')
+    : '<div class="empty">还没有复盘记录</div>';
+
+  $('#view-review').innerHTML = `
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">这周实际发生了什么</span><span class="card-note">自动统计，不能改</span></div>
+          ${weekSummaryHTML()}
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">本周复盘</span><span class="card-note">15 分钟就够</span></div>
+          <div class="field"><label>1 · 这周做成了什么</label>
+            <textarea class="in" data-field="r-done" placeholder="哪怕很小也算：连续三天早睡、把一个卡住的问题解决了">${esc(d.done)}</textarea></div>
+          <div class="field"><label>2 · 哪件事没做好，原因是什么</label>
+            <textarea class="in" data-field="r-fail" placeholder="写原因，不写自责。时间不够？还是根本没想清楚">${esc(d.fail)}</textarea></div>
+          <div class="field"><label>3 · 下周最重要的一件事</label>
+            <textarea class="in" data-field="r-next" placeholder="只写一件">${esc(d.next)}</textarea></div>
+          <div class="field"><label>这周给自己打几分</label>
+            <div style="display:flex;gap:6px">
+              ${[1,2,3,4,5].map(i => `<button class="btn ghost sm" data-act="rate" data-v="${i}" style="${d.rating>=i?'background:#bb8524;border-color:#bb8524;color:#fff':''}">${i}</button>`).join('')}
+            </div>
+          </div>
+          <button class="btn" data-act="save-review">保存本周复盘</button>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">拿不准的时候</span></div>
+          <div class="hint" style="margin-bottom:11px">把这一周的数据整理成一段话，粘到任意大模型里问。比空着手问「我该怎么改」有用得多。</div>
+          <button class="btn" data-act="copy-ai" style="width:100%">复制给 AI 的复盘上下文</button>
+          <div class="note" style="margin-top:8px">包含四线分数、本周记录、连续没做的项和你写下的备注。不联网、不外传。</div>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">往期</span><span class="card-note">${S.reviews.length} 条</span></div>
+          <div style="max-height:560px;overflow:auto">${list}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function fmtReviewDate(s){
+  const str = String(s||'');
+  return /^\d{4}-\d{2}-\d{2}$/.test(str) ? niceDate(str) : str;
+}
+
+function weekSummaryHTML(){
+  const keys = weekKeys();
+  const lines = LINES.map(l => {
+    const st = weekStat(l.key);
+    return `<div class="sum-line">
+      <span class="nm">${l.name}</span>
+      <div class="bar"><i style="width:${st.pct}%;background:${l.color}"></i></div>
+      <span class="pc">${st.pct}%</span>
+    </div>`;
+  }).join('');
+
+  let done = 0, min = 0, miss = 0;
+  const missItems = [], notes = [];
+  S.habits.forEach(h => {
+    keys.forEach(k => {
+      const r = h.log[k]; if(!r || !r.st) return;
+      if(r.st === 'done') done++;
+      else if(r.st === 'min') min++;
+      else { miss++; missItems.push(h.name + '（' + mmdd(k) + '）'); }
+      if(r.note) notes.push(`${mmdd(k)} ${h.name}：${r.note}`);
+    });
+  });
+
+  return `${lines}
+    <div class="tiny" style="margin:12px 0 10px">本周记录：做了 <b>${done}</b> 次 · 最小版 <b>${min}</b> 次 · 没做 <b>${miss}</b> 次</div>
+    ${missItems.length ? `<div class="hint" style="margin-bottom:9px"><b>记成没做的</b><br>${missItems.slice(0,8).map(esc).join('<br>')}${missItems.length>8?'<br>…':''}</div>` : ''}
+    ${notes.length ? `<div class="hint"><b>你写下的备注</b><br>${notes.slice(0,8).map(esc).join('<br>')}${notes.length>8?'<br>…':''}</div>` : ''}
+    ${(!missItems.length && !notes.length) ? '<div class="empty">这周还没有细节记录</div>' : ''}`;
+}
+
+function buildAIContext(){
+  const keys = weekKeys();
+  const out = [];
+  out.push('你是我的日常行为教练。下面是我这一周的真实记录，请帮我改清单，不要讲道理。');
+  out.push('');
+  const latest = latestScore();
+  if(latest){
+    out.push('【四线体检（10 分制，当前 → 期望）】');
+    LINES.forEach(l => out.push(`- ${l.name}：${latest.values[l.key]} → ${latest.desired ? latest.desired[l.key] : '-'}`));
+    out.push('');
+  }
+  out.push('【本周各线完成率】（做了=1，最小版=0.6）');
+  LINES.forEach(l => {
+    const st = weekStat(l.key);
+    out.push(`- ${l.name}：${st.pct}%（应做 ${st.target}，完成 ${st.got.toFixed(1)}；做了 ${st.done}，最小 ${st.min}，没做 ${st.miss}）`);
+  });
+  out.push('');
+  out.push('【本周记录明细】');
+  keys.forEach(k => {
+    const items = S.habits.filter(h => h.log[k]);
+    if(!items.length){ out.push(`${k}：无记录`); return; }
+    out.push(k + '：' + items.map(h => {
+      const r = h.log[k];
+      return `${h.name}=${ST_LABEL[r.st]}${r.note?'（'+r.note+'）':''}`;
+    }).join('；'));
+  });
+  out.push('');
+  out.push('【当前清单与设计】');
+  S.habits.filter(h=>!h.off).forEach(h => {
+    out.push(`- [${LINE_MAP[h.line].name}] ${h.name}｜${freqLabel(h)}｜时机：${h.when||'未设'}｜步骤：${(h.steps||[]).join(' → ')||'未填'}｜最小版：${h.min||'未填'}`);
+  });
+  const weak = S.habits.map(h => ({ h, n: missStreak(h) })).filter(x => x.n >= 2);
+  if(weak.length){
+    out.push('');
+    out.push('【连续记成没做的】');
+    weak.forEach(x => out.push(`- ${x.h.name}：连续 ${x.n} 天`));
+  }
+  out.push('');
+  out.push('请回答三件事：');
+  out.push('1. 哪几条清单本身设计有问题（触发点不明确 / 第一步太大 / 没有最小版），具体指出并给出改后的版本；');
+  out.push('2. 我这周真正卡住的是什么，从记录里找证据，不要泛泛而谈；');
+  out.push('3. 下周只改一件事的话，改哪件。');
+  return out.join('\n');
+}
+
+/* =========================================================
+   渲染：数据
+   ========================================================= */
+function renderData(){
+  const perLine = LINES.map(l => {
+    const ws = weekStat(l.key);
+    return `<div class="hist-row"><span style="width:8px;height:8px;border-radius:2px;background:${l.color}"></span>
+      <span style="width:36px">${l.name}</span>
+      <span style="color:var(--ink2)">本周 ${ws.pct}%</span>
+      <span class="delta">${S.habits.filter(h=>h.line===l.key&&!h.off).length} 条在用</span></div>`;
+  }).join('');
+
+  $('#view-data').innerHTML = `
+    <div class="card">
+      <div class="card-h"><span class="card-t">总览</span><span class="card-note">开始于 ${esc(S.startDate)}</span></div>
+      <div class="hist">${perLine}</div>
+      <div class="stat-row" style="margin-top:14px">
+        <div class="stat"><div class="k">累计记录</div><div class="v">${totalLogs()}<small>次</small></div></div>
+        <div class="stat"><div class="k">最长连续</div><div class="v">${bestStreak()}<small>天</small></div></div>
+        <div class="stat"><div class="k">体检次数</div><div class="v">${S.scores.length}<small>次</small></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="card-t">备份</span></div>
+      <div class="hint" style="margin-bottom:13px">所有数据只在这个浏览器里。换设备、清缓存、换浏览器都会丢，每周导出一次。</div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn" data-act="export">导出备份（JSON）</button>
+        <button class="btn ghost" data-act="import">导入备份</button>
+        <input type="file" accept=".json,application/json" id="importFile" class="hide">
+        <button class="btn warn" data-act="reset">清空重来</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="card-t">这个系统的两层</span></div>
+      <div class="hint">
+        <b>四线</b>回答「为什么」：哪一条在被透支，这个季度重点补哪条。<br>
+        <b>清单</b>回答「怎么做」：今天这一件，分几步，做不动时的最小版是什么。<br><br>
+        评价一条清单好不好，只看三件事：触发点明确吗、第一步小到能立刻做吗、有没有最小版。
+      </div>
+    </div>`;
+}
+
+/* =========================================================
+   渲染入口
+   ========================================================= */
+function render(){
+  $('#dayCount').textContent = Math.max(1, Math.round((dateOf(TODAY)-dateOf(S.startDate))/86400000)+1);
+  $('#streakCount').textContent = streak();
+  $('#todayLabel').textContent = niceDate(TODAY);
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === TAB));
+  ['overview','list','record','body','review','data'].forEach(t => {
+    $('#view-' + t).classList.toggle('hide', t !== TAB);
+  });
+  if(TAB === 'overview') renderOverview();
+  if(TAB === 'list') renderList();
+  if(TAB === 'record') renderRecord();
+  if(TAB === 'body') renderBody();
+  if(TAB === 'review') renderReview();
+  if(TAB === 'data') renderData();
+}
+
+function switchTab(t){
+  TAB = t;
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* =========================================================
+   交互
+   ========================================================= */
+function setRec(id, date, st){
+  const h = S.habits.find(x => x.id === id);
+  if(!h) return;
+  h.log[date] = h.log[date] || { st:'', note:'' };
+  const cur = h.log[date];
+  if(cur.st === st){ delete h.log[date]; }
+  else { cur.st = st; cur.ts = Date.now(); }
+  save();
+  render();
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if(!el) return;
+  const act = el.dataset.act;
+  const id = el.dataset.id;
+
+  if(act === 'tab'){ switchTab(el.dataset.tab); return; }
+  if(act === 'mark'){ setRec(id, el.dataset.date || TODAY, el.dataset.st); return; }
+  if(act === 'open'){
+    OPEN_ID = (OPEN_ID === id) ? null : id;
+    render();
+    return;
+  }
+  if(act === 'pick'){ SELDATE = el.dataset.date; render(); return; }
+  if(act === 'today'){ SELDATE = TODAY; render(); return; }
+
+  if(act === 'new'){ openDialog(null, el.dataset.line); return; }
+  if(act === 'edit'){ openDialog(id); return; }
+  if(act === 'toggle'){
+    const h = S.habits.find(x => x.id === id);
+    if(h){ h.off = !h.off; save(); render(); }
+    return;
+  }
+  if(act === 'del'){
+    const h = S.habits.find(x => x.id === id);
+    if(!h) return;
+    if(!confirm('删除「' + h.name + '」？已有的记录也会一起删掉。')) return;
+    S.habits = S.habits.filter(x => x.id !== id);
+    save(); render(); toast('已删除');
+    return;
+  }
+  if(act === 'up' || act === 'down'){
+    const i = S.habits.findIndex(x => x.id === id);
+    const j = i + (act === 'up' ? -1 : 1);
+    if(i < 0 || j < 0 || j >= S.habits.length) return;
+    const t = S.habits[i]; S.habits[i] = S.habits[j]; S.habits[j] = t;
+    save(); render();
+    return;
+  }
+
+  if(act === 'save-score'){
+    const d = S.draftScore;
+    S.scores.push({ date: new Date().toISOString(), values: Object.assign({}, d.cur), desired: Object.assign({}, d.des) });
+    S.draftScore = null;
+    save(); render(); toast('已保存');
+    return;
+  }
+  if(act === 'reset-draft'){ S.draftScore = null; ensureDraftScore(); save(); renderBody(); return; }
+
+  if(act === 'rate'){ S.draft.rating = +el.dataset.v; save(); renderReview(); return; }
+
+  if(act === 'save-review'){
+    const d = S.draft;
+    if(!d.done && !d.fail && !d.next){ toast('至少写一条再保存'); return; }
+    S.reviews.push({ date: TODAY, done:d.done, fail:d.fail, next:d.next, rating:d.rating||0 });
+    S.draft = { done:'', fail:'', next:'', rating:0 };
+    save(); render(); toast('已保存');
+    return;
+  }
+
+  if(act === 'copy-ai'){
+    const txt = buildAIContext();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(
+        () => toast('已复制，去大模型里粘贴'),
+        () => fallbackCopy(txt)
+      );
+    } else fallbackCopy(txt);
+    return;
+  }
+
+  if(act === 'export'){
+    const blob = new Blob([JSON.stringify(S, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = '四线备份-' + TODAY + '.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 500);
+    toast('已导出');
+    return;
+  }
+  if(act === 'import'){ $('#importFile').click(); return; }
+  if(act === 'reset'){
+    if(!confirm('清空全部清单、记录、体检和复盘？不可撤销。')) return;
+    if(!confirm('再确认一次：真的要清空吗？')) return;
+    localStorage.removeItem(STORE);
+    localStorage.removeItem(OLD);
+    S = defaultState(); save(); render(); toast('已清空');
+    return;
+  }
+
+  if(act === 'dlg-cancel'){ $('#dlg').close(); return; }
+  if(act === 'dlg-save'){ saveDialog(); return; }
+  if(act === 'dlg-toggle'){
+    const h = S.habits.find(x => x.id === editingId);
+    if(h){ h.off = !h.off; save(); $('#dlg').close(); render(); }
+    return;
+  }
+  if(act === 'dlg-del'){
+    const h = S.habits.find(x => x.id === editingId);
+    if(!h) return;
+    if(!confirm('删除「' + h.name + '」？已有的记录也会一起删掉。')) return;
+    S.habits = S.habits.filter(x => x.id !== editingId);
+    save(); $('#dlg').close(); render(); toast('已删除');
+    return;
+  }
+});
+
+function fallbackCopy(txt){
+  const ta = document.createElement('textarea');
+  ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('已复制'); }
+  catch(e){ prompt('手动复制：', txt); }
+  ta.remove();
+}
+
+document.addEventListener('input', e => {
+  const el = e.target;
+  const f = el.dataset.field;
+  if(!f) return;
+
+  if(f === 'focus'){ S.focus = el.value; save(); return; }
+
+  if(f === 'note'){
+    const h = S.habits.find(x => x.id === el.dataset.id);
+    if(!h) return;
+    const k = el.dataset.date;
+    h.log[k] = h.log[k] || { st:'', note:'' };
+    h.log[k].note = el.value;
+    save();
+    return;
+  }
+
+  if(f === 'r-done'){ S.draft.done = el.value; save(); return; }
+  if(f === 'r-fail'){ S.draft.fail = el.value; save(); return; }
+  if(f === 'r-next'){ S.draft.next = el.value; save(); return; }
+
+  if(f === 'm-income' || f === 'm-save' || f === 'm-rate' || f === 'm-years'){
+    S.money[f.replace('m-','')] = +el.value || 0;
+    save(); renderMoneyOut();
+    return;
+  }
+
+  if(f === 'score-cur' || f === 'score-des'){
+    const key = el.dataset.line, val = +el.value;
+    if(!S.draftScore) ensureDraftScore();
+    if(f === 'score-cur'){ S.draftScore.cur[key] = val; const c = $('#cur-'+key); if(c) c.textContent = val; }
+    else { S.draftScore.des[key] = val; const d = $('#des-'+key); if(d) d.textContent = val; }
+    save();
+    const holder = $('#radarHolder');
+    if(holder) holder.innerHTML = radarSVG(S.draftScore.cur, S.draftScore.des);
+    updateGapText();
+    return;
+  }
+});
+
+document.addEventListener('change', e => {
+  if(e.target.id === 'importFile'){
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const o = JSON.parse(String(reader.result));
+        if(!o || (!Array.isArray(o.habits) && !Array.isArray(o.sops))) throw new Error('不是这个工具的备份文件');
+        if(!confirm('导入会覆盖当前全部数据，继续？')) return;
+        // 兼容旧版（v1 / 日常 SOP）
+        let next;
+        if(Array.isArray(o.sops)){
+          next = defaultState();
+          next.habits = o.sops.map(s => ({
+            id: s.id || uid(), line:'health', name: s.name || '未命名',
+            freq: s.freq === 'weekly' ? {type:'weekly', dow: s.dow||[1]} : {type:'daily'},
+            when: s.remind || '', dur: s.dur || 0,
+            steps: s.steps || [], min: s.min || '', off: !!s.off,
+            log: {}
+          }));
+          Object.keys(o.records||{}).forEach(k => {
+            Object.keys(o.records[k]).forEach(id => {
+              const r = o.records[k][id];
+              const h = next.habits.find(x => x.id === id);
+              if(h) h.log[k] = { st: r.st || 'done', note: r.note || '' };
+            });
+          });
+        } else {
+          next = o.v === 2 ? normalize(o) : migrateV1(o);
+        }
+        S = next;
+        localStorage.setItem(STORE, JSON.stringify(S));
+        render();
+        toast('导入完成');
+      }catch(err){ alert('导入失败：' + err.message); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
+});
+
+/* =========================================================
+   编辑弹窗
+   ========================================================= */
+let editingId = null, editingLine = 'health';
+
+function openDialog(id, line){
+  const h = id ? S.habits.find(x => x.id === id) : null;
+  editingId = id || null;
+  editingLine = h ? h.line : (line || 'health');
+  const f = h ? h.freq : {type:'flex', perWeek:3};
+  const dow = (f.dow || []).map(d => WD[d]).join('、');
+
+  $('#dlgForm').innerHTML = `
+    <div class="dh">${id ? '编辑这一条' : '新增一条'}</div>
+    <div class="db">
+      <div class="field"><label>叫什么</label>
+        <input class="in" id="fName" value="${h?esc(h.name):''}" placeholder="例：23:30 前放下手机"></div>
+      <div class="row2">
+        <div class="field"><label>属于哪条线</label>
+          <select class="in" id="fLine">
+            ${LINES.map(l => `<option value="${l.key}" ${l.key===editingLine?'selected':''}>${l.name}</option>`).join('')}
+          </select></div>
+        <div class="field"><label>频率</label>
+          <select class="in" id="fFreq">
+            <option value="daily" ${f.type==='daily'?'selected':''}>每天</option>
+            <option value="flex" ${f.type==='flex'?'selected':''}>每周 N 次（哪天都行）</option>
+            <option value="weekly" ${f.type==='weekly'?'selected':''}>每周固定几天</option>
+            <option value="monthly" ${f.type==='monthly'?'selected':''}>每月某一天</option>
+          </select></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>每周次数 / 星期 / 日号</label>
+          <input class="in" id="fParam" value="${f.type==='flex'?(f.perWeek||3):f.type==='monthly'?(f.dom||1):dow}" placeholder="3 / 一、四 / 1"></div>
+        <div class="field"><label>什么时候做（可空）</label>
+          <input class="in" id="fWhen" type="time" value="${h?esc(h.when):''}"></div>
+      </div>
+      <div class="field"><label>大概要多久（分钟，可空）</label>
+        <input class="in" id="fDur" type="number" min="0" step="5" value="${h?(h.dur||''):''}" placeholder="30"></div>
+      <div class="field"><label>步骤（一行一步，最多 5 步）</label>
+        <textarea class="in" id="fSteps" rows="4" placeholder="换好运动衣（这就算开始）&#10;动 30 分钟，不设强度&#10;记一句今天最难的是哪一步">${h?esc((h.steps||[]).join('\n')):''}</textarea></div>
+      <div class="field"><label>最小版（今天实在不行时做什么）</label>
+        <input class="in" id="fMin" value="${h?esc(h.min):''}" placeholder="例：换好衣服 + 做 1 组">
+        <div class="note">只写动作，不写决心。有最小版，这条才活得下来。</div></div>
+    </div>
+    <div class="df">
+      ${id ? `<div style="margin-right:auto;display:flex;gap:7px">
+        <button class="btn ghost sm" type="button" data-act="dlg-toggle">${h&&h.off?'启用':'停用'}</button>
+        <button class="btn warn sm" type="button" data-act="dlg-del">删除</button>
+      </div>` : ''}
+      <button class="btn ghost" type="button" data-act="dlg-cancel">取消</button>
+      <button class="btn" type="button" data-act="dlg-save">${id?'保存':'添加'}</button>
+    </div>`;
+  $('#dlg').showModal();
+  setTimeout(() => { const n = $('#fName'); if(n) n.focus(); }, 60);
+}
+
+function parseDow(str){
+  const map = {'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'日':0,'天':0,'七':0};
+  const out = [];
+  String(str||'').split(/[、,，\s]+/).forEach(x => {
+    const s = x.replace(/周|星期/g,'');
+    if(map[s] !== undefined) out.push(map[s]);
+    else if(/^[0-6]$/.test(s)) out.push(+s);
+  });
+  return out.length ? Array.from(new Set(out)) : [1];
+}
+
+function saveDialog(){
+  const name = $('#fName').value.trim();
+  if(!name){ toast('先给它起个名字'); return; }
+  const line = $('#fLine').value;
+  const type = $('#fFreq').value;
+  const param = $('#fParam').value.trim();
+  let freq;
+  if(type === 'flex') freq = { type:'flex', perWeek: Math.min(7, Math.max(1, parseInt(param,10) || 3)) };
+  else if(type === 'weekly') freq = { type:'weekly', dow: parseDow(param) };
+  else if(type === 'monthly') freq = { type:'monthly', dom: Math.min(28, Math.max(1, parseInt(param,10) || 1)) };
+  else freq = { type:'daily' };
+
+  const data = {
+    line: line,
+    name: name,
+    freq: freq,
+    when: $('#fWhen').value || '',
+    dur: parseInt($('#fDur').value,10) || 0,
+    steps: $('#fSteps').value.split('\n').map(x => x.trim()).filter(Boolean).slice(0,5),
+    min: $('#fMin').value.trim()
+  };
+
+  if(editingId){
+    const h = S.habits.find(x => x.id === editingId);
+    if(h) Object.assign(h, data);
+  } else {
+    S.habits.push(Object.assign({ id: uid(), off:false, log:{} }, data));
+  }
+  save();
+  $('#dlg').close();
+  render();
+  toast(editingId ? '已更新' : '已添加');
+}
+
+/* =========================================================
+   启动
+   ========================================================= */
+(function initTab(){
+  const t = (location.hash || '').replace('#','');
+  const ok = ['overview','list','record','body','review','data'];
+  TAB = ok.indexOf(t) >= 0 ? t : 'overview';
+})();
+render();
+</script>
+</body>
+</html>

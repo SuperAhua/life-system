@@ -1,0 +1,5 @@
+# 工作区私有用数据，不上传
+.workbuddy/
+node_modules/
+.DS_Store
+Thumbs.db
