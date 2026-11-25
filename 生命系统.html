@@ -967,6 +967,8 @@ git add -A && git commit -m "更新说明" && git push
 
 旁边的「同上」按钮会把「什么时候做」的时间复制过来，多数情况点它就行。
 
+懒得上一条条改：设置里有个 **「按「什么时候做」批量设」**，一次把所有还没设提醒的清单，按它们各自的「什么时候做」时间填上。
+
 几个规则：
 
 - 只在该做的日子提醒。每周三五次的习惯，不会在周一吵你。
@@ -2536,6 +2538,7 @@ function nativeNotifyHTML(){
       <button class="btn ghost sm" data-act="notify-test">响一次试试</button>
       <button class="btn ghost sm" data-act="notify-toggle">${S.notify.on ? '暂停提醒' : '开启提醒'}</button>
       <button class="btn ghost sm" data-act="notify-mode">${S.notify.mode === 'push' ? '改成全屏闹钟' : '改成只发通知'}</button>
+      <button class="btn ghost sm" data-act="notify-auto">按「什么时候做」批量设</button>
     </div>
     <div class="field" style="margin-top:11px"><label>晚上兜底提醒（空=关）</label>
       <input class="in" type="time" id="fEvening" value="${S.notify.eveningOn ? esc(S.notify.evening) : ''}">
@@ -2935,6 +2938,16 @@ document.addEventListener('click', e => {
     S.notify.mode = S.notify.mode === 'push' ? 'full' : 'push';
     saveNow(); syncAlarms(200); renderSheet();
     toast(S.notify.mode === 'push' ? '改成只发通知' : '改成全屏闹钟');
+    return;
+  }
+  if(a === 'notify-auto'){
+    let n = 0;
+    S.habits.forEach(h => {
+      if(!h.off && !h.at && /^\d{1,2}:\d{2}$/.test(h.when || '')){ h.at = h.when; n++; }
+    });
+    if(!n){ toast('没有可设的：要么已经设过，要么「什么时候做」不是具体时间'); return; }
+    saveNow(); syncAlarms(200); renderSheet();
+    toast('已给 ' + n + ' 条按原定时间设上提醒');
     return;
   }
   if(a === 'open-app-dl'){
