@@ -6,5 +6,10 @@
     "backgroundColor": "#FBFAF7",
     "allowMixedContent": false,
     "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
   }
 }

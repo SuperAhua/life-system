@@ -313,6 +313,99 @@
   .big-stat .v{font-size:16px;font-weight:650;font-variant-numeric:tabular-nums}
   .big-stat .v small{font-size:10.5px;font-weight:400;color:var(--ink3);margin-left:1px}
 
+  /* 跟练台（内嵌计时器） */
+  .deck{padding:15px 17px}
+  .dk-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .dk-top > div{min-width:0}
+  .dk-k{font-size:10.5px;letter-spacing:.12em;color:var(--ink3);font-weight:600}
+  .dk-name{font-size:18px;font-weight:650;margin-top:3px;line-height:1.25}
+  .dk-sub{font-size:12px;color:var(--ink3);margin-top:4px;line-height:1.55}
+  .dk-big{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--g);line-height:1.1}
+  .dk-big small{font-size:12px;font-weight:500;color:var(--ink3)}
+  .dk-go{width:100%;margin-top:14px;padding:13px;font-size:14.5px;background:var(--g)}
+  .dk-go:hover{background:#26684d}
+  .dk-btns .btn{background:var(--g)}
+  .dk-btns .btn:hover{background:#26684d}
+  .dk-btns .btn.ghost{background:#fff;color:var(--ink2);border:1px solid var(--line)}
+  .dk-btns .btn.ghost:hover{background:var(--s2);color:var(--ink)}
+  .dk-other{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--ink3)}
+  .dk-mark{display:flex;gap:6px;align-items:center;margin-top:10px;font-size:11.5px;color:var(--ink3)}
+  .dk-mark span{margin-right:1px}
+  .dk-clock{font-size:62px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums;letter-spacing:-.035em;line-height:1.05;margin:12px 0 2px}
+  .dk-clock.rest{color:var(--a)}
+  .dk-lab{text-align:center;font-size:13.5px;color:var(--ink2);min-height:20px;line-height:1.5}
+  .dk-hint{text-align:center;font-size:12px;color:var(--ink3);margin-top:5px}
+  .dk-dots{display:flex;gap:5px;justify-content:center;align-items:center;min-height:18px;margin:0 0 13px}
+  .dkd{width:7px;height:7px;border-radius:50%;background:#e6dfd2;transition:background .2s}
+  .dkd.on{background:var(--g)}
+  .dkd.now{background:var(--g);box-shadow:0 0 0 3px var(--gs)}
+  .dk-note{font-size:11.5px;color:var(--ink3)}
+  .dk-btns{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:7px}
+  .dk-btns .btn{width:100%;padding:11px 4px;font-size:13px;white-space:nowrap}
+  .dk-foot{text-align:center;font-size:11px;color:var(--ink3);margin-top:10px;line-height:1.55}
+  .dk-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:13px 0 10px}
+  .dk-sum > div{background:var(--s2);border-radius:9px;padding:9px 10px;text-align:center}
+  .dk-sum b{font-size:20px;font-variant-numeric:tabular-nums}
+  .dk-sum small{display:block;font-size:10.5px;color:var(--ink3);margin-top:1px}
+  .dk-q{text-align:center;font-size:12.5px;color:var(--ink2);margin-top:6px}
+  .dk-cancel{display:block;margin:10px auto 0;color:var(--ink3)}
+  .deck .steps{margin:0}
+  .deck.live{border-color:var(--gl)}
+
+  /* 教练卡 */
+  .presrow{display:flex;flex-wrap:wrap;gap:5px}
+  .pres{border:1px solid var(--line);background:#fff;border-radius:7px;font-size:11.5px;padding:5px 10px;color:var(--ink2);cursor:pointer;font-family:inherit}
+  .pres.on{border-color:var(--gl);background:var(--gs);color:var(--g);font-weight:600}
+  .coachc .cc-sub{font-size:12.5px;color:var(--ink2);line-height:1.7;margin-top:9px}
+  .coachc .cc-txt{font-size:13.5px;line-height:1.75;color:var(--ink);margin-top:10px;white-space:pre-wrap}
+  .coachc .cc-err{font-size:12px;color:#b4453a;line-height:1.6;margin-top:2px}
+  .coachc .cc-mute{color:var(--ink3)}
+  .coachc .cc-btns{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+  .coachc .cc-btns .btn{flex:1;min-width:110px}
+
+  /* AI 对话抽屉 */
+  .sheet.coachmode{height:94vh;max-height:94vh;display:flex;flex-direction:column;padding:0}
+  .sheet.coachmode .sh-h{flex:0 0 auto;padding:15px 16px 10px}
+  .cchat{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:6px 16px 10px;display:flex;flex-direction:column;gap:11px}
+  .cm{display:flex;gap:8px;align-items:flex-start}
+  .cm.user{justify-content:flex-end}
+  .cav{width:25px;height:25px;border-radius:8px;background:var(--g);color:#fff;font-size:11.5px;font-weight:700;display:grid;place-items:center;flex:0 0 auto;margin-top:3px}
+  .cbody{min-width:0;max-width:min(80%,560px)}
+  .cb{font-size:13.5px;line-height:1.72;border-radius:12px;padding:10px 13px;word-break:break-word}
+  .cm.coach .cb{background:var(--s2);color:var(--ink)}
+  .cm.user .cb{background:var(--g);color:#fff;white-space:pre-wrap}
+  .cb p{margin:0 0 8px}
+  .cb p:last-child{margin-bottom:0}
+  .cb ul,.cb ol{margin:4px 0 8px;padding-left:18px}
+  .cb li{margin:2px 0}
+  .cb strong{font-weight:700}
+  .cb code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:12px}
+  .cb hr{border:0;border-top:1px dashed var(--line);margin:9px 0}
+  .ctime{font-size:10px;color:var(--ink3);margin-top:4px}
+  .cbad{font-size:12px;color:#b4453a;line-height:1.6}
+  .actlist{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+  .actitem{display:flex;align-items:center;gap:8px;font-size:11.5px;padding:5px 8px;border-radius:7px;background:#fff;border:1px solid var(--line);color:var(--ink2)}
+  .actitem.ok{border-color:var(--gl);background:var(--gs);color:var(--g)}
+  .actitem.bad{color:#b4453a;border-color:#f0d5d1;background:#fdf3f1}
+  .actitem span{flex:1;line-height:1.4}
+  .actitem button{font-size:11px;color:var(--ink3);background:none;border:0;text-decoration:underline;padding:0;cursor:pointer}
+  .cquick{display:flex;gap:6px;overflow-x:auto;padding:9px 16px 2px;scrollbar-width:none;flex:0 0 auto;-webkit-mask-image:linear-gradient(to right,#000 0,#000 86%,transparent 100%);mask-image:linear-gradient(to right,#000 0,#000 86%,transparent 100%)}
+  .cquick::-webkit-scrollbar{display:none}
+  .cquick button{flex:0 0 auto;font-size:11.5px;padding:6px 11px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer}
+  .cquick button:hover{border-color:var(--gl);color:var(--g)}
+  .cbox{display:flex;gap:7px;padding:9px 16px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line2);align-items:flex-end;background:#fff;flex:0 0 auto}
+  .cbox textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:16px;line-height:1.45;max-height:110px;font-family:inherit;background:#fff;color:var(--ink);outline:none}
+  .cbox textarea:focus{border-color:var(--gl)}
+  .csend{flex:0 0 auto;width:40px;height:40px;border-radius:11px;background:var(--g);color:#fff;border:0;display:grid;place-items:center;cursor:pointer}
+  .csend:disabled{opacity:.45}
+  .cwait{display:inline-flex;gap:4px;padding:3px 0}
+  .cwait i{width:6px;height:6px;border-radius:50%;background:var(--ink3);animation:cbounce .9s infinite}
+  .cwait i:nth-child(2){animation-delay:.15s}
+  .cwait i:nth-child(3){animation-delay:.3s}
+  @keyframes cbounce{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-4px);opacity:1}}
+  .cempty{text-align:center;color:var(--ink3);font-size:12.5px;line-height:1.9;padding:26px 12px}
+  .cempty b{display:block;font-size:22px;margin-bottom:6px}
+
   /* 训练 */
   .tmeta{font-size:12px;color:var(--ink3);margin:-3px 0 0}
   .tprog{display:flex;align-items:center;gap:8px;margin:11px 0 12px}
@@ -427,7 +520,7 @@
 
 > 一个单文件的个人节奏工具：**四条线不透支，今天的事今天做，训练单独练。**
 > 双击 `生命系统.html` 即可使用，不用安装、不用联网、不用注册。数据只存在你自己的浏览器里。
-> 想让它**到点弹出来叫你**，装安卓 App 版（见第十一节）。
+> 想让它**到点弹出来叫你**，装安卓 App 版（见第十一节）；想让它**读懂你的记录再说话**，接一个模型（见第十二节）。
 >
 > 仓库：[github.com/SuperAhua/life-system](https://github.com/SuperAhua/life-system)
 
@@ -446,10 +539,12 @@
 9. [手机端适配](#九手机端适配)
 10. [放到手机上用](#十放到手机上用github-pages)
 11. [安卓 App：到点提醒](#十一安卓-app到点提醒)
-12. [设计原则：为什么这样取舍](#十二设计原则为什么这样取舍)
-13. [常见问题](#十三常见问题)
-14. [技术说明](#十四技术说明)
-15. [版本演进](#十五版本演进)
+12. [AI 教练](#十二ai-教练)
+13. [做之前看了什么：同类应用的毛病](#十三做之前看了什么同类应用的毛病)
+14. [设计原则：为什么这样取舍](#十四设计原则为什么这样取舍)
+15. [常见问题](#十五常见问题)
+16. [技术说明](#十六技术说明)
+17. [版本演进](#十七版本演进)
 
 ---
 
@@ -504,7 +599,11 @@
 
 ### 训练（想练的时候）
 
-去「训练」，按下绿色大按钮「开始跟练」，跟着倒计时走。
+去「训练」，跟练台已经挑好了今天该练的那条，点「开始跟练」→「开始」，跟着倒计时走。不想跟计时就直接点「做了」或「最小版」。
+
+### 想让它更懂你（可选）
+
+设置 → AI 教练 → 选 DeepSeek → 填 Key → 保存 → 测试连接。之后训练页会多一张「教练说」，可以问它任何关于记录的问题，也可以直接说「今天练完了，20 分钟」让它替你记。
 
 ---
 
@@ -526,19 +625,20 @@
 
 ### 2. 训练
 
-**这一个页面的主动作：开始一次跟练。**
+**这一个页面的主动作：打开就能练，不用先点开弹层。**
 
 - **抬头一句判断**：本周还差几次 / 今天练过了 / 本周已达标。
-- **训练卡**：名称、频率、模板名、动作数、预计时长、本周进度点、绿色大按钮「开始跟练」。
-- **按钮下方一行**：换一套动作 / 看动作 / 今天的状态（做了·最小版·没做）。
-- **动作清单**（点「看动作」展开）：每行是「动作名 + 右对齐的量」，例如「深蹲 4 组 × 15 个 · 4 组」。组间休息不会写进正文，只在计时里生效。
-- **最小版提示**：今天实在不行做这个。
+- **跟练台**（页面第一张卡）：默认自动挑「今天还没练」的那一条，显示动作数、预计时长、起手动作，右上角是本周进度。点「开始跟练」→ 就地列出全部动作 → 点「开始」进入计时。
+- **计时就在这张卡里**：62px 的大号倒计时、当前动作、组数圆点、进度条，「完成这组 / 暂停 / 跳过动作」三个按钮一行。组间休息自动接，倒计时结束响一声。
+- **不跟练也能记**：跟练台底部有「做了 / 最小版」两个小按钮，一键落库，不用进计时。
+- **教练卡**：接了大模型就显示一句「今天最该做哪件事」，以及「问教练」「排今天的动作」两个入口；没接就是一行「去接入」，其余功能不受影响。
+- **多条训练时**：跟练台会自动在「也可以练」里列出其它条目，点一下切换；同时在下方保留每条的设置卡（换动作 / 看动作 / 三态记录）。
+
+如果一条跟练都没有，页面会给一个「+ 加一条训练」，点开就是预填好的表单。
 - **右栏**：
   - 训练记录：本周次数、本周时长、本月次数、累计时长 + 7 天打卡条
   - 最近 8 条：日期、名称、分钟数、体感
   - 练过什么：从计时记录里摘出的动作组合（只在有记录时出现）
-
-如果一条跟练都没有，页面会给一个「+ 加一条训练」，点开就是预填好的表单。
 
 ### 3. 回顾
 
@@ -567,10 +667,12 @@
 
 ### 设置（右上齿轮）
 
+- **到点提醒**：五项权限、测试响铃、晚间兜底、批量设时间（只在 App 里成立）
 - **使用说明**：这份 README 已经内嵌进应用，离线也能看（顶部目录可一键跳到对应章节）
+- **AI 教练**：开关、服务商、Key、模型、身体资料、测试连接
 - 记录天数 / 记录次数 / 累计时长
 - 导出 JSON / 导入 JSON / 清空所有记录
-- 复制上下文（给 AI 的复盘）
+- 复制上下文（不填 Key 时，把本周数据整理成一段话给任意对话框）
 
 ---
 
@@ -618,9 +720,9 @@
 
 ### 三个入口
 
-1. 顶部页签 **训练** —— 看计划、换模板、看历史
-2. 今天页跟练行的 **开始跟练** —— 一键直接进计时器
-3. 今天页展开面板底部的 **去训练页 ›** —— 带着这条跳到训练页并展开动作
+1. **训练页的跟练台** —— 打开就在那儿，自动挑今天还没练的那条
+2. 今天页跟练行的 **开始跟练** —— 一键跳到训练页并进计时
+3. 到点提醒的**通知按钮** —— 不用进 App 就能记「做了 / 最小版」
 
 ### 什么算「跟练」
 
@@ -673,14 +775,18 @@
 
 ### 一次完整跟练
 
-1. 「开始跟练」→ 抽屉里先看一遍今天的动作清单
-2. 点「开始」→ 进入第 1 组
+1. 训练页第一张卡就是**跟练台**，点「开始跟练」→ 动作清单就地展开（不用弹窗）
+2. 点「开始 · 共 N 个动作」→ 进入第 1 组，卡片变成大号计时器
 3. 有秒数的自动倒计时，到点响一声（880Hz，160ms），自动进休息
 4. 休息结束自动进下一组
 5. 按次数做的，做完点「完成这组」
-6. 四个按钮随时可用：完成这组 / 跳过这个动作 / 暂停 / 提前结束
-7. 走完最后一组 → 「练完了」页：用时、完成动作数、跳过数
+6. 三个按钮随时可用：完成这组 / 暂停 / 跳过动作；右上角「提前结束」
+7. 走完最后一组 → 同一张卡变成完成态：用时、完成动作数、跳过数
 8. 选一个体感（轻松 / 刚好 / 偏难），点「存进今天」
+
+**不想跟计时**：跟练台底部有「做了 / 最小版」，点一下直接落库，不用进计时流程。
+
+**多条训练**：跟练台底部「也可以练」列出其余条目，点一下切换；下面还保留每条的设置卡（换动作 / 看动作 / 三态记录）。只有一条时不显示设置卡，页面更干净。
 
 存进去的内容：
 
@@ -848,6 +954,27 @@ sum:  原地踏步 3 分钟；开合跳 3 组 × 30 秒；…   （做过的动�
   ],
   "draft": { "done": "", "fail": "", "next": "", "rating": 0 },
   "money": { "save": 3000, "rate": 5, "years": 10 },
+  "notify": { "on": true, "mode": "full", "evening": "21:30", "eveningOn": true },
+  "ai": {
+    "on": true,
+    "preset": "deepseek",
+    "base": "https://api.deepseek.com/v1",
+    "model": "deepseek-chat",
+    "key": "sk-…",                 // 只在这台设备里
+    "temp": 0.6,
+    "thread": [                    // 对话记录，只留最近 60 条
+      { "role": "user", "text": "今天练完了，20 分钟", "at": 1764000000000 },
+      { "role": "coach", "text": "记上了。…", "at": 1764000005000,
+        "acts": [ { "t": "checkin", "ok": true, "text": "已记上「运动 30 分钟」20 分钟" } ] }
+    ],
+    "notes": ["右膝下楼有点疼"],    // 让 AI 长期记住的事
+    "daily":  { "date": "2026-11-25", "text": "今天先补下肢，20 分钟够。" },
+    "weekly": { "week": "2026-11-24", "text": "健康线 2/5，是这周最差的…" }
+  },
+  "profile": {
+    "sex": "男", "age": "28", "height": "175", "weight": "70",
+    "goal": "减脂", "level": "入门", "gear": "徒手", "notes": ""
+  },
   "migrated": ""
 }
 ```
@@ -1018,7 +1145,137 @@ cd android && ./gradlew assembleDebug
 
 ---
 
-## 十二、设计原则：为什么这样取舍
+## 十二、AI 教练
+
+前几版只做了「复制上下文」：把本周数据整理成一段话，你自己粘到 DeepSeek 网页版。能用，但每天复制一遍很烦，而且它看不到具体某天的动作。
+
+这一版接了真的模型：填一个 Key，它就能直接读你的记录、回答问题、改清单。
+
+### 怎么接（2 分钟）
+
+设置 ⚙ → **AI 教练** → 「开启 AI 教练」→ 点一个服务商 → 填 Key → 保存 → 测试连接。
+
+| 服务商 | 拿 Key 的地方 | 一个月的花费（按每天聊 3 句估） |
+|---|---|---|
+| **DeepSeek**（默认） | platform.deepseek.com → API keys | 几毛钱 |
+| 通义千问 | 阿里云百炼控制台 | 有免费额度 |
+| 智谱 GLM | open.bigmodel.cn | glm-4-flash 基本免费 |
+| Kimi | platform.moonshot.cn | 有赠送额度 |
+| 硅基流动 | cloud.siliconflow.cn | 有免费模型 |
+| OpenAI | platform.openai.com | 贵，且需要外网 |
+| Ollama 本地 | 电脑上跑 `ollama serve` | 免费，但手机要能访问电脑 |
+
+接口地址填到 `/v1` 这一层就行，程序自己拼 `/chat/completions`。换服务商只改这一处。
+
+### 它能做什么
+
+1. **说一句今天最该做的事**（训练页「教练说」）
+   读最近的记录，给一句 60 字以内的判断，可以点「换一句」重读。**同一天只请求一次**，结果缓存，不会每次打开都烧 token。
+
+2. **对话**（「问教练」）
+   像发微信一样问：「今天只有 15 分钟」「这周哪条线最差」「我膝盖不舒服」。它能看到你近 14 天的每一条记录、四线进度、训练明细、体检分数、上次复盘。
+
+3. **直接改数据**（这一条最有用）
+   你说「今天练完了，深蹲 3 组」，它不会回你「好的，请手动记录」，而是直接写进今天的记录，回复下面出现一张绿色小卡：
+
+   ```
+   [ 已记上「运动 30 分钟」20 分钟 ]   撤销
+   ```
+
+   点「撤销」就退回原样。能改的有四类：打卡（做了/分钟数/体感）、换动作计划、改每周次数、记住一条长期事实（伤病、作息、忌口）。
+
+4. **本周复盘**（回顾页「教练的复盘」）
+   读完两周数据，指出哪条线透支最明显、下周只改一件、明天能做的最小动作。180 字以内。
+
+### 它能看到的和不能做的
+
+**能看到**：四线本周进度、全部清单与频率、近 14 天逐条记录（日期/状态/分钟/体感/备注/练了什么）、训练统计、身体资料、上次体检、上次复盘、你让它记住的事。
+
+**刻意限制**：
+
+- **不许编**。系统提示里第一条就是「只能依据给定数据回答，数据里没有的直接说没有」。它不会编一个睡眠分数或心率。
+- **必须具体**。要求引用哪一天、几次、多少分钟，不接受「你最近练得不错」这种话。
+- **不诊断**。疼痛、伤病、胸闷、眩晕一律建议就医，不开运动处方。
+- **不主动打扰**。它只在你点的时候说话。没有任何「AI 每日问候」推送到你脸上——这一条是看了 Google Health Coach 的教训才定下的（见下一节）。
+- **不做订阅**。没有会员墙，没有"AI 次数用完请充值"。你付钱给模型厂商，不付给我。
+
+### 花钱吗
+
+你直接付给服务商，中间没有我。DeepSeek 一天聊三句、一周复盘一次，一个月大约几毛到两块。请求是**非流式**的，一次要等 2–8 秒，换来的是省电、省流量、App 里更稳。
+
+### 为什么在 App 里更顺
+
+浏览器直连模型需要服务商允许跨域。DeepSeek、通义、智谱、Kimi、硅基流动都允许，网页版直接能用。但有些服务商不允许，网页里就会报「请求失败」。
+
+App 版在 `capacitor.config.json` 里开了 `CapacitorHttp`，所有请求走安卓原生 HTTP，**不受跨域限制**，任何 OpenAI 兼容接口都能连。
+
+### 不接会怎样
+
+什么都不会少。四个页面、跟练计时、到点提醒、周复盘、热力图，全部照常。教练卡变成一行「去接入」，回顾页那张卡变成一句说明。所有 AI 相关的代码都在 `aiReady()` 后面，关掉就是零开销。
+
+---
+
+## 十三、做之前看了什么：同类应用的毛病
+
+这一版改训练页和加 AI 之前，把两类应用翻了一遍：习惯打卡类（Streaks、Habitify、Loop、Habitica）和 AI 健康教练类（Whoop Coach、Google Health Coach、MyFitnessPal AI、各家 AI 健身 App）。看的是它们被骂什么，而不是它们宣传什么。
+
+### 六个被反复提到的毛病
+
+**1. 连击（streak）崩塌 → 整体放弃**
+
+习惯类应用最核心的机制是连续天数。但研究里有个反直觉的结论：允许自己断的人坚持得更久，追完美连击的人放弃得最快。因为连击一断，那个衡量你全部进度的数字就归零了，心理上等于"前面白做了"。
+
+> 我们把连击彻底删了。今天看到的永远是「本周 2/3」，断一天只掉一格，周目标还在。热力图里那格是空的，不是红的。
+
+**2. 功能越多，越没人用**
+
+统计、图表、日记、社交、徽章、标签、子连击……每加一个功能，就多一个要维护的东西、多一个要做的决定。用户为了"简单"下载，结果维护一套比习惯本身还复杂的系统。
+
+> 我们的取舍：四个页签，砍掉了 XP、27 枚徽章、补签卡、月历、柱状趋势、部位雷达、体重体脂曲线。清单默认 8 条，不是 20 条。
+
+**3. AI 编造不存在的数据和功能**
+
+Whoop Coach 的用户在官方论坛发帖，说它给了一套「app 里根本没有的选项」的详细操作步骤，被追问后承认是「从别的健身应用的模式里推测的」。Google Health Coach 也被指「误报运动数据、误解你告诉它的目标」。有评测者说它的训练建议"很泛"——会说你的 HRV 高于同龄人平均，但说不出这个平均来自哪个数据集。
+
+> 三条防线：① 系统提示第一条就是「只能依据给定数据」；② 要求引用具体日期和数字；③ 我们的数据只有你自己记的，它编也只能编出你能一眼看穿的假日期。
+
+**4. AI 全天候说话 → 用户去设置里关掉**
+
+Google Health Coach 一天好几次在主屏更新评论，结果一批 Premium 用户专门去搜「怎么关掉 AI 教练」。MyFitnessPal 做得更收敛：AI 放在独立入口，你去找它它才说话。
+
+> 我们也做收敛的那一版：训练页一句、回顾页一段，其余全靠你点。没有推送，没有"早安"。
+
+**5. 建议泛泛，因为它只有问卷**
+
+Reddit 上对 AI 健身 App 最集中的批评是「基于问卷的通用建议，换个人也成立」。能给出有用建议的，都是能读到真实训练数据的。
+
+> 我们喂的是：近 14 天逐条记录（含体感、备注、练了什么）、四线进度、训练统计、身体资料、上次复盘。它想泛也泛不起来，因为数据太具体了。
+
+**6. 数据上云 + 订阅墙**
+
+习惯数据是很私密的东西（你在戒什么、你在怕什么）。而主流应用的趋势是把它放到服务器上，再按月收费。
+
+> 没有账号、没有服务器、没有订阅。数据在 localStorage，Key 在你自己的设备里，请求直连服务商。
+
+### 保留下来的优点
+
+不是所有东西都该砍。这几条是同类应用里真正有效的：
+
+| 优点 | 我们的做法 |
+|---|---|
+| 记录要一秒完成 | 今天页每条清单三个按钮，点一下即存；跟练台底部直接「做了/最小版」 |
+| 视觉比数字有动力 | 18 周热力图、7 天打卡条、四线进度条 |
+| 每周复盘才看得出模式 | 回顾页固定三个问题 + 自动统计 + AI 点评 |
+| 低门槛版本能救命 | 每条清单都有「最小版」，记了算 0.6 次，不算失败 |
+| 环境提示比提醒有效 | 提醒只做「到点一次 + 晚间兜底」，不做每小时催 |
+
+### 一条结论
+
+这类工具能不能用下去，不取决于功能多少，取决于**断掉之后它还愿不愿意让你回来**。所以整套设计里最重要的一行不是连击天数，是那个「最小版」按钮。
+
+---
+
+## 十四、设计原则：为什么这样取舍
 
 **1. 每页只有一个主动作**
 今天 = 记录；训练 = 开始练；回顾 = 复盘；清单 = 维护。页面多了会瘫，动作多了也会瘫。
@@ -1035,15 +1292,15 @@ cd android && ./gradlew assembleDebug
 **5. 砍掉等级和徽章**
 XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励，和"每周 / 每季度审视"的节奏打架，还占首屏。这套工具的目标不是让人每天回来点一下，而是半年后回头看，四条线都还在。
 
-**6. 不存 API Key**
-本地文件跨域请求不可靠，Key 明文放在 localStorage 也不安全。所以只做「复制上下文」，你自己粘到任何对话框里问。效果一样，风险为零。
+**6. Key 只存在你的设备里，没有中间服务器**
+接模型有两种做法：把 Key 存在我这边的服务器（省事，但你得信任我），或者存在你的浏览器里、直连服务商（麻烦一点，但没有第三方经手）。选后者。代价是网页版受跨域限制，所以另做了 App 版走原生 HTTP 绕过去。「复制上下文」保留着，不填 Key 也能用。
 
 **7. 数据本地优先**
 没有账号、没有服务器、没有隐私政策要看。代价是要自己导出备份，这个代价换来的确定性更高。
 
 ---
 
-## 十三、常见问题
+## 十五、常见问题
 
 **Q：换电脑 / 换手机怎么办？**
 导出 JSON，在新设备打开页面，导入。没有云同步。
@@ -1069,13 +1326,28 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 **Q：能改语言 / 主题吗？**
 目前只有中文和这套浅色主题。深色模式需要额外维护一套配色，暂时没做。
 
+**Q：AI 要花钱吗？能关吗？**
+要，但很便宜（DeepSeek 一天聊三句大约几毛钱一个月），钱直接付给服务商。设置 → AI 教练 → 「关掉 AI」，所有 AI 功能立刻消失，其余功能不受影响。
+
+**Q：API Key 会被上传吗？**
+不会。Key 存在你设备的 `localStorage`，请求从你的设备直连服务商。这个项目没有服务器。
+
+**Q：为什么 AI 一次要等好几秒？**
+用的是非流式请求，一次吐完整段。换来的是省电、省流量、在 App 里更稳。想要逐字出，需要 SSE 流式，App 的原生 HTTP 层不支持。
+
+**Q：AI 会不会瞎编我的数据？**
+提示词第一条就是「只能依据给定数据，没有的直接说没有」，并要求引用具体日期和数字。但它仍然是模型，不是数据库——看到它对不上的数字，去「今天」或「最近」核对一下，错了就点「撤销」。
+
+**Q：为什么训练页没有「连续打卡 X 天」了？**
+故意去掉的。连击一断，人会觉得自己全盘失败然后彻底放弃，这是习惯类应用最常见的死因（见第十三节）。
+
 ---
 
-## 十四、技术说明
+## 十六、技术说明
 
 | 项 | 说明 |
 |---|---|
-| 形态 | 单文件 HTML（约 141 KB，其中约 28 KB 是内嵌的这份说明；代码约 2400 行），CSS + JS 全部内联 |
+| 形态 | 单文件 HTML（约 200 KB，其中约 44 KB 是内嵌的这份说明；代码约 2800 行），CSS + JS 全部内联 |
 | 依赖 | 无。不用框架、不用 CDN、不用构建 |
 | 运行 | `file://` 直接打开即可，也可放到任意静态服务器 |
 | 存储 | `localStorage`，键 `life.v3`（兼容读 `fourlines.v2` / `fourlines.v1`） |
@@ -1090,6 +1362,8 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 | 提醒 | 自写原生插件 `Alarm`：`AlarmManager.setAlarmClock()` 精确排程 + `NotificationCompat.setFullScreenIntent()` + 独立 `AlarmActivity`（`showWhenLocked` / `turnScreenOn`） |
 | 回写 | 通知按钮 → `BroadcastReceiver` 写 SharedPreferences 队列 → 下次进 App 由 `takePending()` 取走写进 `localStorage`，所以 App 没在前台也能记录 |
 | 排程策略 | JS 把未来 7 天展开成具体时刻交给原生，每次启动/回前台重排；已打卡的时刻自动跳过；重启后由 `BootReceiver` 重排 |
+| 大模型 | OpenAI 兼容的 `/chat/completions`，**非流式**。App 里开 `CapacitorHttp` 走原生 HTTP 绕过 CORS；网页里直连服务商（需其允许跨域） |
+| 提示词 | 系统提示在 `AI_PERSONA` + `ACT_DOC` 里，数据在 `aiData()` 里拼。AI 改数据靠末尾的 ` ```act ` 块，一行一个 JSON，由 `splitActs / runActs` 解析执行，可撤销 |
 
 主要函数：
 
@@ -1099,8 +1373,14 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 | `habitWeek / weekStat / dayStat` | 周 / 日统计（加权） |
 | `trainHabits / trainStats / recentTrain` | 训练数据聚合 |
 | `parseStep / stepView` | 把自然语言步骤拆成 组数 / 秒数 / 休息 |
-| `startTimer / tick / completeSet / saveTimer` | 跟练计时与落库 |
-| `buildAIContext` | 生成给 AI 的复盘上下文 |
+| `startTimer / tick / completeSet / saveTimer` | 跟练计时与落库（计时器在训练页内嵌，不用弹层） |
+| `trainDeck / deckIdle / deckDots` | 跟练台的三态渲染：空闲 / 计时中 / 完成 |
+| `buildAIContext` | 生成给外部 AI 的复盘上下文（不填 Key 时用） |
+| `aiData / aiSystem` | 把真实记录拼成上下文 + 系统提示（防幻觉规则 + act 协议） |
+| `callAI` | 一次非流式请求。App 里优先 `CapacitorHttp.request`，否则 `fetch` |
+| `aiSend / coachSheet / coachMsg` | 对话发送、渲染、消息气泡 |
+| `splitActs / runActs / undoAct` | 解析 AI 回复里的动作、执行、撤销 |
+| `aiDaily / aiWeekly` | 当天一句建议、本周点评（都按天/按周缓存，不重复请求） |
 | `md2html / docSheet` | 把内嵌的 README 转成设置页里的说明文档 |
 | `exportData / importData / migrateFrom` | 备份、恢复、旧版迁移 |
 | `buildAlarms / syncAlarms` | 把清单展开成未来 7 天的提醒时刻，交给原生排程 |
@@ -1118,7 +1398,7 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 
 ---
 
-## 十五、版本演进
+## 十七、版本演进
 
 | 版本 | 文件 | 变化 |
 |---|---|---|
@@ -1127,7 +1407,8 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 | v3 | `生命系统.html` | 并入「锻炼打卡」的跟练计时；砍到三个页签：今天 / 回顾 / 清单 |
 | v3.1 | `生命系统.html` | 训练独立成页；四个页签；全面手机端适配；修复编辑弹窗缺底板 |
 | v3.2 | `生命系统.html` · `index.html` | 说明内嵌进设置页；`tools/build.mjs` 同步说明并生成 `index.html`；上线 GitHub Pages，可加到手机主屏、断网可开 |
-| **v4.0（当前）** | `生命系统.html` · `android/` | 打包成安卓 App：原生到点提醒、全屏闹钟、通知上直接记「做了 / 最小版」、晚间兜底、批量设提醒时间 |
+| **v4.0** | `生命系统.html` · `android/` | 打包成安卓 App：原生到点提醒、全屏闹钟、通知上直接记「做了 / 最小版」、晚间兜底、批量设提醒时间 |
+| **v4.1（当前）** | `生命系统.html` · `android/` | 训练页改成内嵌跟练台（计时不用开弹层、多条训练一键切换）；接入大模型：AI 教练对话、直接改记录且可撤销、当天一句建议、本周复盘；`CapacitorHttp` 让 App 内不受跨域限制 |
 
 旧版本文件保留在同目录，方便对照，可以随时删掉。
 
@@ -1268,7 +1549,25 @@ function defaultState(){
     draftScore: null,
     money: { save:3000, rate:5, years:10 },
     notify: { on:true, mode:'full', evening:'21:30', eveningOn:true },
+    ai: defaultAI(),
+    profile: { sex:'', age:'', height:'', weight:'', goal:'减脂', level:'入门', gear:'徒手', notes:'' },
     migrated: ''
+  };
+}
+
+/* AI 教练：Key 只存在这台设备，不上传任何服务器 */
+function defaultAI(){
+  return {
+    on: false,
+    preset: 'deepseek',
+    base: 'https://api.deepseek.com/v1',
+    model: 'deepseek-chat',
+    key: '',
+    temp: 0.6,
+    thread: [],          // [{ role:'user'|'coach', text, at, acts, err }]
+    notes: [],           // AI 记住的长期事实（伤病、作息、忌口）
+    daily: null,         // { date, text } 当天一句建议，避免每次打开都烧 token
+    weekly: null         // { week, text } 本周点评缓存
   };
 }
 
@@ -1294,6 +1593,17 @@ function normalize(s){
   if(!out.draftScore) out.draftScore = null;
   if(!out.money) out.money = base.money;
   out.notify = Object.assign({}, base.notify, out.notify || {});
+  out.ai = Object.assign(defaultAI(), out.ai || {});
+  out.ai.thread = Array.isArray(out.ai.thread) ? out.ai.thread.slice(-60) : [];
+  /* 上次请求没跑完就退出了：别让它永远转圈 */
+  out.ai.thread.forEach(m => {
+    if(m.pending){
+      m.pending = false;
+      if(!m.text) m.text = '（这次没等到回复，再问一次）';
+    }
+  });
+  out.ai.notes = Array.isArray(out.ai.notes) ? out.ai.notes.filter(Boolean).slice(-20) : [];
+  out.profile = Object.assign({}, base.profile, out.profile || {});
   return out;
 }
 
@@ -1885,20 +2195,18 @@ function trainCard(h){
   const full = Math.floor(ws.got + 1e-9), frac = ws.got - full;
   let dots = '';
   for(let i = 0; i < seg; i++) dots += `<span class="dt${i < full ? ' on' : (i === full && frac > .05 ? ' half' : '')}"></span>`;
-  const minsTxt = st === 'done' && r.mins ? '今天已练 ' + r.mins + ' 分钟 · 再练一次' : st === 'done' ? '今天已练 · 再练一次' : '开始跟练';
 
   return `<section class="card" style="--c:${line.color}">
     <div class="ch">
       <span class="ct">${esc(h.name)}</span>
       <span class="cn">${freqLabel(h)}${h.when ? ' · ' + h.when : ''}</span>
     </div>
-    <div class="tmeta">${esc(tpl ? tpl.name : '自定义动作')} · ${acts.length} 个动作${h.dur ? ' · 约 ' + h.dur + ' 分钟' : ''}</div>
+    <div class="tmeta">${esc(tpl ? tpl.name : '自定义动作')} · ${acts.length} 个动作${h.dur ? ' · 约 ' + h.dur + ' 分钟' : ''}${st === 'done' && r.mins ? ' · 今天已练 ' + r.mins + ' 分钟' : ''}</div>
     <div class="tprog">
       <span class="lb">本周</span>
       <span class="dots">${dots}</span>
       <span class="nm">${fmtN(ws.got)}/${fmtN(ws.target)}</span>
     </div>
-    <button class="btn tstart${st === 'done' ? ' did' : ''}" data-act="start-timer" data-id="${h.id}">${minsTxt}</button>
     <div class="trow2">
       <button class="mini" data-act="pick-tpl" data-id="${h.id}">换一套动作</button>
       <button class="mini" data-act="tsteps" data-id="${h.id}">${open ? '收起动作' : '看动作'}</button>
@@ -1918,6 +2226,159 @@ function trainCard(h){
   </section>`;
 }
 
+/* 跟练台：计时器直接长在页面上，不用先开弹层 */
+function deckDots(cur, sets){
+  let d = '';
+  for(let i = 1; i <= sets; i++){
+    d += `<span class="dkd${i < cur ? ' on' : i === cur ? ' now' : ''}"></span>`;
+  }
+  return d;
+}
+
+function trainDeck(){
+  const hs = trainHabits();
+  if(!hs.length) return '';
+  if(!T || !hs.some(h => h.id === T.id)) return deckIdle(hs);
+
+  const h = S.habits.find(x => x.id === T.id) || { name: '' };
+
+  if(T.mode === 'idle') return deckIdle(hs);
+
+  if(T.mode === 'done'){
+    const mins = tElapsedMin();
+    const total = T.steps.length, doneN = T.done.length;
+    return `<section class="card deck done">
+      <div class="dk-top">
+        <div><div class="dk-k">练完了</div><div class="dk-name">${esc(h.name)}</div></div>
+        <button class="mini" data-act="timer-close">收起</button>
+      </div>
+      <div class="dk-sum">
+        <div><b>${mins}</b><small>分钟</small></div>
+        <div><b>${doneN}</b><small>/${total} 动作</small></div>
+        <div><b>${Math.max(0, total - doneN)}</b><small>跳过</small></div>
+      </div>
+      <div class="dk-q">今天感觉怎么样？</div>
+      <div class="feel">${['easy','normal','hard'].map(f => `<button data-act="timer-feel" data-v="${f}" class="${T.feel === f ? 'on' : ''}">${FEEL[f]}</button>`).join('')}</div>
+      <button class="btn dk-go" data-act="timer-save">存进今天</button>
+      <button class="mini dk-cancel" data-act="timer-close">不存了</button>
+    </section>`;
+  }
+
+  const s = curStep() || { sets: 1, text: '', work: 0 };
+  const rest = T.mode === 'rest';
+  return `<section class="card deck live${rest ? ' rest' : ''}">
+    <div class="dk-top">
+      <div>
+        <div class="dk-k">${rest ? '组间休息' : '第 ' + T.set + ' / ' + s.sets + ' 组'}</div>
+        <div class="dk-name">${esc(h.name)}</div>
+      </div>
+      <button class="mini" data-act="timer-end">提前结束</button>
+    </div>
+    <div class="dk-clock${rest ? ' rest' : ''}" id="tNum">${fmtClock(tRemain())}</div>
+    <div class="dk-lab">${esc(s.text || '')}</div>
+    ${!rest && !s.work ? '<div class="dk-hint">按次数做，做完点「完成这组」</div>' : ''}
+    <div class="tbar${rest ? ' rest' : ''}" id="tBar"><i style="width:0"></i></div>
+    <div class="dk-dots">${rest ? '<span class="dk-note">休息结束自动接下一组</span>' : deckDots(T.set, s.sets)}</div>
+    <div class="dk-btns">
+      <button class="btn" data-act="timer-setdone">${rest ? '跳过休息' : '完成这组'}</button>
+      <button class="btn ghost" data-act="timer-pause">${T.running ? '暂停' : '继续'}</button>
+      <button class="btn ghost" data-act="timer-skip">跳过动作</button>
+    </div>
+    <div class="dk-foot">已完成 ${T.done.length}/${T.steps.length} 个动作</div>
+  </section>`;
+}
+
+function deckIdle(hs){
+  const cur = T && hs.some(h => h.id === T.id) ? hs.filter(h => h.id === T.id)[0] : null;
+
+  if(cur){
+    return `<section class="card deck live">
+      <div class="dk-top">
+        <div><div class="dk-k">准备开始</div><div class="dk-name">${esc(cur.name)}</div>
+          <div class="dk-sub">${T.steps.length} 个动作 · 按顺序走，组间自动休息</div></div>
+        <button class="mini" data-act="timer-close">取消</button>
+      </div>
+      <ol class="steps" style="margin-top:12px">${T.steps.map(x => `<li>${esc(x.text)}</li>`).join('')}</ol>
+      <button class="btn dk-go" data-act="timer-start">开始 · 共 ${T.steps.length} 个动作</button>
+      <div class="dk-other" style="justify-content:center">
+        <button class="mini" data-act="pick-tpl" data-id="${cur.id}">换一套动作</button>
+      </div>
+      <div class="dk-foot">有秒数的倒计时，按次数的点「完成这组」。响铃前先点一下页面。</div>
+    </section>`;
+  }
+
+  const h = hs.filter(x => !(x.log[TODAY] && x.log[TODAY].st === 'done'))[0] || hs[0];
+  const tpl = TPL_MAP[h.tpl];
+  const acts = (h.steps && h.steps.length) ? h.steps : (tpl ? tpl.steps : []);
+  const first = acts[0] ? stepView(acts[0]).clean : '';
+  const ws = habitWeek(h);
+  const est = h.dur || Math.max(6, acts.length * 3);
+  const others = hs.filter(x => x.id !== h.id);
+
+  return `<section class="card deck">
+    <div class="dk-top">
+      <div>
+        <div class="dk-k">跟练台</div>
+        <div class="dk-name">${esc(h.name)}</div>
+        <div class="dk-sub">${acts.length} 个动作 · 约 ${est} 分钟${first ? ' · 起手：' + esc(first) : ''}</div>
+      </div>
+      <div class="dk-big">${fmtN(ws.got)}<small>/${fmtN(ws.target)}</small></div>
+    </div>
+    <button class="btn dk-go" data-act="start-timer" data-id="${h.id}">开始跟练</button>
+    <div class="dk-mark">
+      <span>不跟练，直接记</span>
+      <button class="mini" data-act="mark" data-id="${h.id}" data-date="${TODAY}" data-st="done">做了</button>
+      <button class="mini" data-act="mark" data-id="${h.id}" data-date="${TODAY}" data-st="min">最小版</button>
+    </div>
+    ${others.length ? `<div class="dk-other"><span>也可以练</span>${others.map(x => `<button class="mini" data-act="start-timer" data-id="${x.id}">${esc(x.name)}</button>`).join('')}</div>` : ''}
+  </section>`;
+}
+
+/* 教练卡：没接模型就一行引导；接了就给一句当天建议，其余等你问 */
+function coachCard(){
+  const a = S.ai;
+  if(!a.on){
+    return `<section class="card coachc">
+      <div class="dk-top">
+        <div><div class="dk-k">AI 教练</div><div class="dk-name" style="font-size:15px">让它读懂你的记录再说话</div></div>
+      </div>
+      <div class="cc-sub">接一个模型（DeepSeek 等），它能看到你的真实记录、排今天的动作、直接改清单。不接也完全能用——其余功能都不依赖它。</div>
+      <button class="btn ghost" style="margin-top:11px" data-act="ai-setup">去接入</button>
+    </section>`;
+  }
+  if(!aiReady()){
+    return `<section class="card coachc">
+      <div class="dk-top">
+        <div><div class="dk-k">AI 教练</div><div class="dk-name" style="font-size:15px">还差一个 API Key</div></div>
+      </div>
+      <div class="cc-sub">已经选好 ${esc(aiPresetOf(a.preset) ? aiPresetOf(a.preset).name : '自定服务')}，填上 Key 就能用。</div>
+      <button class="btn ghost" style="margin-top:11px" data-act="ai-setup">去填写</button>
+    </section>`;
+  }
+
+  const d = a.daily;
+  const today = d && d.date === TODAY ? d : null;
+  let body = '';
+  if(today && today.busy) body = '<span class="cwait"><i></i><i></i><i></i></span>';
+  else if(today && today.err) body = '<div class="cc-err">' + esc(today.err) + '</div>';
+  else if(today && today.text) body = esc(today.text);
+  else body = '<span class="cc-mute">还没读过今天的记录。</span>';
+
+  return `<section class="card coachc">
+    <div class="dk-top">
+      <div><div class="dk-k">教练说</div></div>
+      <button class="mini" data-act="ai-daily" data-force="1">${today && today.text ? '换一句' : '读一下'}</button>
+    </div>
+    <div class="cc-txt">${body}</div>
+    <div class="cc-btns">
+      <button class="btn" data-act="ai-open">问教练</button>
+      <button class="btn ghost" data-act="ai-plan">排今天的动作</button>
+    </div>
+    <div class="dk-foot" style="text-align:left">它读的是你本地的记录，Key 只存在这台设备。</div>
+  </section>`;
+}
+
+
 function renderTrain(){
   const hs = trainHabits();
   const ts = trainStats();
@@ -1932,10 +2393,14 @@ function renderTrain(){
           <div class="hero-l">${trainHero(hs)}</div>
         </div>
       </section>
-      ${hs.length ? hs.map(trainCard).join('') : `<section class="card">
+      ${trainDeck()}
+      ${coachCard()}
+      ${hs.length > 1 ? hs.map(trainCard).join('') : ''}
+      ${hs.length ? '' : `<section class="card">
         <div class="empty">还没有跟练条目。加一条「运动 30 分钟」，选一套动作就能开始。</div>
         <div style="text-align:center;margin-top:12px"><button class="btn sm" data-act="new-train">+ 加一条训练</button></div>
       </section>`}
+      ${hs.length ? `<div style="text-align:center;margin-top:2px"><button class="mini" data-act="new-train">+ 再加一条训练</button></div>` : ''}
     </div>
     <aside>
       <section class="card">
@@ -1979,6 +2444,32 @@ function renderReview(){
     ${RSEG === 'week' ? weekBlock() : quarterBlock()}`;
 }
 
+function aiWeekCard(){
+  const a = S.ai;
+  if(!a.on || !aiReady()){
+    return `<section class="card">
+      <div class="ch"><span class="ct">教练的复盘</span><span class="cn">${a.on ? '还缺 Key' : '未接入'}</span></div>
+      <div class="note" style="margin-top:0">接上模型后，这里会读你这两周的真实记录，指出哪条线透支最明显、下周只改哪一件。</div>
+      <button class="btn ghost sm" style="margin-top:10px" data-act="ai-setup">去接入</button>
+    </section>`;
+  }
+  const w = a.weekly;
+  const cur = w && w.week === weekKeys()[0] ? w : null;
+  let body;
+  if(cur && cur.busy) body = '<span class="cwait"><i></i><i></i><i></i></span>';
+  else if(cur && cur.err) body = '<div class="cc-err">' + esc(cur.err) + '</div>';
+  else if(cur && cur.text) body = esc(cur.text);
+  else body = '<span class="cc-mute">还没读过这一周。</span>';
+  return `<section class="card coachc">
+    <div class="dk-top">
+      <div><div class="dk-k">教练的复盘</div></div>
+      <button class="mini" data-act="ai-weekly">${cur && cur.text ? '重新读' : '读一遍'}</button>
+    </div>
+    <div class="cc-txt">${body}</div>
+    <div class="cc-btns"><button class="btn ghost" data-act="ai-open">接着问</button></div>
+  </section>`;
+}
+
 function weekBlock(){
   const stats = LINES.map(l => ({ l, s: weekStat(l.key) }));
   const totDone = stats.reduce((a,x) => a + x.s.done, 0);
@@ -2018,6 +2509,7 @@ function weekBlock(){
       <div class="heat-key"><span>少</span><span class="cell"></span><span class="cell l1"></span><span class="cell l2"></span><span class="cell l3"></span><span class="cell l4"></span><span>多</span>
         <span style="margin-left:auto">连续 ${streak()} · 最长 ${bestStreak()} · 累计 ${totalLogs()} 次</span></div>
     </section>
+    ${aiWeekCard()}
     </div>
 
     <section class="card">
@@ -2302,8 +2794,9 @@ function startTimer(id){
     return { text: txt, sets: p.sets, work: p.work, rest: p.rest };
   });
   T = { id, steps, i: 0, set: 1, mode: 'idle', running: false, left: 0, endAt: 0, started: 0, done: [], feel: '' };
-  SHEET = { type:'timer' };
-  renderSheet();
+  TAB = 'train';
+  render();
+  scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function parseStep(text){
@@ -2341,7 +2834,7 @@ function beginWork(){
   T.left = s.work;
   T.running = s.work > 0;
   T.endAt = T.running ? Date.now() + s.work * 1000 : 0;
-  renderSheet();
+  render();
 }
 function beginRest(sec){
   if(!sec || sec <= 0){ beginWork(); return; }
@@ -2349,7 +2842,7 @@ function beginRest(sec){
   T.left = sec;
   T.running = true;
   T.endAt = Date.now() + sec * 1000;
-  renderSheet();
+  render();
 }
 function nextStep(){
   T.i++;
@@ -2379,7 +2872,7 @@ function finishTimer(){
   T.mode = 'done';
   T.running = false;
   T.endAt = 0;
-  renderSheet();
+  render();
 }
 function paintTimer(){
   const n = $('#tNum'); if(!n) return;
@@ -2497,11 +2990,11 @@ function renderSheet(){
   let html = '';
   if(SHEET.type === 'day') html = daySheet();
   else if(SHEET.type === 'tpl') html = tplSheetHTML();
-  else if(SHEET.type === 'timer') html = timerSheet();
   else if(SHEET.type === 'settings') html = settingsSheet();
   else if(SHEET.type === 'doc') html = docSheet();
-  openSheet(html, SHEET.type === 'doc' ? 'docmode' : '');
-  if(SHEET && SHEET.type === 'timer' && T && (T.mode === 'work' || T.mode === 'rest')) paintTimer();
+  else if(SHEET.type === 'coach') html = coachSheet();
+  openSheet(html, SHEET.type === 'doc' ? 'docmode' : SHEET.type === 'coach' ? 'coachmode' : '');
+  if(SHEET.type === 'coach') setTimeout(scrollChat, 30);
 }
 
 /* ---- 设置 ---- */
@@ -2530,11 +3023,60 @@ function settingsSheet(){
       <button class="btn ghost sm" data-act="clear">清空所有记录</button>
     </div>
     <div class="note">${S.migrated ? '已从旧版（' + S.migrated + '）自动迁移，原记录都在。' : '数据只存在这台设备的浏览器里，没有服务器。'}</div>
-    <div class="ch" style="margin:16px 0 8px"><span class="ct">给 AI 的复盘</span></div>
-    <button class="btn ghost sm" data-act="copy-ai">复制上下文</button>
-    <div class="note">复制后粘到 DeepSeek / 豆包任意对话框，让它帮你判断该补哪条线。不联网、不存 Key。</div>
+    <div class="ch" style="margin:16px 0 8px"><span class="ct">AI 教练</span><span class="cn">${S.ai.on ? (aiReady() ? '已接通' : '还缺 Key') : '未开启'}</span></div>
+    ${aiSettingsHTML()}
+    <div class="ch" style="margin:16px 0 8px"><span class="ct">不接模型也能用</span><span class="cn">复制给任意对话框</span></div>
+    <button class="btn ghost sm" data-act="copy-ai">复制本周上下文</button>
+    <div class="note">不带 Key、不联网，把本周真实数据整理成一段话，粘到 DeepSeek / 豆包 / 任意对话框都能问。</div>
   </div>
   <div class="sh-f"><button class="btn" data-act="close-sheet">好</button></div>`;
+}
+
+/* 设置里的 AI 区块 */
+function aiSettingsHTML(){
+  const a = S.ai;
+  if(!a.on){
+    return `<div class="note" style="margin-top:0">接一个大模型，它就能读懂你的记录、排今天的动作、直接改清单。
+      不接也完全能用——其余功能都不依赖它。</div>
+      <button class="btn" style="margin-top:10px" data-act="ai-toggle">开启 AI 教练</button>`;
+  }
+  const pf = S.profile;
+  const opt = (v, cur) => `<option value="${v}"${v === cur ? ' selected' : ''}>${v || '不填'}</option>`;
+  return `
+    <div class="presrow">${AI_PRESETS.map(p =>
+      `<button class="pres${a.preset === p.id ? ' on' : ''}" data-act="ai-preset" data-id="${p.id}">${p.name}</button>`
+    ).join('')}</div>
+    <div class="field" style="margin-top:12px"><label>接口地址</label>
+      <input class="in" id="aiBase" value="${esc(a.base)}" placeholder="https://api.deepseek.com/v1" autocomplete="off" spellcheck="false"></div>
+    <div class="field"><label>API Key</label>
+      <input class="in" id="aiKey" type="password" placeholder="${a.key ? '已保存（留空不改）' : 'sk-...'}" autocomplete="off" spellcheck="false"></div>
+    <div class="grid2">
+      <div class="field"><label>模型</label>
+        <input class="in" id="aiModel" value="${esc(a.model)}" placeholder="deepseek-chat" autocomplete="off" spellcheck="false"></div>
+      <div class="field"><label>温度（越低越稳）</label>
+        <input class="in" id="aiTemp" type="number" min="0" max="2" step="0.1" value="${a.temp}"></div>
+    </div>
+    <div class="ch" style="margin:12px 0 7px"><span class="ct">身体资料</span><span class="cn">决定排动作的强度</span></div>
+    <div class="grid2">
+      <div class="field"><label>性别</label><select class="in" id="pfSex">${['', '男', '女'].map(v => opt(v, pf.sex)).join('')}</select></div>
+      <div class="field"><label>年龄</label><input class="in" id="pfAge" type="number" value="${esc(pf.age)}" placeholder="28"></div>
+      <div class="field"><label>身高（cm）</label><input class="in" id="pfHeight" type="number" value="${esc(pf.height)}" placeholder="175"></div>
+      <div class="field"><label>体重（kg）</label><input class="in" id="pfWeight" type="number" value="${esc(pf.weight)}" placeholder="70"></div>
+      <div class="field"><label>目标</label><select class="in" id="pfGoal">${['减脂','增肌','塑形','提升体能','保持健康'].map(v => opt(v, pf.goal)).join('')}</select></div>
+      <div class="field"><label>水平</label><select class="in" id="pfLevel">${['入门','初级','进阶','熟练'].map(v => opt(v, pf.level)).join('')}</select></div>
+    </div>
+    <div class="field"><label>器械</label><select class="in" id="pfGear">${['徒手','徒手 + 哑铃','家用器械齐全','健身房'].map(v => opt(v, pf.gear)).join('')}</select></div>
+    <div class="field"><label>备注（伤病、作息、忌口）</label>
+      <textarea class="in" id="pfNotes" rows="2" placeholder="右膝下楼有点疼；晚上九点后才有空">${esc(pf.notes)}</textarea></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn sm" data-act="ai-save">保存</button>
+      <button class="btn ghost sm" data-act="ai-test" ${a.testing ? 'disabled' : ''}>${a.testing ? '测试中…' : '测试连接'}</button>
+      <button class="btn ghost sm" data-act="ai-clear-key">清空 Key</button>
+      <button class="btn ghost sm" data-act="ai-toggle">关掉 AI</button>
+    </div>
+    <div class="note">Key 只存在这台设备，直连服务商，没有中间服务器。DeepSeek 一天聊十句大概几分钱。
+      ${a.preset === 'ollama' ? '本地模型不需要 Key。' : ''}
+      ${a.notes.length ? 'AI 记住的：' + a.notes.map(n => '「' + esc(n) + '」').join('') : ''}</div>`;
 }
 
 /* 设置里的「到点提醒」区块 */
@@ -2837,6 +3379,157 @@ function welcome(){
   return (dateOf(TODAY).getMonth()+1) + '月' + dateOf(TODAY).getDate() + '日 周' + WD[dateOf(TODAY).getDay()];
 }
 
+/* =========================================================
+   AI 教练
+   ---------------------------------------------------------
+   设计取舍（见 README「竞品调研」一节）：
+   · 不做常驻打扰：只在训练页给一句当天建议，其余等你主动问
+   · 不编数据：把真实记录整段喂进去，要求它引用具体日期与数字
+   · 不锁云：Key 只在你自己的设备里，直连服务商，没有中间服务器
+   ========================================================= */
+const AI_PRESETS = [
+  { id:'deepseek', name:'DeepSeek', base:'https://api.deepseek.com/v1',              model:'deepseek-chat' },
+  { id:'qwen',     name:'通义千问', base:'https://dashscope.aliyuncs.com/compatible-mode/v1', model:'qwen-plus' },
+  { id:'zhipu',    name:'智谱 GLM', base:'https://open.bigmodel.cn/api/paas/v4',      model:'glm-4-flash' },
+  { id:'kimi',     name:'Kimi',     base:'https://api.moonshot.cn/v1',                model:'moonshot-v1-8k' },
+  { id:'silicon',  name:'硅基流动', base:'https://api.siliconflow.cn/v1',             model:'Qwen/Qwen2.5-7B-Instruct' },
+  { id:'openai',   name:'OpenAI',   base:'https://api.openai.com/v1',                 model:'gpt-4o-mini' },
+  { id:'ollama',   name:'Ollama 本地', base:'http://localhost:11434/v1',              model:'qwen2.5:7b' }
+];
+
+function aiLocal(url){ return /localhost|127\.0\.0\.1|0\.0\.0\.0/.test(String(url || '')); }
+function aiReady(){ const a = S.ai; return !!a && !!a.on && (!!a.key || aiLocal(a.base)); }
+function aiPresetOf(id){ return AI_PRESETS.filter(p => p.id === id)[0] || null; }
+
+function aiEndpoint(){
+  const b = String(S.ai.base || '').trim().replace(/\/+$/, '');
+  if(!b) throw new Error('还没填接口地址');
+  if(/\/chat\/completions$/.test(b)) return b;
+  return b + '/chat/completions';
+}
+
+function pickAIText(data){
+  if(!data) return '';
+  if(typeof data === 'string'){
+    try{ data = JSON.parse(data); }catch(e){ return ''; }
+  }
+  const c = data.choices && data.choices[0];
+  if(!c) return '';
+  return (c.message && c.message.content) || c.text || '';
+}
+function pickAIErr(data){
+  if(!data) return '';
+  if(typeof data === 'string') return data;
+  if(data.error && data.error.message) return data.error.message;
+  if(data.message) return data.message;
+  try{ return JSON.stringify(data).slice(0, 200); }catch(e){ return ''; }
+}
+
+/* 非流式请求。App 里走原生 HTTP 绕过 CORS；网页里直连服务商（需其允许跨域） */
+function callAI(messages, opts){
+  opts = opts || {};
+  const a = S.ai;
+  if(!a.key && !aiLocal(a.base)) return Promise.reject(new Error('还没填 API Key'));
+  if(!a.model) return Promise.reject(new Error('还没填模型名'));
+  const body = { model: a.model, messages, stream: false };
+  const t = Number(a.temp);
+  if(!isNaN(t)) body.temperature = Math.min(2, Math.max(0, t));
+  const url = aiEndpoint();
+  const headers = { 'content-type': 'application/json' };
+  if(a.key) headers.authorization = 'Bearer ' + a.key;
+
+  const capHttp = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.CapacitorHttp;
+  if(capHttp && capHttp.request){
+    return capHttp.request({ url, method:'POST', headers, data: body, readTimeout:120000, connectTimeout:20000 })
+      .then(res => {
+        const txt = pickAIText(res.data);
+        if(res.status < 200 || res.status >= 300){
+          throw new Error('接口返回 ' + res.status + '：' + pickAIErr(res.data).slice(0, 180));
+        }
+        if(!txt) throw new Error('模型没有返回内容');
+        return txt;
+      })
+      .catch(e => {
+        if(/^接口返回|^模型没有/.test(e.message)) throw e;
+        throw new Error('请求失败：' + ((e && e.message) || '网络不通'));
+      });
+  }
+
+  return fetch(url, { method:'POST', headers, body: JSON.stringify(body) })
+    .catch(() => { throw new Error('请求失败：网络不通，或该服务不允许浏览器跨域调用（装 App 版可绕过）'); })
+    .then(res => res.text().then(txt => ({ res, txt })))
+    .then(({ res, txt }) => {
+      let data = null;
+      try{ data = JSON.parse(txt); }catch(e){}
+      if(!res.ok) throw new Error('接口返回 ' + res.status + '：' + String(pickAIErr(data) || txt || res.statusText).slice(0, 180));
+      const out = pickAIText(data);
+      if(!out) throw new Error('模型没有返回内容');
+      return out;
+    });
+}
+
+/* ---- 把真实数据整理成一段上下文：AI 只能依据它说话 ---- */
+function aiData(){
+  const L = [];
+  const d = dateOf(TODAY);
+  L.push('【今天】' + TODAY + ' 周' + WD[d.getDay()] + '，现在 ' + new Date().getHours() + ' 点');
+
+  L.push('\n【四线本周】');
+  LINES.forEach(l => {
+    const s = weekStat(l.key);
+    L.push(l.name + '：' + fmtN(s.got) + '/' + fmtN(s.target) + '（' + s.pct + '%）· 做了 ' + s.done + ' 次，最小版 ' + s.min + ' 次，没做 ' + s.miss + ' 次');
+  });
+
+  L.push('\n【清单】');
+  S.habits.filter(h => !h.off).forEach(h => {
+    const ws = habitWeek(h);
+    const r = h.log[TODAY];
+    const stTxt = !r || !r.st ? '今天还没记' : (r.st === 'done' ? '今天已做' : r.st === 'min' ? '今天记了最小版' : '今天记了没做');
+    L.push('- ' + h.name + '（' + (LM[h.line] ? LM[h.line].name : '健康') + '，' + freqLabel(h) + '，本周 ' + fmtN(ws.got) + '/' + fmtN(ws.target) + '，' + stTxt +
+      (h.when ? '，平时 ' + h.when : '') + (h.at ? '，提醒 ' + h.at : '') + (h.kind === 'train' && h.tpl && TPL_MAP[h.tpl] ? '，动作：' + TPL_MAP[h.tpl].name : '') + '）');
+  });
+
+  const rows = [];
+  for(let i = 0; i < 14; i++){
+    const k = ymd(new Date(d.getFullYear(), d.getMonth(), d.getDate() - i));
+    S.habits.forEach(h => {
+      const r = h.log[k];
+      if(!r || !r.st) return;
+      rows.push(k + ' 周' + WD[dateOf(k).getDay()] + ' ' + h.name + ' = ' +
+        (r.st === 'done' ? '做了' : r.st === 'min' ? '最小版' : '没做') +
+        (r.mins ? ' ' + r.mins + ' 分钟' : '') + (r.feel ? ' 体感' + FEEL[r.feel] : '') +
+        (r.sum ? '，练了' + r.sum : '') + (r.note ? '，备注「' + r.note + '」' : ''));
+    });
+  }
+  L.push('\n【近 14 天逐条记录】\n' + (rows.length ? rows.join('\n') : '（这 14 天没有任何记录）'));
+
+  const ts = trainStats();
+  L.push('\n【训练】本周 ' + ts.weekN + ' 次、' + ts.weekMin + ' 分钟；本月 ' + ts.monthN + ' 次；累计 ' + ts.total + ' 次、' + ts.totalMin + ' 分钟');
+  const rec = recentTrain(5).filter(x => x.r.sum);
+  if(rec.length) L.push('最近练的内容：' + rec.map(x => mmdd(x.k) + ' ' + x.h.name + '（' + x.r.sum + '）').join('；'));
+
+  const p = S.profile;
+  const pb = [];
+  if(p.sex) pb.push(p.sex);
+  if(p.age) pb.push(p.age + ' 岁');
+  if(p.height) pb.push(p.height + 'cm');
+  if(p.weight) pb.push(p.weight + 'kg');
+  if(p.goal) pb.push('目标' + p.goal);
+  if(p.level) pb.push('水平' + p.level);
+  if(p.gear) pb.push('器械' + p.gear);
+  if(p.notes) pb.push('备注：' + p.notes);
+  L.push('\n【身体资料】' + (pb.length ? pb.join('，') : '（还没填，问一次即可）'));
+
+  const sc = latestScore();
+  if(sc) L.push('【上次体检】' + LINES.map(x => x.name + ' ' + sc.values[x.key] + '（期望 ' + sc.desired[x.key] + '）').join('，'));
+  if(S.focus) L.push('【本周重点】' + S.focus);
+  const last = S.reviews[S.reviews.length - 1];
+  if(last) L.push('【上次复盘】做成：' + (last.done || '—') + '；卡在：' + (last.fail || '—') + '；下周重点：' + (last.next || '—'));
+  L.push('\n【你记住的关于用户的事】\n' + (S.ai.notes.length ? S.ai.notes.map(n => '- ' + n).join('\n') : '（暂无）'));
+
+  return L.join('\n');
+}
+
 function buildAIContext(){
   const lines = [];
   lines.push('【我的四线周报】' + niceDate(TODAY));
@@ -2867,6 +3560,314 @@ function buildAIContext(){
   lines.push('\n请基于以上真实数据回答：1）这周哪条线透支最明显；2）下周只改一件事的话，改哪件；3）给一个能立刻做的最小动作。不要泛泛而谈。');
   return lines.join('\n');
 }
+
+/* ---- 提示词：尽量短，把「不许编」写在最前面 ---- */
+const AI_PERSONA = [
+  '你是用户的私人教练兼生活参谋。用户在用一套叫「生命系统」的个人工具：四条线（健康、财务、能力、关系）都不透支，今天的事今天做，训练单独练。',
+  '',
+  '【说话方式】像真人在微信上发消息：短句，一般 2-4 段，不用「首先／其次」这类连接词，不客套，不加免责声明，也不要每次都列清单。该追问就追问，该下结论就直接给结论。',
+  '',
+  '【必须遵守】',
+  '1. 只能依据下面给你的真实数据回答。数据里没有的（睡眠、心率、体重变化等）不要编，直接说「这个你还没记」。',
+  '2. 提到成绩必须具体：哪一天、几次、多少分钟。不要笼统说「你最近练得不错」。',
+  '3. 不确定就说不确定。不要为了显得专业而虚构数字、研究或功能。',
+  '4. 不要介绍你的能力，也不要提任何 App 功能（除非用户主动问）。',
+  '5. 疼痛、伤病、胸闷、眩晕这类，建议就医，不要开运动处方。',
+  '6. 每次只聚焦最关键的 1-2 件事，别一次给五条建议。',
+  '7. 简短：默认 120 字以内，用户明确要求详细时才展开。'
+].join('\n');
+
+const ACT_DOC = [
+  '【你可以直接改数据】',
+  '用户在对话里说了具体做了什么、或你判断该调计划时，直接执行，不要先问「要不要我帮你改」。',
+  '把操作放在回复最末尾，用 act 代码块，一行一个 JSON：',
+  '```act',
+  '{"type":"checkin","name":"运动 30 分钟","content":"深蹲 3 组 12 次 + 慢跑 20 分钟","duration":30,"feeling":"normal"}',
+  '{"type":"set_plan","name":"运动 30 分钟","steps":["慢走 5 分钟","深蹲 4 组 × 12，组间休息 60 秒","大腿前侧拉伸 各 30 秒"]}',
+  '{"type":"freq","name":"运动 30 分钟","value":3}',
+  '{"type":"note","text":"右膝下楼有点疼，避免深蹲过深"}',
+  '```',
+  '可用类型：',
+  '- checkin：记录今天做了。name 必须和清单里的名字一致；content 简短动作描述；duration 分钟数；feeling 取 easy|normal|hard',
+  '- set_plan：替换某条训练的动作列表。steps 是字符串数组，每项「动作 + 组数次数或时长」，可带「组间休息 N 秒」',
+  '- freq：改某条清单的每周目标次数（1-7）',
+  '- note：把关于用户的重要事实写进长期记忆。text 一句话',
+  '不需要改数据时不要写 act 块。写了就在正文里用一句话说明改了什么，不要复述 JSON。'
+].join('\n');
+
+function aiSystem(){
+  return AI_PERSONA + '\n\n' + ACT_DOC + '\n\n以下是用户的真实数据，只能依据这些回答：\n' + aiData();
+}
+
+/* ---- 解析 AI 回复里的动作，并真的执行 ---- */
+function splitActs(text){
+  const raw = String(text || '');
+  const acts = [];
+  const clean = raw.replace(/```(?:act)[ \t]*\r?\n([\s\S]*?)```/gi, (m, body) => {
+    String(body).split(/\r?\n/).forEach(line => {
+      const s = line.trim();
+      if(!s || s.charAt(0) !== '{') return;
+      try{ acts.push(JSON.parse(s)); }catch(e){}
+    });
+    return '';
+  }).replace(/\n{3,}/g, '\n\n').trim();
+  return { clean, acts };
+}
+
+function findHabitByName(name){
+  const s = String(name || '').trim();
+  if(!s) return null;
+  const on = S.habits.filter(h => !h.off);
+  return on.filter(h => h.name === s)[0]
+      || on.filter(h => h.name.indexOf(s) >= 0 || s.indexOf(h.name) >= 0)[0]
+      || null;
+}
+
+function runActs(acts){
+  const out = [];
+  (acts || []).forEach(a => {
+    if(!a || !a.type) return;
+    const rec = { t: a.type, ok: false, text: '', undo: null };
+
+    if(a.type === 'checkin'){
+      const h = findHabitByName(a.name);
+      if(!h){ rec.text = '没找到清单「' + (a.name || '') + '」，没记'; out.push(rec); return; }
+      const k = TODAY, cur = h.log[k] || {};
+      rec.undo = { id: h.id, k, prev: JSON.parse(JSON.stringify(cur)) };
+      const mins = Number(a.duration) || 0;
+      h.log[k] = Object.assign({}, cur, {
+        st: 'done',
+        mins: mins || cur.mins || 0,
+        feel: a.feeling && FEEL[a.feeling] ? a.feeling : (cur.feel || ''),
+        sum: String(a.content || cur.sum || '').slice(0, 140)
+      });
+      rec.ok = true;
+      rec.text = '已记上「' + h.name + '」' + (mins ? ' ' + mins + ' 分钟' : '');
+    }
+    else if(a.type === 'set_plan'){
+      const h = findHabitByName(a.name);
+      const steps = Array.isArray(a.steps) ? a.steps.filter(Boolean).map(x => String(x).slice(0, 60)) : [];
+      if(!h || !steps.length){ rec.text = '计划没改成（清单不存在或动作为空）'; out.push(rec); return; }
+      rec.undo = { id: h.id, steps: h.steps.slice() };
+      h.steps = steps.slice(0, 12);
+      rec.ok = true;
+      rec.text = '把「' + h.name + '」换成 ' + h.steps.length + ' 个动作';
+    }
+    else if(a.type === 'freq'){
+      const h = findHabitByName(a.name);
+      const v = Math.max(1, Math.min(7, Number(a.value) || 0));
+      if(!h || !v){ rec.text = '频率没改（清单不存在）'; out.push(rec); return; }
+      rec.undo = { id: h.id, freq: JSON.parse(JSON.stringify(h.freq || {})) };
+      h.freq = { type: 'flex', perWeek: v };
+      rec.ok = true;
+      rec.text = '「' + h.name + '」改成每周 ' + v + ' 次';
+    }
+    else if(a.type === 'note'){
+      const t = String(a.text || '').trim().slice(0, 120);
+      if(!t){ rec.text = '笔记是空的，没记'; out.push(rec); return; }
+      if(S.ai.notes.indexOf(t) < 0) S.ai.notes.push(t);
+      if(S.ai.notes.length > 20) S.ai.notes = S.ai.notes.slice(-20);
+      rec.ok = true;
+      rec.text = '记住了：' + t;
+    }
+    else {
+      rec.text = '这条动作没看懂（' + a.type + '）';
+    }
+    out.push(rec);
+  });
+  return out;
+}
+
+function undoAct(mi, ai2){
+  const m = S.ai.thread[mi];
+  if(!m || !m.acts || !m.acts[ai2]) return;
+  const rec = m.acts[ai2];
+  if(!rec.ok || !rec.undo) return;
+  const h = S.habits.filter(x => x.id === rec.undo.id)[0];
+  if(!h) return;
+  if(rec.t === 'checkin' && rec.undo.k) h.log[rec.undo.k] = rec.undo.prev;
+  else if(rec.t === 'set_plan') h.steps = rec.undo.steps;
+  else if(rec.t === 'freq') h.freq = rec.undo.freq;
+  else if(rec.t === 'note') S.ai.notes = S.ai.notes.filter(n => n !== rec.text.replace(/^记住了：/, ''));
+  rec.ok = false;
+  rec.text = '已撤销：' + rec.text.replace(/^已|^把|^记住了：/, '');
+  rec.undo = null;
+  saveNow();
+  syncAlarms && syncAlarms(600);
+  render();
+  if(SHEET && SHEET.type === 'coach') renderSheet();
+}
+
+/* ---- 对话界面 ---- */
+function timeOf(ts){
+  const d = new Date(ts || Date.now());
+  return pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+
+function actsHTML(acts, mi){
+  if(!acts || !acts.length) return '';
+  return '<div class="actlist">' + acts.map((a, j) =>
+    `<div class="actitem${a.ok ? ' ok' : ' bad'}"><span>${esc(a.text)}</span>${
+      a.ok && a.undo ? `<button data-act="act-undo" data-i="${mi}" data-j="${j}">撤销</button>` : ''
+    }</div>`
+  ).join('') + '</div>';
+}
+
+function coachMsg(m, i){
+  if(m.role === 'user'){
+    return `<div class="cm user"><div class="cbody"><div class="cb">${esc(m.text)}</div>
+      <div class="ctime" style="text-align:right">${timeOf(m.at)}</div></div></div>`;
+  }
+  if(m.pending){
+    return `<div class="cm coach"><div class="cav">教</div><div class="cbody"><div class="cb">
+      <span class="cwait"><i></i><i></i><i></i></span></div></div></div>`;
+  }
+  if(m.err){
+    return `<div class="cm coach"><div class="cav">教</div><div class="cbody"><div class="cb">
+      <div class="cbad">${esc(m.err)}</div></div>
+      <div class="ctime">换个时间再试，或去设置里检查 Key</div></div></div>`;
+  }
+  return `<div class="cm coach"><div class="cav">教</div><div class="cbody">
+    <div class="cb">${md2html(m.text || '')}${actsHTML(m.acts, i)}</div>
+    <div class="ctime">${timeOf(m.at)}</div></div></div>`;
+}
+
+function coachChips(){
+  const ts = trainStats();
+  const out = ['今天练什么', '我只有 15 分钟'];
+  if(ts.weekN < 2) out.push('这周还没怎么练，怎么补');
+  out.push('这周哪条线最差');
+  out.push('帮我复盘');
+  out.push('我膝盖不舒服');
+  return out.slice(0, 6);
+}
+
+function coachSheet(){
+  const a = S.ai;
+  const p = aiPresetOf(a.preset);
+  const sub = a.model ? (p ? p.name : '自定') + ' · ' + a.model : '还没配模型';
+  /* 保留原始索引，撤销时才不会错位 */
+  const thread = a.thread.map((m, i) => ({ m, i }))
+    .filter(x => x.m.role === 'user' || x.m.text || x.m.pending || x.m.err);
+  return `<div class="sh-h">
+    <div><div class="sh-t">教练</div><div class="sh-s">${esc(sub)} · 读你的真实记录</div></div>
+    <button class="x" data-act="close-sheet">×</button>
+  </div>
+  <div class="cchat" id="cchat">${
+    thread.length ? thread.map(x => coachMsg(x.m, x.i)).join('')
+      : `<div class="cempty"><b>问点什么</b>说说今天的情况，或者让它改计划。<br>你记的每一条它都能看到。</div>`
+  }</div>
+  <div class="cquick">${coachChips().map(c => `<button data-act="ai-chip" data-v="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+  <div class="cbox">
+    <textarea id="cInput" rows="1" placeholder="说说今天的情况…"></textarea>
+    <button class="csend" data-act="ai-send" ${AI_BUSY ? 'disabled' : ''} aria-label="发送">↑</button>
+  </div>`;
+}
+
+function scrollChat(){
+  const el = $('#cchat');
+  if(el) el.scrollTop = el.scrollHeight;
+}
+
+function aiPlanToday(){
+  const hs = trainHabits();
+  if(!hs.length){ toast('先加一条训练'); return; }
+  if(!aiReady()){ toast('先去设置里配置模型'); SHEET = { type:'settings' }; renderSheet(); return; }
+  const h = hs[0];
+  SHEET = { type:'coach' };
+  renderSheet();
+  aiSend('帮我把「' + h.name + '」今天的动作排一下，按我现在的水平来，用 act 改，别问我要不要。');
+}
+
+
+let AI_BUSY = false;
+
+function aiSend(text){
+  text = String(text || '').trim();
+  if(!text || AI_BUSY) return;
+  if(!S.ai.on){ toast('先去设置里开启 AI 教练'); SHEET = { type:'settings' }; renderSheet(); return; }
+  if(!aiReady()){ toast('还没填 API Key'); SHEET = { type:'settings' }; renderSheet(); return; }
+
+  S.ai.thread.push({ role:'user', text, at: Date.now() });
+  const pending = { role:'coach', text:'', at: Date.now(), pending:true };
+  S.ai.thread.push(pending);
+  if(S.ai.thread.length > 60) S.ai.thread = S.ai.thread.slice(-60);
+  AI_BUSY = true;
+  saveNow();
+  renderSheet();
+
+  const msgs = [{ role:'system', content: aiSystem() }]
+    .concat(S.ai.thread.filter(m => !m.pending).slice(-14)
+      .map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: String(m.text || '').slice(0, 1200) })));
+
+  callAI(msgs).then(txt => {
+    const { clean, acts } = splitActs(txt);
+    pending.text = clean || '（模型没有返回文字）';
+    pending.pending = false;
+    pending.acts = runActs(acts);
+    if(pending.acts.length){ saveNow(); syncAlarms && syncAlarms(600); render(); }
+    AI_BUSY = false;
+    saveNow();
+    renderSheet();
+  }).catch(err => {
+    pending.text = '';
+    pending.pending = false;
+    pending.err = (err && err.message) || '请求失败';
+    AI_BUSY = false;
+    saveNow();
+    renderSheet();
+  });
+}
+
+/* ---- 当天一句建议 / 本周点评（都缓存，不重复烧 token） ---- */
+function aiDaily(force){
+  if(!aiReady()){ toast('先去设置里配置模型'); return; }
+  const c = S.ai.daily;
+  if(!force && c && c.date === TODAY && c.text) return;
+  const slot = { date: TODAY, text: '', busy: true };
+  S.ai.daily = slot;
+  renderTrain();
+  callAI([
+    { role:'system', content: aiSystem() },
+    { role:'user', content:'（用户刚打开训练页。用 60 字以内说一句：现在最该做的是哪件事、为什么。必须引用最近一次具体记录。不要列表，不要反问，不要说「你好」。）' }
+  ]).then(txt => {
+    slot.text = String(txt || '').trim().slice(0, 200);
+    slot.busy = false;
+    saveNow();
+    if(TAB === 'train') renderTrain();
+  }).catch(err => {
+    slot.text = '';
+    slot.busy = false;
+    slot.err = (err && err.message) || '请求失败';
+    saveNow();
+    if(TAB === 'train') renderTrain();
+  });
+}
+
+function aiWeekly(force){
+  if(!aiReady()){ toast('先去设置里配置模型'); return; }
+  const c = S.ai.weekly;
+  if(!force && c && c.week === weekKeys()[0] && c.text) return;
+  const slot = { week: weekKeys()[0], text: '', busy: true };
+  S.ai.weekly = slot;
+  renderReview();
+  callAI([
+    { role:'system', content: aiSystem() },
+    { role:'user', content:'（读完上面两周数据，写本周复盘，180 字以内。三段：①哪条线透支最明显，用数字说明；②下周只改一件事，改哪件；③明天就能做的最小动作。不要列清单，不要客套。）' }
+  ]).then(txt => {
+    slot.text = String(txt || '').trim().slice(0, 600);
+    slot.busy = false;
+    saveNow();
+    if(TAB === 'review') renderReview();
+  }).catch(err => {
+    slot.text = '';
+    slot.busy = false;
+    slot.err = (err && err.message) || '请求失败';
+    saveNow();
+    if(TAB === 'review') renderReview();
+  });
+}
+
 
 function copyText(txt){
   const done = () => toast('已复制，去粘给 AI');
@@ -3034,12 +4035,62 @@ document.addEventListener('click', e => {
     } else if(T.left > 0){
       T.running = true; T.endAt = Date.now() + T.left * 1000;
     }
-    renderSheet();
+    render();
     return;
   }
   if(a === 'timer-end'){ finishTimer(); return; }
-  if(a === 'timer-feel'){ T.feel = T.feel === t.dataset.v ? '' : t.dataset.v; renderSheet(); return; }
+  if(a === 'timer-feel'){ T.feel = T.feel === t.dataset.v ? '' : t.dataset.v; render(); return; }
   if(a === 'timer-save'){ saveTimer(); return; }
+  if(a === 'timer-close'){ T = null; render(); return; }
+
+  /* ---- AI 教练 ---- */
+  if(a === 'ai-setup' || a === 'ai-open-settings'){ SHEET = { type:'settings' }; renderSheet(); return; }
+  if(a === 'ai-open'){ SHEET = { type:'coach' }; renderSheet(); return; }
+  if(a === 'ai-send'){
+    const box = $('#cInput');
+    const v = box ? box.value : '';
+    if(box) box.value = '';
+    aiSend(v);
+    return;
+  }
+  if(a === 'ai-chip'){ aiSend(t.dataset.v); return; }
+  if(a === 'ai-daily'){ aiDaily(true); return; }
+  if(a === 'ai-plan'){ aiPlanToday(); return; }
+  if(a === 'ai-weekly'){ aiWeekly(true); return; }
+  if(a === 'act-undo'){ undoAct(Number(t.dataset.i), Number(t.dataset.j)); return; }
+  if(a === 'ai-toggle'){
+    S.ai.on = !S.ai.on; saveNow(); renderSheet();
+    toast(S.ai.on ? 'AI 教练已开启' : '已关掉 AI 教练');
+    return;
+  }
+  if(a === 'ai-preset'){
+    const p = aiPresetOf(t.dataset.id);
+    if(p){ S.ai.preset = p.id; S.ai.base = p.base; S.ai.model = p.model; saveNow(); renderSheet(); }
+    return;
+  }
+  if(a === 'ai-save'){
+    const v = id => { const el = $(id); return el ? el.value.trim() : null; };
+    const base = v('#aiBase'); if(base) S.ai.base = base;
+    const model = v('#aiModel'); if(model) S.ai.model = model;
+    const key = v('#aiKey'); if(key) S.ai.key = key;
+    const temp = v('#aiTemp'); if(temp) S.ai.temp = Math.min(2, Math.max(0, Number(temp) || 0.6));
+    const map = { '#pfSex':'sex', '#pfAge':'age', '#pfHeight':'height', '#pfWeight':'weight', '#pfGoal':'goal', '#pfLevel':'level', '#pfGear':'gear', '#pfNotes':'notes' };
+    Object.keys(map).forEach(sel => { const x = v(sel); if(x !== null) S.profile[map[sel]] = x; });
+    saveNow(); renderSheet(); toast('已保存');
+    return;
+  }
+  if(a === 'ai-clear-key'){
+    S.ai.key = ''; saveNow(); renderSheet(); toast('Key 已清空');
+    return;
+  }
+  if(a === 'ai-test'){
+    t.textContent = '测试中…'; t.disabled = true;
+    callAI([{ role:'system', content:'你是测试助手。' }, { role:'user', content:'只回复两个字：通了' }])
+      .then(txt => { toast('连接正常：' + String(txt).slice(0, 12)); })
+      .catch(err => { toast('失败：' + ((err && err.message) || '未知错误').slice(0, 40)); })
+      .then(() => { if(SHEET && SHEET.type === 'settings') renderSheet(); });
+    return;
+  }
 
   if(a === 'rate'){ S.draft.rating = Number(t.dataset.v); save(); render(); return; }
   if(a === 'save-review'){ saveReview(); return; }
@@ -3154,6 +4205,22 @@ $('#editDlg').addEventListener('close', () => { $('#editDlg').innerHTML = ''; ED
 /* =========================================================
    启动
    ========================================================= */
+/* 对话框：回车发送，Shift+回车换行；输入时自动长高 */
+document.addEventListener('keydown', e => {
+  if(!e.target || e.target.id !== 'cInput') return;
+  if(e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    const v = e.target.value;
+    e.target.value = '';
+    aiSend(v);
+  }
+});
+document.addEventListener('input', e => {
+  if(!e.target || e.target.id !== 'cInput') return;
+  e.target.style.height = 'auto';
+  e.target.style.height = Math.min(110, e.target.scrollHeight) + 'px';
+});
+
 (function boot(){
   const h = (location.hash || '').replace('#','');
   if(['today','train','review','list'].indexOf(h) >= 0) TAB = h;
