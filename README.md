@@ -2,6 +2,7 @@
 
 > 一个单文件的个人节奏工具：**四条线不透支，今天的事今天做，训练单独练。**
 > 双击 `生命系统.html` 即可使用，不用安装、不用联网、不用注册。数据只存在你自己的浏览器里。
+> 想让它**到点弹出来叫你**，装安卓 App 版（见第十一节）。
 >
 > 仓库：[github.com/SuperAhua/life-system](https://github.com/SuperAhua/life-system)
 
@@ -649,7 +650,7 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 
 | 项 | 说明 |
 |---|---|
-| 形态 | 单文件 HTML（约 128 KB，其中约 23 KB 是内嵌的这份说明；代码约 2250 行），CSS + JS 全部内联 |
+| 形态 | 单文件 HTML（约 141 KB，其中约 28 KB 是内嵌的这份说明；代码约 2400 行），CSS + JS 全部内联 |
 | 依赖 | 无。不用框架、不用 CDN、不用构建 |
 | 运行 | `file://` 直接打开即可，也可放到任意静态服务器 |
 | 存储 | `localStorage`，键 `life.v3`（兼容读 `fourlines.v2` / `fourlines.v1`） |
@@ -660,6 +661,10 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 | URL | 支持 `#today` `#train` `#review` `#list` 直接进入对应页 |
 | 说明页 | README 存在 `<script type="text/plain" id="docSrc">` 里，运行时用内置迷你 markdown 渲染器转 HTML。改完 README 后跑 `node tools/build.mjs` 同步，并顺带生成 `index.html`，不用手动复制 |
 | 部署 | GitHub Pages 托管 `main` 根目录；`sw.js` 只缓存导航请求（网络优先），装到主屏后没网也能开 |
+| 外壳 | Capacitor 8（`com.superahua.lifesystem`），把 `www/` 包进 WebView，minSdk 24 / targetSdk 36 |
+| 提醒 | 自写原生插件 `Alarm`：`AlarmManager.setAlarmClock()` 精确排程 + `NotificationCompat.setFullScreenIntent()` + 独立 `AlarmActivity`（`showWhenLocked` / `turnScreenOn`） |
+| 回写 | 通知按钮 → `BroadcastReceiver` 写 SharedPreferences 队列 → 下次进 App 由 `takePending()` 取走写进 `localStorage`，所以 App 没在前台也能记录 |
+| 排程策略 | JS 把未来 7 天展开成具体时刻交给原生，每次启动/回前台重排；已打卡的时刻自动跳过；重启后由 `BootReceiver` 重排 |
 
 主要函数：
 
@@ -673,6 +678,18 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 | `buildAIContext` | 生成给 AI 的复盘上下文 |
 | `md2html / docSheet` | 把内嵌的 README 转成设置页里的说明文档 |
 | `exportData / importData / migrateFrom` | 备份、恢复、旧版迁移 |
+| `buildAlarms / syncAlarms` | 把清单展开成未来 7 天的提醒时刻，交给原生排程 |
+| `drainPending` | 把通知里点掉的「做了 / 最小版」补进记录 |
+
+原生侧（`android/app/src/main/java/com/superahua/lifesystem/`）：
+
+| 文件 | 作用 |
+|---|---|
+| `AlarmPlugin.java` | 给网页层的接口：`schedule / takePending / status / test / openSettings / askNotifications` |
+| `AlarmScheduler.java` | `setAlarmClock` 排程与撤销，没有精确闹钟权限时逐级降级 |
+| `AlarmReceiver.java` | 到点发通知（含三个动作按钮）、拉起全屏页、处理延后 10 分钟 |
+| `AlarmActivity.java` | 全屏提醒页：亮屏、盖在锁屏上，三个按钮直接落库 |
+| `AlarmStore.java` / `Perm.java` / `BootReceiver.java` | 本地队列、权限检查与跳转、开机重排 |
 
 ---
 
@@ -684,7 +701,8 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 | v2 | `四线生命系统.html` | 并入 SOP 四要素与三态记录；六个页签 |
 | v3 | `生命系统.html` | 并入「锻炼打卡」的跟练计时；砍到三个页签：今天 / 回顾 / 清单 |
 | v3.1 | `生命系统.html` | 训练独立成页；四个页签；全面手机端适配；修复编辑弹窗缺底板 |
-| **v3.2（当前）** | `生命系统.html` · `index.html` | 说明内嵌进设置页；`tools/build.mjs` 同步说明并生成 `index.html`；上线 GitHub Pages，可加到手机主屏、断网可开 |
+| v3.2 | `生命系统.html` · `index.html` | 说明内嵌进设置页；`tools/build.mjs` 同步说明并生成 `index.html`；上线 GitHub Pages，可加到手机主屏、断网可开 |
+| **v4.0（当前）** | `生命系统.html` · `android/` | 打包成安卓 App：原生到点提醒、全屏闹钟、通知上直接记「做了 / 最小版」、晚间兜底、批量设提醒时间 |
 
 旧版本文件保留在同目录，方便对照，可以随时删掉。
 
