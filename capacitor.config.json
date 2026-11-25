@@ -1,0 +1,10 @@
+{
+  "appId": "com.superahua.lifesystem",
+  "appName": "生命系统",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#FBFAF7",
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false
+  }
+}

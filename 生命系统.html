@@ -235,6 +235,15 @@
   @media(max-width:480px){.grid2{grid-template-columns:1fr}}
   .note{font-size:11px;color:var(--ink3);line-height:1.6;margin-top:3px}
 
+  /* 提醒权限胶囊 */
+  .permrow{display:flex;gap:6px;flex-wrap:wrap}
+  .perm{display:inline-flex;align-items:center;gap:5px;font:inherit;font-size:11.5px;padding:6px 10px;border-radius:999px;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink3);cursor:pointer}
+  .perm i{width:6px;height:6px;border-radius:50%;background:#d9d2c4;display:block;flex:none}
+  .perm.on{color:var(--g);border-color:var(--gl);background:var(--gs)}
+  .perm.on i{background:var(--g)}
+  .perm:active{transform:scale(.97)}
+
   /* 说明文档（README 内嵌） */
   .toc{display:flex;flex-wrap:wrap;gap:6px;padding:12px 18px 0}
   .toc button{border:1px solid var(--line);background:#fff;border-radius:99px;font-size:11.5px;color:var(--ink2);padding:4px 10px;line-height:1.5}
@@ -435,10 +444,11 @@
 8. [数据与备份](#八数据与备份)
 9. [手机端适配](#九手机端适配)
 10. [放到手机上用](#十放到手机上用github-pages)
-11. [设计原则：为什么这样取舍](#十一设计原则为什么这样取舍)
-12. [常见问题](#十二常见问题)
-13. [技术说明](#十三技术说明)
-14. [版本演进](#十四版本演进)
+11. [安卓 App：到点提醒](#十一安卓-app到点提醒)
+12. [设计原则：为什么这样取舍](#十二设计原则为什么这样取舍)
+13. [常见问题](#十三常见问题)
+14. [技术说明](#十四技术说明)
+15. [版本演进](#十五版本演进)
 
 ---
 
@@ -918,7 +928,94 @@ git add -A && git commit -m "更新说明" && git push
 
 ---
 
-## 十一、设计原则：为什么这样取舍
+## 十一、安卓 App：到点提醒
+
+网页版有个绕不过去的短板：**它没法在你不看它的时候叫你**。浏览器的定时器一旦切到后台就被系统冻结，关闭页面就彻底停了。这不是代码问题，是浏览器的权限天花板。
+
+所以做了一个安卓 App。它不只是套壳——里面是原生闹钟。
+
+### 装上去
+
+手机浏览器打开（两个地址任选，哪个快用哪个）：
+
+- **<https://superahua.github.io/life-system/life-system.apk>**
+- <https://github.com/SuperAhua/life-system/releases/latest/download/life-system.apk>
+
+下载完点开安装 → 如果提示「禁止安装未知来源」，去设置里允许这一次即可。
+
+安卓 8.0 以上都能装。装完桌面上会出现四个色块的图标。
+
+### 第一次打开：把五项权限打通
+
+进「设置 ⚙ → 到点提醒」，会看到五个小胶囊。绿色是已开，灰色是没开——**点灰色那项会直接跳到对应的系统设置页**。
+
+| 权限 | 不开的后果 |
+|---|---|
+| 通知 | 什么都弹不出来 |
+| 精确闹钟（Android 12+） | 系统会把提醒挪到"大致这个时间"，可能差十几分钟 |
+| 全屏提醒（Android 14+） | 锁屏时不会铺满整屏，只出一条通知 |
+| 置顶显示（可选） | 有它才能在你正用别的 App 时直接把提醒页顶上来；没有就退化成顶部横幅 |
+| 免电池限制 | 部分国产系统（MIUI / EMUI / ColorOS）会把 App 冻住，提醒可能不响 |
+
+不同厂商的设置路径不一样，找不到就用搜索：在系统设置里搜「闹钟和提醒」「全屏通知」「显示在其他应用上层」。
+
+**改完点一下「响一次试试」**，5 秒后会有一条测试提醒。看得见就说明链路通了。
+
+### 每条清单设提醒
+
+清单 → 编辑 → 「到点提醒」填一个时间（空着就不提醒）。
+
+旁边的「同上」按钮会把「什么时候做」的时间复制过来，多数情况点它就行。
+
+几个规则：
+
+- 只在该做的日子提醒。每周三五次的习惯，不会在周一吵你。
+- **今天已经记过的，不再提醒**。提前打完卡，那个点的闹钟自动取消。
+- 提前 7 天排一次。每次打开 App 会往后接，不用管。
+- 提醒时间过了那一刻就不再补发，避免一次性弹一堆。
+
+### 到点那一刻
+
+选「全屏闹钟」模式时，屏幕会直接亮起来，盖在锁屏之上：
+
+> **运动 30 分钟**
+> 做不动就做这个：换好衣服，做 1 组
+>
+> 　　[ 做了 ]　　[ 只做最小版 ]　　[ 10 分钟后再提醒 ]
+
+点「做了」或「最小版」，记录当场就写进去了，**不用先打开 App**。下次进 App 会提示「已按通知记上 1 件」。
+
+不想被砸脸，就在设置里切成「只发通知」——那就只在下拉栏出一条，带同样的三个按钮。
+
+### 晚间兜底
+
+设置里还有一个「晚上兜底提醒」，默认 21:30。到点如果今天还有没做的，会再提醒一次，标题直接写「今天还剩 3 件」。
+
+它的作用不是催，是**防止一天就这么过去了**。真不想被提醒，把时间框清空就关了。
+
+### 网页版和 App 的数据是两份
+
+App 里记的数据存在 App 自己的目录里，和浏览器那份互不相通（系统就是这么隔离的）。
+
+要合并：一边「设置 → 导出 JSON」，把文件发到另一边，「导入 JSON」。
+
+### 自己重新打包
+
+改完 `生命系统.html` 后：
+
+```bash
+node tools/build.mjs      # README 注回应用，同时生成 www/
+npx cap sync android      # 网页装进原生工程
+cd android && ./gradlew assembleDebug
+```
+
+产物在 `android/app/build/outputs/apk/debug/app-debug.apk`。
+
+第一次打包需要 JDK 21 和 Android SDK（`platforms;android-36`、`build-tools;36.0.0`）。不想在本地装这套东西的话，`tools/github-workflow-build-apk.yml` 是一份现成的云端构建配置：把它放到 `.github/workflows/build-apk.yml`，以后 push 就自动出包。
+
+---
+
+## 十二、设计原则：为什么这样取舍
 
 **1. 每页只有一个主动作**
 今天 = 记录；训练 = 开始练；回顾 = 复盘；清单 = 维护。页面多了会瘫，动作多了也会瘫。
@@ -943,7 +1040,7 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 
 ---
 
-## 十二、常见问题
+## 十三、常见问题
 
 **Q：换电脑 / 换手机怎么办？**
 导出 JSON，在新设备打开页面，导入。没有云同步。
@@ -971,7 +1068,7 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 
 ---
 
-## 十三、技术说明
+## 十四、技术说明
 
 | 项 | 说明 |
 |---|---|
@@ -1002,7 +1099,7 @@ XP 十级、27 枚徽章、补签卡，是给"每天打卡"设计的外部激励
 
 ---
 
-## 十四、版本演进
+## 十五、版本演进
 
 | 版本 | 文件 | 变化 |
 |---|---|---|
@@ -1150,6 +1247,7 @@ function defaultState(){
     draft: { done:'', fail:'', next:'', rating:0 },
     draftScore: null,
     money: { save:3000, rate:5, years:10 },
+    notify: { on:true, mode:'full', evening:'21:30', eveningOn:true },
     migrated: ''
   };
 }
@@ -1164,6 +1262,7 @@ function normalize(s){
     kind: h.kind === 'train' ? 'train' : 'plain',
     freq: h.freq || { type:'daily' },
     when: h.when || '',
+    at: h.at || '',
     dur: h.dur || 0,
     steps: Array.isArray(h.steps) ? h.steps.filter(Boolean) : [],
     min: h.min || '',
@@ -1174,6 +1273,7 @@ function normalize(s){
   if(!out.draft) out.draft = base.draft;
   if(!out.draftScore) out.draftScore = null;
   if(!out.money) out.money = base.money;
+  out.notify = Object.assign({}, base.notify, out.notify || {});
   return out;
 }
 
@@ -1237,6 +1337,114 @@ function save(){
 function saveNow(){
   clearTimeout(saveT);
   try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){}
+}
+
+/* =========================================================
+   到点提醒（只在手机 App 里生效；网页版没有这个能力）
+   ========================================================= */
+const APP_DL = 'https://github.com/SuperAhua/life-system/releases/latest';
+
+let NATIVE = (() => {
+  try{
+    const C = window.Capacitor;
+    if(!C || typeof C.isNativePlatform !== 'function' || !C.isNativePlatform()) return null;
+    if(typeof C.registerPlugin === 'function') return C.registerPlugin('Alarm');
+    return (C.Plugins && C.Plugins.Alarm) || null;
+  }catch(e){ return null; }
+})();
+
+const NAT = { notifications:false, exact:false, fullScreen:false, overlay:false, battery:false, sdk:0 };
+let NAT_PLANNED = 0;
+
+async function refreshNative(){
+  if(!NATIVE) return;
+  try{ Object.assign(NAT, await NATIVE.status()); }catch(e){}
+}
+
+/* 把未来 7 天的提醒展开成具体时刻，交给系统闹钟 */
+function buildAlarms(){
+  const out = [];
+  if(!NATIVE || !S.notify.on) return out;
+  const full = S.notify.mode !== 'push';
+  const now = Date.now();
+
+  for(let d = 0; d < 7; d++){
+    const day = new Date(); day.setDate(day.getDate() + d);
+    const k = ymd(day);
+
+    S.habits.forEach(h => {
+      if(h.off || !h.at) return;
+      if(!dueOn(h, k)) return;
+      const r = h.log[k];
+      if(r && r.st) return;                       // 今天已经记过了就不再吵
+      const m = /^(\d{1,2}):(\d{2})$/.exec(h.at);
+      if(!m) return;
+      const at = new Date(day.getFullYear(), day.getMonth(), day.getDate(), +m[1], +m[2], 0, 0);
+      if(at.getTime() <= now + 60000) return;
+      out.push({
+        id: h.id + '_' + k + '_' + h.at.replace(':', ''),
+        habitId: h.id, date: k, name: h.name,
+        min: h.min || '',
+        hint: h.when ? '平时这个点做：' + h.when : '',
+        at: at.getTime(), full
+      });
+    });
+
+    // 晚间兜底：这天还有没做的，就提醒一句
+    if(S.notify.eveningOn && /^\d{1,2}:\d{2}$/.test(S.notify.evening || '')){
+      const due = dueList(k);
+      const left = due.filter(h => !(h.log[k] && h.log[k].st)).length;
+      if(due.length && left > 0){
+        const p = S.notify.evening.split(':');
+        const at = new Date(day.getFullYear(), day.getMonth(), day.getDate(), +p[0], +p[1], 0, 0);
+        if(at.getTime() > now + 60000){
+          out.push({
+            id: 'eve_' + k, habitId:'', date:k,
+            name: left >= 3 ? ('今天还剩 ' + left + ' 件') : '今天还剩一点',
+            min: '能做一件是一件，最小版也算',
+            hint: '从最容易的那件起',
+            at: at.getTime(), full
+          });
+        }
+      }
+    }
+  }
+  return out;
+}
+
+let syncT = null;
+function syncAlarms(delay){
+  if(!NATIVE) return;
+  clearTimeout(syncT);
+  syncT = setTimeout(async () => {
+    try{
+      const items = buildAlarms();
+      const r = await NATIVE.schedule({ items });
+      NAT_PLANNED = (r && r.count) || items.length;
+    }catch(e){}
+  }, delay || 1200);
+}
+
+/* 用户在通知栏 / 全屏页上点掉的「做了 / 最小版」，回到 App 时补进记录 */
+async function drainPending(){
+  if(!NATIVE) return;
+  try{
+    const r = await NATIVE.takePending();
+    const items = (r && r.items) || [];
+    if(!items.length) return;
+    let n = 0;
+    items.forEach(it => {
+      const h = S.habits.find(x => x.id === it.habitId);
+      if(!h || !it.date) return;
+      const st = it.status === 'min' ? 'min' : 'done';
+      h.log[it.date] = Object.assign({ note:'', src:'notify' }, h.log[it.date] || {}, { st });
+      n++;
+    });
+    if(n){
+      saveNow(); render();
+      toast('已按通知记上 ' + n + ' 件');
+    }
+  }catch(e){}
 }
 
 /* =========================================================
@@ -2290,7 +2498,9 @@ function settingsSheet(){
       <div><div class="k">记录次数</div><div class="v">${totalLogs()}<small>次</small></div></div>
       <div><div class="k">累计时长</div><div class="v">${totalMins()}<small>分</small></div></div>
     </div>
-    <div class="ch" style="margin:16px 0 8px"><span class="ct">使用说明</span><span class="cn">${DOC_SECTIONS.length || 13} 章 · 内嵌离线</span></div>
+    <div class="ch" style="margin:16px 0 8px"><span class="ct">到点提醒</span><span class="cn">${NATIVE ? '已排 ' + NAT_PLANNED + ' 个' : '需装 App'}</span></div>
+    ${NATIVE ? nativeNotifyHTML() : webNotifyHTML()}
+    <div class="ch" style="margin:16px 0 8px"><span class="ct">使用说明</span><span class="cn">${DOC_SECTIONS.length || 14} 章 · 内嵌离线</span></div>
     <button class="btn ghost sm" data-act="doc">打开完整说明</button>
     <div class="note">五分钟上手 / 四个页面 / 训练模块 / 备份迁移 / 常见问题，都在里面。和仓库里的 README.md 是同一份。</div>
     <div class="ch" style="margin:14px 0 8px"><span class="ct">备份</span><span class="cn">换手机、清缓存都靠它</span></div>
@@ -2305,6 +2515,41 @@ function settingsSheet(){
     <div class="note">复制后粘到 DeepSeek / 豆包任意对话框，让它帮你判断该补哪条线。不联网、不存 Key。</div>
   </div>
   <div class="sh-f"><button class="btn" data-act="close-sheet">好</button></div>`;
+}
+
+/* 设置里的「到点提醒」区块 */
+function nativeNotifyHTML(){
+  const rows = [
+    ['通知', NAT.notifications, 'notif'],
+    ['精确闹钟', NAT.exact, 'exact'],
+    ['全屏提醒', NAT.fullScreen, 'full'],
+    ['置顶显示', NAT.overlay, 'overlay'],
+    ['免电池限制', NAT.battery, 'battery']
+  ];
+  const bad = rows.filter(r => !r[1]).length;
+  return `
+    <div class="permrow">
+      ${rows.map(r => `<button class="perm ${r[1] ? 'on' : ''}" data-act="sys" data-which="${r[2]}"><i></i>${r[0]}</button>`).join('')}
+    </div>
+    <div class="note">${bad ? '灰色的那几项没开，点它会跳到系统设置，允许之后提醒才不会被拦下。' : '五项都开着，剩下的交给到点那一下。'}</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px">
+      <button class="btn ghost sm" data-act="notify-test">响一次试试</button>
+      <button class="btn ghost sm" data-act="notify-toggle">${S.notify.on ? '暂停提醒' : '开启提醒'}</button>
+      <button class="btn ghost sm" data-act="notify-mode">${S.notify.mode === 'push' ? '改成全屏闹钟' : '改成只发通知'}</button>
+    </div>
+    <div class="field" style="margin-top:11px"><label>晚上兜底提醒（空=关）</label>
+      <input class="in" type="time" id="fEvening" value="${S.notify.eveningOn ? esc(S.notify.evening) : ''}">
+    </div>
+    <div class="note">每晚这个点，如果今天还有没做的，会再提醒一次。当前已排 <b>${NAT_PLANNED}</b> 个提醒点，覆盖未来 7 天；每次打开 App 会自动往后接，不用管它。</div>`;
+}
+
+function webNotifyHTML(){
+  return `
+    <div class="note" style="margin-top:0">网页版（包括加到主屏的那个图标）拿不到系统的定时能力：页面一关，浏览器就不许它再响了。提醒只能做在 App 里。</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px">
+      <button class="btn ghost sm" data-act="open-app-dl">下载安卓 App</button>
+    </div>
+    <div class="note">每条清单的提醒时间现在就能设（编辑里「到点提醒」），装上 App 后自动生效。</div>`;
 }
 
 /* ---- 使用说明（README 内嵌，运行时转成 HTML） ---- */
@@ -2485,6 +2730,13 @@ function openEdit(id, line, kind){
         <div class="field"><label>大概多久（分钟）</label>
           <input class="in" id="fDur" type="number" min="0" max="240" value="${h ? (h.dur||'') : (pre ? 30 : '')}"></div>
       </div>
+      <div class="field"><label>到点提醒${NATIVE ? '' : '（需装 App）'}</label>
+        <div style="display:flex;gap:7px;align-items:center">
+          <input class="in" id="fAt" type="time" value="${esc(h ? h.at : '')}" style="flex:1;min-width:0">
+          <button type="button" class="btn ghost sm" data-act="at-from-when">同上</button>
+        </div>
+        <div class="note">空着就不提醒。到点手机会弹出来，可以直接点「做了 / 最小版」，不用先打开 App。</div>
+      </div>
       <div class="field"><label>分几步（一行一步；跟练就写「3 组 × 12 个」）</label>
         <textarea class="in" id="fSteps" rows="4" placeholder="换好运动衣（这就算开始）&#10;动 30 分钟&#10;记一句感受">${esc(h ? h.steps.join('\n') : (pre ? pre.steps.join('\n') : ''))}</textarea></div>
       <div class="field"><label>最小版（今天实在不行时做这个）</label>
@@ -2527,6 +2779,7 @@ function saveEdit(){
   const data = {
     name, kind, line: $('#fLine').value, freq,
     when: $('#fWhen').value || '',
+    at: ($('#fAt') && $('#fAt').value) || '',
     dur: Number($('#fDur').value) || 0,
     steps, min: $('#fMin').value.trim()
   };
@@ -2538,10 +2791,12 @@ function saveEdit(){
   } else {
     S.habits.push(mkHabit(data.line, name, Object.assign({}, data, { tpl: kind === 'train' ? 'wake' : '' })));
   }
+  const wasEdit = !!EDIT_ID;
   saveNow();
   closeEdit();
   render();
-  toast(EDIT_ID ? '已保存' : '已添加');
+  syncAlarms(400);
+  toast(wasEdit ? '已保存' : '已添加');
 }
 
 /* =========================================================
@@ -2654,6 +2909,39 @@ document.addEventListener('click', e => {
   if(a === 'close-sheet'){ closeSheet(); return; }
   if(a === 'rseg'){ RSEG = t.dataset.v; render(); return; }
 
+  /* ---- 提醒 ---- */
+  if(a === 'at-from-when'){
+    const w = $('#fWhen'), at = $('#fAt');
+    if(w && at){ at.value = w.value || ''; }
+    return;
+  }
+  if(a === 'sys'){
+    if(NATIVE) NATIVE.openSettings({ which: t.dataset.which || 'app' }).catch(() => {});
+    else toast('装 App 后才有这项');
+    return;
+  }
+  if(a === 'notify-test'){
+    if(!NATIVE){ toast('装 App 后才有这项'); return; }
+    NATIVE.test().then(() => toast('5 秒后响，记得看屏幕')).catch(() => toast('发不出去，检查通知权限'));
+    return;
+  }
+  if(a === 'notify-toggle'){
+    S.notify.on = !S.notify.on;
+    saveNow(); syncAlarms(200); renderSheet();
+    toast(S.notify.on ? '提醒已开启' : '提醒已暂停');
+    return;
+  }
+  if(a === 'notify-mode'){
+    S.notify.mode = S.notify.mode === 'push' ? 'full' : 'push';
+    saveNow(); syncAlarms(200); renderSheet();
+    toast(S.notify.mode === 'push' ? '改成只发通知' : '改成全屏闹钟');
+    return;
+  }
+  if(a === 'open-app-dl'){
+    try{ window.open(APP_DL, '_blank'); }catch(err){ location.href = APP_DL; }
+    return;
+  }
+
   if(a === 'toggle-open'){
     OPEN_ID = OPEN_ID === t.dataset.id ? null : t.dataset.id;
     render();
@@ -2674,6 +2962,7 @@ document.addEventListener('click', e => {
     if(cur.st === st){ delete h.log[k]; }
     else h.log[k] = Object.assign({}, cur, { st });
     saveNow();
+    syncAlarms(2500);
     if(SHEET && SHEET.type === 'day') renderSheet();
     else render();
     return;
@@ -2795,6 +3084,13 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const el = e.target;
   if(el.id === 'fFreq'){ syncFreqUI(); return; }
+  if(el.id === 'fEvening'){
+    S.notify.eveningOn = !!el.value;
+    if(el.value) S.notify.evening = el.value;
+    saveNow(); syncAlarms(300);
+    toast(el.value ? ('每晚 ' + el.value + ' 再提醒一次') : '晚间提醒已关');
+    return;
+  }
   if(el.id === 'fileIn'){
     if(el.files && el.files[0]) importData(el.files[0]);
     el.value = '';
@@ -2832,8 +3128,19 @@ $('#editDlg').addEventListener('close', () => { $('#editDlg').innerHTML = ''; ED
   if(['today','train','review','list'].indexOf(h) >= 0) TAB = h;
   ensureDraft();
   render();
-  /* 部署到网上（http/https）才注册离线缓存，装到主屏后没网也能开；本地 file:// 跳过 */
-  if(location.protocol.indexOf('http') === 0 && 'serviceWorker' in navigator){
+
+  if(NATIVE){
+    /* 手机上：先把通知里点掉的记录补进来，再把未来 7 天的提醒排好 */
+    refreshNative().then(() => {
+      drainPending().then(() => syncAlarms(500));
+      if(SHEET && SHEET.type === 'settings') renderSheet();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if(document.hidden) return;
+      refreshNative().then(drainPending).then(() => syncAlarms(900));
+    });
+  } else if(location.protocol.indexOf('http') === 0 && 'serviceWorker' in navigator){
+    /* 部署到网上（http/https）才注册离线缓存，装到主屏后没网也能开；本地 file:// 跳过 */
     window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
   }
 })();

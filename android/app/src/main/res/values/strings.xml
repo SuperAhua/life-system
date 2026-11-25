@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">生命系统</string>
+    <string name="title_activity_main">生命系统</string>
+    <string name="package_name">com.superahua.lifesystem</string>
+    <string name="custom_url_scheme">com.superahua.lifesystem</string>
+</resources>
